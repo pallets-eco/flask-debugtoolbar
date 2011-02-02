@@ -4,7 +4,7 @@ from flaskext.debugtoolbar.panels import DebugPanel
 
 _ = lambda x: x
 
-flask_version = pkg_resources.working_set.require('flask')[0].version
+flask_version = pkg_resources.get_distribution('Flask').version
 
 class VersionDebugPanel(DebugPanel):
     """
