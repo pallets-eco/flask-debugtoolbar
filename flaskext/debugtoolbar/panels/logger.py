@@ -1,12 +1,16 @@
-"""
-Logger panel (taken from django-debug-toolbar)
-
-"""
-import threading
+import datetime
 import logging
+try:
+    import threading
+except ImportError:
+    threading = None
+from . import DebugPanel
 
 class ThreadTrackingHandler(logging.Handler):
     def __init__(self):
+        if threading is None:
+            raise NotImplementedError("threading module is not available, \
+                the logging panel cannot be used without it")
         logging.Handler.__init__(self)
         self.records = {} # a dictionary that maps threads to log records
 
@@ -33,3 +37,46 @@ class ThreadTrackingHandler(logging.Handler):
 handler = ThreadTrackingHandler()
 logging.root.setLevel(logging.NOTSET)
 logging.root.addHandler(handler)
+
+class LoggingPanel(DebugPanel):
+    name = 'Logging'
+    has_content = True
+
+    def process_request(self, request):
+        handler.clear_records()
+
+    def get_and_delete(self):
+        records = handler.get_records()
+        handler.clear_records()
+        return records
+
+    def nav_title(self):
+        return "Logging"
+
+    def nav_subtitle(self):
+        # FIXME l10n: use ngettext
+        return "%s message%s" % (len(handler.get_records()), (len(handler.get_records()) == 1) and '' or 's')
+
+    def title(self):
+        return 'Log Messages'
+
+    def url(self):
+        return ''
+
+    def content(self):
+        records = []
+        for record in self.get_and_delete():
+            records.append({
+                'message': record.getMessage(),
+                'time': datetime.datetime.fromtimestamp(record.created),
+                'level': record.levelname,
+                'file': record.pathname,
+                'line': record.lineno,
+            })
+
+        context = self.context.copy()
+        context.update({'records': records})
+
+        return self.render('panels/logger.html', context)
+
+
