@@ -21,7 +21,8 @@ def replace_insensitive(string, target, replacement):
 
 
 class DebugToolbarExtension(object):
-    _static_dir = os.path.join(os.path.dirname(__file__), 'static')
+    _static_dir = os.path.realpath(
+        os.path.join(os.path.dirname(__file__), 'static'))
 
     def __init__(self, app):
         self.app = app
