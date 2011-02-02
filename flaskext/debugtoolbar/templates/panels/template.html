@@ -1,0 +1,22 @@
+{% if templates %}
+	<table>
+		<thead>
+			<tr>
+				<th>Filename</th>
+				<th>Context vars</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for template in templates %}
+				<tr class="{{ loop.cycle('fjDebugOdd' 'fjDebugEven') }}">
+					<td>{{ template.template.name }}</td>
+					<td>{{ template.context.keys()|join(', ') }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>No templates rendered.</p>
+{% endif %}
+
+
