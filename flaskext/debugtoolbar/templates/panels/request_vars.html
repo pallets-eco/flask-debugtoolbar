@@ -1,0 +1,123 @@
+
+<h4>View information</h4>
+<table>
+	<thead>
+		<tr>
+			<th>View Function</th>
+			<th>args</th>
+			<th>kwargs</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>{{ view_func }}</td>
+			<td>{{ view_args|default("None") }}</td>
+			<td>
+			{% if view_kwargs.items() %}
+				{% for k, v in view_kwargs.items() %}
+					{{ k }}={{ v }}{% if not forloop.last %}, {% endif %}
+				{% endfor %}
+			{% else %}
+				None
+			{% endif %}
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h4>COOKIES Variables</h4>
+{% if cookies %}
+	<table>
+		<colgroup>
+			<col style="width:20%"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>Variable</th>
+				<th>Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for key, value in cookies %}
+				<tr class="{{ loop.cycle('flDebugOdd' 'flDebugEven') }}">
+					<td>{{ key|escape }}</td>
+					<td>{{ value|escape }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>No COOKIE data</p>
+{% endif %}
+
+<h4>SESSION Variables</h4>
+{% if session %}
+	<table>
+		<colgroup>
+			<col style="width:20%"/>
+			<col/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>Variable</th>
+				<th>Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for key, value in session %}
+				<tr class="{{ loop.cycle('flDebugOdd' 'flDebugEven') }}">
+					<td>{{ key|escape }}</td>
+					<td>{{ value|escape }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>No SESSION data</p>
+{% endif %}
+
+<h4>GET Variables</h4>
+{% if get %}
+	<table>
+		<thead>
+			<tr>
+				<th>Variable</th>
+				<th>Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for key, value in get %}
+				<tr class="{{ loop.cycle('flDebugOdd' 'flDebugEven') }}">
+					<td>{{ key|escape }}</td>
+					<td>{{ value|join(", ")|escape }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>No GET data</p>
+{% endif %}
+
+<h4>POST Variables</h4>
+{% if post %}
+	<table>
+		<thead>
+			<tr>
+				<th>Variable</th>
+				<th>Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for key, value in post %}
+				<tr class="{{ loop.cycle('row1' 'row2') }}">
+					<td>{{ key|escape }}</td>
+					<td>{{ value|join(", ")|escape }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>No POST data</p>
+{% endif %}
+

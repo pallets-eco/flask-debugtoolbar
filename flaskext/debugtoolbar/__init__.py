@@ -1,6 +1,7 @@
 import os
 
-from flask import request_finished, request_started, request
+from flask import request
+from flask import signals
 from flask.helpers import send_from_directory
 from jinja2 import Environment, PackageLoader
 from werkzeug.routing import Rule, Submount
@@ -28,12 +29,15 @@ class DebugToolbarExtension(object):
         self.app = app
         self.debug_toolbars = {}
 
-        request_started.connect(self.process_request, app)
-        request_finished.connect(self.process_response, app)
+        signals.request_started.connect(self.process_request, app)
+        signals.request_finished.connect(self.process_response, app)
 
         # Configure jinja for the internal templates and add url rules
         # for static data
-        self.jinja_env = Environment(loader=PackageLoader(__name__, 'templates'))
+        self.jinja_env = Environment(
+            extensions=['jinja2.ext.i18n'],
+            loader=PackageLoader(__name__, 'templates'))
+
         app.url_map.add(Submount('/_debug_toolbar', [
             Rule('/static/<path:filename>', endpoint='_debug_toolbar.static'),
         ]))
@@ -46,6 +50,11 @@ class DebugToolbarExtension(object):
         self.debug_toolbars[request] = DebugToolbar(request, self.jinja_env)
         for panel in self.debug_toolbars[request].panels:
             panel.process_request(request)
+
+    def process_view(self, app, template, context):
+        if request in self.debug_toolbars:
+            for panel in self.debug_toolbars[request].panels:
+                panel.process_view(request, template, [], context)
 
     def process_response(self, sender, response):
         if request not in self.debug_toolbars:
