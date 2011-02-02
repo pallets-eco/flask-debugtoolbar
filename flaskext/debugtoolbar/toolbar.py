@@ -14,6 +14,7 @@ class DebugToolbar(object):
             'flaskext.debugtoolbar.panels.timer.TimerDebugPanel',
             'flaskext.debugtoolbar.panels.headers.HeaderDebugPanel',
             'flaskext.debugtoolbar.panels.request_vars.RequestVarsDebugPanel',
+            'flaskext.debugtoolbar.panels.sqlalchemy.SQLAlchemyDebugPanel',
             'flaskext.debugtoolbar.panels.logger.LoggingPanel',
         ]
         self.load_panels()
