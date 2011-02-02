@@ -4,7 +4,9 @@ try:
     import threading
 except ImportError:
     threading = None
-from . import DebugPanel
+from flaskext.debugtoolbar.panels import DebugPanel
+
+_ = lambda x: x
 
 class ThreadTrackingHandler(logging.Handler):
     def __init__(self):
@@ -51,14 +53,14 @@ class LoggingPanel(DebugPanel):
         return records
 
     def nav_title(self):
-        return "Logging"
+        return _("Logging")
 
     def nav_subtitle(self):
         # FIXME l10n: use ngettext
         return "%s message%s" % (len(handler.get_records()), (len(handler.get_records()) == 1) and '' or 's')
 
     def title(self):
-        return 'Log Messages'
+        return _('Log Messages')
 
     def url(self):
         return ''
