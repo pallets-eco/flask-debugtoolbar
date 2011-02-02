@@ -11,6 +11,7 @@ class DebugToolbar(object):
         }
 
         self.default_panels = [
+            'flaskext.debugtoolbar.panels.versions.VersionDebugPanel',
             'flaskext.debugtoolbar.panels.timer.TimerDebugPanel',
             'flaskext.debugtoolbar.panels.headers.HeaderDebugPanel',
             'flaskext.debugtoolbar.panels.request_vars.RequestVarsDebugPanel',
