@@ -24,13 +24,12 @@ class SQLAlchemyDebugPanel(DebugPanel):
 
     @property
     def has_content(self):
-        return True if get_debug_queries() else False
+        return True if get_debug_queries and get_debug_queries() else False
 
     def process_request(self, request):
         pass
 
     def process_response(self, request, response):
-
         pass
 
     def nav_title(self):
