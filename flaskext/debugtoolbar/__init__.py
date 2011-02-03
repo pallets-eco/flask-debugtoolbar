@@ -40,10 +40,8 @@ class DebugToolbarExtension(object):
             extensions=['jinja2.ext.i18n'],
             loader=PackageLoader(__name__, 'templates'))
 
-        app.url_map.add(Submount('/_debug_toolbar', [
-            Rule('/static/<path:filename>', endpoint='_debug_toolbar.static'),
-        ]))
-        app.view_functions['_debug_toolbar.static'] = self.send_static_file
+        app.add_url_rule('/_debug_toolbar/static/<path:filename>',
+            '_debug_toolbar.static', self.send_static_file)
 
     def send_static_file(self, filename):
         return send_from_directory(self._static_dir, filename)
