@@ -20,7 +20,10 @@ class SQLAlchemyDebugPanel(DebugPanel):
     Panel that displays the time a response took in milliseconds.
     """
     name = 'SQLAlchemy'
-    style = get_style_by_name('colorful')
+    if HAVE_PYGMENTS:
+        style = get_style_by_name('colorful')
+    else:
+        style = None
 
     @property
     def has_content(self):
