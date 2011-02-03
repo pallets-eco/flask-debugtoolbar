@@ -1,0 +1,12 @@
+Flask Debug-toolbar
+
+
+A port of the django-debug toolbar (github.com/robhudson/django-debug-toolbar)
+to Flask.
+
+Usage::
+
+ from flask import Flask
+ from flaskext.debugtoolbar import DebugToolbarExtension
+ app = Flask(__name__)
+ toolbar = DebugToolbarExtension(app)
