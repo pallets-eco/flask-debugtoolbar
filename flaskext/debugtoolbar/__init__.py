@@ -25,6 +25,8 @@ class DebugToolbarExtension(object):
     _static_dir = os.path.realpath(
         os.path.join(os.path.dirname(__file__), 'static'))
 
+    _redirect_codes = [301, 302, 303, 304]
+
     def __init__(self, app):
         self.app = app
         self.debug_toolbars = {}
@@ -60,6 +62,18 @@ class DebugToolbarExtension(object):
         if request not in self.debug_toolbars:
             return response
 
+        if self.debug_toolbars[request].config['DEBUG_TB_INTERCEPT_REDIRECTS']:
+            if response.status_code in self._redirect_codes:
+                redirect_to = response.location
+                redirect_code = response.status_code
+                if redirect_to:
+                    response.location = None
+                    response.status_code = 200
+                    response.response = [
+                        self.render('redirect.html', {
+                            'redirect_to': redirect_to,
+                            'redirect_code': redirect_code})]
+
         if response.status_code == 200:
             for panel in self.debug_toolbars[request].panels:
                 panel.process_response(request, response)
@@ -73,3 +87,6 @@ class DebugToolbarExtension(object):
                         '</body>',
                         toolbar_html + '</body>')]
 
+    def render(self, template_name, context):
+        template = self.jinja_env.get_template(template_name)
+        return template.render(**context)

@@ -1,10 +1,16 @@
-from flask import url_for
+from flask import url_for, current_app
 
 class DebugToolbar(object):
     def __init__(self, request, jinja_env):
         self.jinja_env = jinja_env
         self.request = request
         self.panels = []
+        
+        # default config settings
+        self.config = {
+            'DEBUG_TB_INTERCEPT_REDIRECTS': True,
+        }
+        self.config.update(current_app.config)
 
         self.template_context = {
             'static_path': url_for('_debug_toolbar.static', filename='')
