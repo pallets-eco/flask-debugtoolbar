@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='Flask-DebugToolbar',
-    version='0.02',
+    version='0.04',
     url='http://github.com/mvantellingen/flask-debugtoolbar',
     license='BSD',
     author='Michael van Tellingen',
