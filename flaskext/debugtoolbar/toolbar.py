@@ -9,6 +9,15 @@ class DebugToolbar(object):
         # default config settings
         self.config = {
             'DEBUG_TB_INTERCEPT_REDIRECTS': True,
+            'DEBUG_TB_PANELS': (
+                'flaskext.debugtoolbar.panels.versions.VersionDebugPanel',
+                'flaskext.debugtoolbar.panels.timer.TimerDebugPanel',
+                'flaskext.debugtoolbar.panels.headers.HeaderDebugPanel',
+                'flaskext.debugtoolbar.panels.request_vars.RequestVarsDebugPanel',
+                'flaskext.debugtoolbar.panels.template.TemplateDebugPanel',
+                'flaskext.debugtoolbar.panels.sqlalchemy.SQLAlchemyDebugPanel',
+                'flaskext.debugtoolbar.panels.logger.LoggingPanel',
+            )
         }
         self.config.update(current_app.config)
 
@@ -16,15 +25,7 @@ class DebugToolbar(object):
             'static_path': url_for('_debug_toolbar.static', filename='')
         }
 
-        self.default_panels = [
-            'flaskext.debugtoolbar.panels.versions.VersionDebugPanel',
-            'flaskext.debugtoolbar.panels.timer.TimerDebugPanel',
-            'flaskext.debugtoolbar.panels.headers.HeaderDebugPanel',
-            'flaskext.debugtoolbar.panels.request_vars.RequestVarsDebugPanel',
-            'flaskext.debugtoolbar.panels.template.TemplateDebugPanel',
-            'flaskext.debugtoolbar.panels.sqlalchemy.SQLAlchemyDebugPanel',
-            'flaskext.debugtoolbar.panels.logger.LoggingPanel',
-        ]
+        self.default_panels = self.config['DEBUG_TB_PANELS']
         self.load_panels()
 
 

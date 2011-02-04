@@ -9,6 +9,11 @@ from flaskext.debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
+app.config['DEBUG_TB_PANELS'] = (
+    'flaskext.debugtoolbar.panels.headers.HeaderDebugPanel',
+    'flaskext.debugtoolbar.panels.logger.LoggingPanel',
+    'flaskext.debugtoolbar.panels.timer.TimerDebugPanel',
+)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
 
