@@ -37,7 +37,7 @@ class RequestVarsDebugPanel(DebugPanel):
             'cookies': [(k, self.request.cookies.get(k)) for k in self.request.cookies],
             'view_func': '%s.%s' % (self.view_func.__module__, self.view_func.__name__) if self.view_func else '[unknown]',
             'view_args': self.view_args,
-            'view_kwargs': self.view_kwargs
+            'view_kwargs': self.view_kwargs or {}
         })
         if hasattr(self.request, 'session'):
             context.update({
