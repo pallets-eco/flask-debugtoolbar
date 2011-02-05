@@ -77,7 +77,7 @@ class DebugToolbarExtension(object):
                 panel.process_response(request, response)
 
             if response.is_sequence:
-                response_html = response.data
+                response_html = response.data.decode(response.charset)
                 toolbar_html = self.debug_toolbars[request].render_toolbar()
                 response.response = [
                     replace_insensitive(
