@@ -15,7 +15,7 @@
 			<td>
 			{% if view_kwargs.items() %}
 				{% for k, v in view_kwargs.items() %}
-					{{ k }}={{ v }}{% if not forloop.last %}, {% endif %}
+					{{ k }}={{ v }}{% if not loop.last %}, {% endif %}
 				{% endfor %}
 			{% else %}
 				None
