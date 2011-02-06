@@ -52,7 +52,7 @@ class DebugPanel(object):
     def process_request(self, request):
         pass
 
-    def process_view(self, request, view_func, view_args, view_kwargs):
+    def process_view(self, request, view_func, view_kwargs):
         pass
 
     def process_response(self, request, response):

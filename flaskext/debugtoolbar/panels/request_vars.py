@@ -22,11 +22,10 @@ class RequestVarsDebugPanel(DebugPanel):
         self.request = request
         self.view_func = None
         self.view_args = []
-        self.view_kwargs = request.view_args
+        self.view_kwargs = {}
 
-    def process_view(self, request, view_func, view_args, view_kwargs):
+    def process_view(self, request, view_func, view_kwargs):
         self.view_func = view_func
-        self.view_args = view_args
         self.view_kwargs = view_kwargs
 
     def content(self):

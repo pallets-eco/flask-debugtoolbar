@@ -2,6 +2,7 @@ try:
     import cProfile as profile
 except ImportError:
     import profile
+import functools
 import pstats
 
 from flask import current_app
@@ -25,13 +26,9 @@ class ProfilerDebugPanel(DebugPanel):
         self.profiler = profile.Profile()
         self.stats = None
 
-        # Monkey-patch Flask.dispatch_request for profiling
-        org_dispatch_request = current_app.dispatch_request
-        def dispatch_request():
-            content = self.profiler.runcall(org_dispatch_request)
-            current_app.dispatch_request = org_dispatch_request
-            return content
-        current_app.dispatch_request = dispatch_request
+    def process_view(self, request, view_func, view_kwargs):
+        if self.is_active:
+            return functools.partial(self.profiler.runcall, view_func)
 
     def process_response(self, request, response):
         if not self.is_active:
@@ -63,7 +60,6 @@ class ProfilerDebugPanel(DebugPanel):
             self.function_calls = function_calls
             # destroy the profiler just in case
         return response
-
 
     def title(self):
         if not self.is_active:
