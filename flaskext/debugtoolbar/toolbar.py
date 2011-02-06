@@ -17,6 +17,8 @@ class DebugToolbar(object):
                 'flaskext.debugtoolbar.panels.template.TemplateDebugPanel',
                 'flaskext.debugtoolbar.panels.sqlalchemy.SQLAlchemyDebugPanel',
                 'flaskext.debugtoolbar.panels.logger.LoggingPanel',
+                'flaskext.debugtoolbar.panels.profiler.ProfilerDebugPanel',
+
             )
         }
         self.config.update(current_app.config)
@@ -33,9 +35,7 @@ class DebugToolbar(object):
         """
         Populate debug panels
         """
-
         activated = self.request.cookies.get('fldt_active', '').split(';')
-
         for panel_path in self.default_panels:
             dot = panel_path.rindex('.')
             panel_module, panel_classname = panel_path[:dot], panel_path[dot+1:]
