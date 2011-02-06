@@ -43,10 +43,19 @@ class DebugToolbarExtension(object):
         app.add_url_rule('/_debug_toolbar/static/<path:filename>',
             '_debug_toolbar.static', self.send_static_file)
 
+    def _show_toolbar(self):
+        if request.path.startswith('/_debug_toolbar/'):
+            return False
+
+        return True
+
     def send_static_file(self, filename):
         return send_from_directory(self._static_dir, filename)
 
     def process_request(self, app):
+        if not self._show_toolbar():
+            return
+
         self.debug_toolbars[request] = DebugToolbar(request, self.jinja_env)
         for panel in self.debug_toolbars[request].panels:
             panel.process_request(request)
