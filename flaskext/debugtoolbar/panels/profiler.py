@@ -1,12 +1,16 @@
+import sys
 try:
     import cProfile as profile
 except ImportError:
     import profile
 import functools
+import os.path
 import pstats
 
 from flask import current_app
 from flaskext.debugtoolbar.panels import DebugPanel
+
+
 
 class ProfilerDebugPanel(DebugPanel):
     """
@@ -30,6 +34,8 @@ class ProfilerDebugPanel(DebugPanel):
         if self.is_active:
             return functools.partial(self.profiler.runcall, view_func)
 
+
+
     def process_response(self, request, response):
         if not self.is_active:
             return False
@@ -38,24 +44,41 @@ class ProfilerDebugPanel(DebugPanel):
             self.profiler.disable()
             stats = pstats.Stats(self.profiler)
             function_calls = []
-            for func in stats.strip_dirs().sort_stats(1).fcn_list:
-                current = []
-                if stats.stats[func][0] != stats.stats[func][1]:
-                    current.append('%d/%d' % (stats.stats[func][1], stats.stats[func][0]))
+            for func in stats.sort_stats(1).fcn_list:
+                current = {}
+                info = stats.stats[func]
+
+                # Number of calls
+                if info[0] != info[1]:
+                    current['ncalls'] = '%d/%d' % (info[1], info[0])
                 else:
-                    current.append(stats.stats[func][1])
-                current.append(stats.stats[func][2]*1000)
-                if stats.stats[func][1]:
-                    current.append(stats.stats[func][2]*1000/stats.stats[func][1])
+                    current['ncalls'] = info[1]
+
+                # Total time
+                current['tottime'] = info[2] * 1000
+
+                # Quotient of total time divided by number of calls
+                if info[1]:
+                    current['percall'] = info[2] * 1000 / info[1]
                 else:
-                    current.append(0)
-                current.append(stats.stats[func][3]*1000)
-                if stats.stats[func][0]:
-                    current.append(stats.stats[func][3]*1000/stats.stats[func][0])
+                    current['percall'] = 0
+
+                # Cumulative time
+                current['cumtime'] = info[3] * 1000
+
+                # Quotient of the cumulative time divded by the number of
+                # primitive calls.
+                if info[0]:
+                    current['percall_cum'] = info[3] * 1000 / info[0]
                 else:
-                    current.append(0)
-                current.append(pstats.func_std_string(func))
+                    current['percall_cum'] = 0
+
+                # Filename
+                filename = pstats.func_std_string(func)
+                current['filename_long'] = filename
+                current['filename'] = format_fname(filename)
                 function_calls.append(current)
+
             self.stats = stats
             self.function_calls = function_calls
             # destroy the profiler just in case
@@ -87,3 +110,32 @@ class ProfilerDebugPanel(DebugPanel):
         }
         return self.render('panels/profiler.html', context)
 
+
+def format_fname(value):
+    # If the value is not an absolute path, the it is a builtin or
+    # a relative file (thus a project file).
+    if not os.path.isabs(value):
+        if value.startswith('{'):
+            return value
+        return './' + value
+
+    # If the file is absolute and within the project root handle it as
+    # a project file
+    if value.startswith(current_app.root_path):
+        return "." + value[len(current_app.root_path):]
+
+    # Loop through sys.path to find the longest match and return
+    # the relative path from there.
+    paths = sys.path
+    prefix = None
+    prefix_len = 0
+    for path in sys.path:
+        new_prefix = os.path.commonprefix([path, value])
+        if len(new_prefix) > prefix_len:
+            prefix = new_prefix
+            prefix_len = len(prefix)
+
+    if not prefix.endswith('/'):
+        prefix_len -= 1
+    path = value[prefix_len:]
+    return '<%s>' % path

@@ -12,12 +12,12 @@
 	<tbody>
         {% for row in function_calls %}
 			<tr class="{{ loop.cycle('flDebugOdd' 'flDebugEven') }}">
-				<td>{{ row.0 }}</td>
-				<td>{{ row.1 }}</td>
-				<td>{{ row.2 }}</td>
-				<td>{{ row.3 }}</td>
-				<td>{{ row.4 }}</td>
-				<td>{{ row.5 }}</td>
+				<td>{{ row.ncalls }}</td>
+				<td>{{ row.tottime }}</td>
+				<td>{{ '%.4f'|format(row.percall) }}</td>
+				<td>{{ row.cumtime }}</td>
+				<td>{{ '%.4f'|format(row.percall_cum) }}</td>
+				<td title="{{ row.filename_long }}">{{ row.filename|escape }}</td>
 			</tr>
 		{% endfor %}
 	</tbody>
