@@ -10,8 +10,6 @@ class DebugPanel(object):
     # If the client is able to activate/de-activate the panel
     user_enable = False
 
-    # If the client enabled the panel
-    is_active = False
 
     # We'll maintain a local context instance so we can expose our template
     # context variables to panels which need them:
@@ -21,6 +19,9 @@ class DebugPanel(object):
     def __init__(self, jinja_env, context={}):
         self.context.update(context)
         self.jinja_env = jinja_env
+
+        # If the client enabled the panel
+        self.is_active = False
 
     def render(self, template_name, context):
         template = self.jinja_env.get_template(template_name)
