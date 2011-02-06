@@ -9,8 +9,7 @@ from werkzeug.exceptions import HTTPException
 from flaskext.debugtoolbar.toolbar import DebugToolbar
 
 def replace_insensitive(string, target, replacement):
-    """
-    Similar to string.replace() but is case insensitive
+    """Similar to string.replace() but is case insensitive
     Code borrowed from: http://forums.devshed.com/python-programming-11/case-insensitive-string-replace-490921.html
     """
     no_case = string.lower()
@@ -78,12 +77,14 @@ class DebugToolbarExtension(object):
             return app.handle_http_exception(e)
 
     def _show_toolbar(self):
+        """Return a boolean to indicate if we need to show the toolbar."""
         if request.path.startswith('/_debug_toolbar/'):
             return False
 
         return True
 
     def send_static_file(self, filename):
+        """Send a static file from the flask-debugtoolbar static directory."""
         return send_from_directory(self._static_dir, filename)
 
     def process_request(self, app):
@@ -95,6 +96,9 @@ class DebugToolbarExtension(object):
             panel.process_request(request)
 
     def process_view(self, app, view_func, view_kwargs):
+        """This method is called just before the flask view is called.
+        This is done by the dispatch_request method.
+        """
         if request in self.debug_toolbars:
             for panel in self.debug_toolbars[request].panels:
                 new_view = panel.process_view(request, view_func, view_kwargs)
@@ -106,6 +110,8 @@ class DebugToolbarExtension(object):
         if request not in self.debug_toolbars:
             return response
 
+        # Intercept http redirect codes and display an html page with a
+        # link to the target.
         if self.debug_toolbars[request].config['DEBUG_TB_INTERCEPT_REDIRECTS']:
             if response.status_code in self._redirect_codes:
                 redirect_to = response.location
@@ -118,6 +124,8 @@ class DebugToolbarExtension(object):
                             'redirect_to': redirect_to,
                             'redirect_code': redirect_code})]
 
+        # If the http response code is 200 then we process to add the
+        # toolbar to the returned html response.
         if response.status_code == 200:
             for panel in self.debug_toolbars[request].panels:
                 panel.process_response(request, response)
