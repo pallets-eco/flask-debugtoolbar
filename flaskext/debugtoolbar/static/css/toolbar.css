@@ -92,6 +92,27 @@
 	font-variant:small-caps;
 }
 
+#flDebug #flDebugToolbar li .switch {
+    font-size: 10px;
+    position: absolute;
+    display: block;
+    color: white;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+    top: 15px;
+    right: 2px;
+}
+
+#flDebug #flDebugToolbar li .switch.active {
+    background-image: url(../img/tick.png);
+}
+
+#flDebug #flDebugToolbar li .switch.inactive {
+    background-image: url(../img/tick-red.png);
+}
+
+
 #flDebug #flDebugToolbarHandle {
 	position:fixed;
 	background:#fff;

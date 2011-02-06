@@ -7,6 +7,12 @@ class DebugPanel(object):
     # name = Base
     has_content = False # If content returns something, set to true in subclass
 
+    # If the client is able to activate/de-activate the panel
+    user_enable = False
+
+    # If the client enabled the panel
+    is_active = False
+
     # We'll maintain a local context instance so we can expose our template
     # context variables to panels which need them:
     context = {}

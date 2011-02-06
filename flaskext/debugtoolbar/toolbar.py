@@ -5,7 +5,7 @@ class DebugToolbar(object):
         self.jinja_env = jinja_env
         self.request = request
         self.panels = []
-        
+
         # default config settings
         self.config = {
             'DEBUG_TB_INTERCEPT_REDIRECTS': True,
@@ -34,6 +34,8 @@ class DebugToolbar(object):
         Populate debug panels
         """
 
+        activated = self.request.cookies.get('fldt_active', '').split(';')
+
         for panel_path in self.default_panels:
             dot = panel_path.rindex('.')
             panel_module, panel_classname = panel_path[:dot], panel_path[dot+1:]
@@ -44,6 +46,9 @@ class DebugToolbar(object):
             panel_instance = panel_class(
                 context=self.template_context,
                 jinja_env=self.jinja_env)
+
+            if panel_instance.dom_id() in activated:
+                panel_instance.is_active = True
             self.panels.append(panel_instance)
 
     def render_toolbar(self):

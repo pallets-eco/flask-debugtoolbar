@@ -10,7 +10,7 @@
 			<li id="flDebugButton">DEBUG</li>
 			{% endif %}
 			{% for panel in panels %}
-				<li>
+				<li class="{{ panel.dom_id() }}">
 					{% if panel.has_content %}
 						<a href="{{ panel.url()|default("#") }}" title="{{ panel.title() }}" class="{{ panel.dom_id() }}">
 					{% else %}
@@ -25,6 +25,9 @@
 					{% else %}
 					    </div>
 					{% endif %}
+                    {% if panel.user_activate %}
+                    <span class="switch {{ 'active' if panel.is_active else 'inactive' }}" title="Enable or disable the panel"></span>
+                    {% endif %}
 				</li>
 			{% endfor %}
         </ol>

@@ -17,6 +17,7 @@
     $.cookie = function(name, value, options) { if (typeof value != 'undefined') { options = options || {}; if (value === null) { value = ''; options.expires = -1; } var expires = ''; if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) { var date; if (typeof options.expires == 'number') { date = new Date(); date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000)); } else { date = options.expires; } expires = '; expires=' + date.toUTCString(); } var path = options.path ? '; path=' + (options.path) : ''; var domain = options.domain ? '; domain=' + (options.domain) : ''; var secure = options.secure ? '; secure' : ''; document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join(''); } else { var cookieValue = null; if (document.cookie && document.cookie != '') { var cookies = document.cookie.split(';'); for (var i = 0; i < cookies.length; i++) { var cookie = $.trim(cookies[i]); if (cookie.substring(0, name.length + 1) == (name + '=')) { cookieValue = decodeURIComponent(cookie.substring(name.length + 1)); break; } } } return cookieValue; } };
     $('head').append('<link rel="stylesheet" href="'+DEBUG_TOOLBAR_STATIC_PATH+'css/toolbar.css?'+ Math.random() +'" type="text/css" />');
 	var COOKIE_NAME = 'fldt';
+    var COOKIE_NAME_ACTIVE = COOKIE_NAME +'_active';
 	var fldt = {
 		init: function() {
 			$('#flDebug').show();
@@ -37,6 +38,37 @@
 				}
 				return false;
 			});
+            $('#flDebugPanelList li .switch').click(function() {
+                var $panel = $(this).parent();
+                var $this = $(this);
+                var dom_id = $panel.get(0).className;
+
+                // Turn cookie content into an array of active panels
+                var active_str = $.cookie(COOKIE_NAME_ACTIVE);
+                var active = (active_str) ? active_str.split(';') : [];
+                active = $.grep(active, function(n,i) { return n != dom_id; });
+
+                if ($this.hasClass('active')) {
+                    $this.removeClass('active');
+                    $this.addClass('inactive');
+                }
+                else {
+                    active.push(dom_id);
+                    $this.removeClass('inactive');
+                    $this.addClass('active');
+                }
+
+                if (active.length > 0) {
+                    $.cookie(COOKIE_NAME_ACTIVE, active.join(';'), {
+                        path: '/', expires: 10
+                    });
+                }
+                else {
+                    $.cookie(COOKIE_NAME_ACTIVE, null, {
+                        path: '/', expires: -1
+                    });
+                }
+            });
 			$('#flDebug a.flDebugClose').click(function() {
 				$(document).trigger('close.flDebug');
 				$('#flDebugToolbar li').removeClass('active');
