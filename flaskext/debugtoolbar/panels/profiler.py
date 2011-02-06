@@ -115,9 +115,11 @@ def format_fname(value):
     # If the value is not an absolute path, the it is a builtin or
     # a relative file (thus a project file).
     if not os.path.isabs(value):
-        if value.startswith('{'):
+        if value.startswith(('{', '<')):
             return value
-        return './' + value
+        if value.startswith('.' + os.path.sep):
+            return value
+        return '.' + os.path.sep + value
 
     # If the file is absolute and within the project root handle it as
     # a project file
@@ -135,7 +137,7 @@ def format_fname(value):
             prefix = new_prefix
             prefix_len = len(prefix)
 
-    if not prefix.endswith('/'):
+    if not prefix.endswith(os.path.sep):
         prefix_len -= 1
     path = value[prefix_len:]
     return '<%s>' % path
