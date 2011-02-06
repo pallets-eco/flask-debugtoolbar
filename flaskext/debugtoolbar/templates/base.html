@@ -10,7 +10,7 @@
 			<li id="flDebugButton">DEBUG</li>
 			{% endif %}
 			{% for panel in panels %}
-				<li class="{{ panel.dom_id() }}">
+				<li id="{{ panel.dom_id() }}">
 					{% if panel.has_content %}
 						<a href="{{ panel.url()|default("#") }}" title="{{ panel.title() }}" class="{{ panel.dom_id() }}">
 					{% else %}
@@ -37,7 +37,7 @@
 	</div>
 	{% for panel in panels %}
 		{% if panel.has_content %}
-			<div id="{{ panel.dom_id() }}" class="panelContent">
+			<div id="{{ panel.dom_id() }}-content" class="panelContent">
 				<div class="flDebugPanelTitle">
 					<a href="" class="flDebugClose">Close</a>
 					<h3>{{ panel.title()|safe }}</h3>

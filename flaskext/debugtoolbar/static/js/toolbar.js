@@ -26,7 +26,7 @@
 				if (!this.className) {
 					return false;
 				}
-				current = $('#flDebug #' + this.className);
+				current = $('#flDebug #' + this.className + '-content');
 				if (current.is(':visible')) {
 				    $(document).trigger('close.flDebug');
 					$(this).parent().removeClass('active');
@@ -41,7 +41,7 @@
             $('#flDebugPanelList li .switch').click(function() {
                 var $panel = $(this).parent();
                 var $this = $(this);
-                var dom_id = $panel.get(0).className;
+                var dom_id = $panel.attr('id');
 
                 // Turn cookie content into an array of active panels
                 var active_str = $.cookie(COOKIE_NAME_ACTIVE);
