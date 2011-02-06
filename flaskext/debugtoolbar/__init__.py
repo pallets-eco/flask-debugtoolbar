@@ -30,6 +30,9 @@ class DebugToolbarExtension(object):
         self.app = app
         self.debug_toolbars = {}
 
+        if not app.debug:
+            return
+
         signals.request_started.connect(self.process_request, app)
         signals.request_finished.connect(self.process_response, app)
 
