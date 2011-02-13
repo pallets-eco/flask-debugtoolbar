@@ -43,6 +43,7 @@ class DebugToolbarExtension(object):
         # Configure jinja for the internal templates and add url rules
         # for static data
         self.jinja_env = Environment(
+            autoescape=True,
             extensions=['jinja2.ext.i18n'],
             loader=PackageLoader(__name__, 'templates'))
 
