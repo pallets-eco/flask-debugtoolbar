@@ -1,12 +1,14 @@
 import os
 
-from flask import current_app, request, signals
+from flask import current_app, request
 from flask.globals import _request_ctx_stack
 from flask.helpers import send_from_directory
 from jinja2 import Environment, PackageLoader
 from werkzeug.exceptions import HTTPException
+from werkzeug.urls import url_quote_plus
 
 from flaskext.debugtoolbar.toolbar import DebugToolbar
+from flaskext.debugtoolbar.views import module
 
 def replace_insensitive(string, target, replacement):
     """Similar to string.replace() but is case insensitive
@@ -36,7 +38,6 @@ class DebugToolbarExtension(object):
         self.app.before_request(self.process_request)
         self.app.after_request(self.process_response)
 
-
         # Monkey-patch the Flask.dispatch_request method
         app.dispatch_request = self.dispatch_request
 
@@ -46,7 +47,9 @@ class DebugToolbarExtension(object):
             autoescape=True,
             extensions=['jinja2.ext.i18n'],
             loader=PackageLoader(__name__, 'templates'))
+        self.jinja_env.filters['urlencode'] = url_quote_plus
 
+        app.register_module(module, url_prefix='/_debug_toolbar/views')
         app.add_url_rule('/_debug_toolbar/static/<path:filename>',
             '_debug_toolbar.static', self.send_static_file)
 
@@ -64,6 +67,7 @@ class DebugToolbarExtension(object):
         try:
             if req.routing_exception is not None:
                 raise req.routing_exception
+
             rule = req.url_rule
             # if we provide automatic options for this URL and the
             # request came with the OPTIONS method, reply automatically
@@ -75,6 +79,9 @@ class DebugToolbarExtension(object):
             # panels the ability to wrap the view_func
             view_func = app.view_functions[rule.endpoint]
             view_func = self.process_view(app, view_func, req.view_args)
+
+            if req.path.startswith('/_debug_toolbar/views'):
+                req.view_args['render'] = self.render
 
             return view_func(**req.view_args)
 

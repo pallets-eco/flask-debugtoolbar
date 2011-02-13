@@ -1,9 +1,13 @@
+import hashlib
+
 try:
     from flaskext.sqlalchemy import get_debug_queries
 except ImportError:
     get_debug_queries = None
 
 
+import simplejson
+from flask import current_app
 from flaskext.debugtoolbar.panels import DebugPanel
 from flaskext.debugtoolbar.utils import format_fname, format_sql
 
@@ -44,9 +48,25 @@ class SQLAlchemyDebugPanel(DebugPanel):
         queries = get_debug_queries()
         data = []
         for query in queries:
+            is_select = query.statement.strip().lower().startswith('select')
+            _params = ''
+            try:
+                _params = simplejson.dumps(query.parameters)
+            except TypeError:
+                pass # object not JSON serializable
+
+
+            hash = hashlib.sha1(
+                current_app.config['SECRET_KEY'] +
+                query.statement + _params).hexdigest()
+
             data.append({
                 'duration': query.duration,
-                'sql': self._format_sql(query.statement, query.parameters),
+                'sql': format_sql(query.statement, query.parameters),
+                'raw_sql': query.statement,
+                'hash': hash,
+                'params': _params,
+                'is_select': is_select,
                 'context_long': query.context,
                 'context': format_fname(query.context)
             })
