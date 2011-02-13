@@ -22,7 +22,6 @@ setup(
     install_requires=[
         'setuptools',
         'Flask',
-        'blinker'
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',

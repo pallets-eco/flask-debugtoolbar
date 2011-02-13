@@ -33,8 +33,9 @@ class DebugToolbarExtension(object):
         if not app.debug:
             return
 
-        signals.request_started.connect(self.process_request, app)
-        signals.request_finished.connect(self.process_response, app)
+        self.app.before_request(self.process_request)
+        self.app.after_request(self.process_response)
+
 
         # Monkey-patch the Flask.dispatch_request method
         app.dispatch_request = self.dispatch_request
@@ -83,14 +84,13 @@ class DebugToolbarExtension(object):
         """Return a boolean to indicate if we need to show the toolbar."""
         if request.path.startswith('/_debug_toolbar/'):
             return False
-
         return True
 
     def send_static_file(self, filename):
         """Send a static file from the flask-debugtoolbar static directory."""
         return send_from_directory(self._static_dir, filename)
 
-    def process_request(self, app):
+    def process_request(self):
         if not self._show_toolbar():
             return
 
@@ -109,7 +109,7 @@ class DebugToolbarExtension(object):
                     view_func = new_view
         return view_func
 
-    def process_response(self, sender, response):
+    def process_response(self, response):
         if request not in self.debug_toolbars:
             return response
 
@@ -141,6 +141,7 @@ class DebugToolbarExtension(object):
                         response_html,
                         '</body>',
                         toolbar_html + '</body>')]
+        return response
 
     def render(self, template_name, context):
         template = self.jinja_env.get_template(template_name)
