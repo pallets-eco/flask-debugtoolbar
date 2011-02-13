@@ -9,7 +9,6 @@ import pstats
 
 from flask import current_app
 from flaskext.debugtoolbar.panels import DebugPanel
-
 from flaskext.debugtoolbar.utils import format_fname
 
 
@@ -35,15 +34,17 @@ class ProfilerDebugPanel(DebugPanel):
         if self.is_active:
             return functools.partial(self.profiler.runcall, view_func)
 
-
-
     def process_response(self, request, response):
         if not self.is_active:
             return False
 
         if self.profiler is not None:
             self.profiler.disable()
-            stats = pstats.Stats(self.profiler)
+            try:
+                stats = pstats.Stats(self.profiler)
+            except TypeError:
+                self.is_active = False
+                return False
             function_calls = []
             for func in stats.sort_stats(1).fcn_list:
                 current = {}
@@ -110,5 +111,6 @@ class ProfilerDebugPanel(DebugPanel):
             'function_calls': self.function_calls,
         }
         return self.render('panels/profiler.html', context)
+
 
 
