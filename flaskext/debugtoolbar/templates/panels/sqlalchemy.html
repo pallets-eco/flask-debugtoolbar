@@ -10,7 +10,7 @@
 	<tbody>
 		{% for query in queries %}
 			<tr class="{{ loop.cycle('flDebugOdd' 'flDebugEven') }}">
-				<td>{{ query.duration }}</td>
+				<td>{{ '%.4f'|format(query.duration) }}</td>
 				<td>
                     {#
 				{% if query.params %}
@@ -24,7 +24,7 @@
 				{% endif %}
                     #}
 				</td>
-				<td>
+				<td title="{{ query.context_long }}">
                     {{ query.context }}
 				</td>
 				<td class="syntax">

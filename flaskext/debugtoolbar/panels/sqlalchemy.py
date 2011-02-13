@@ -13,6 +13,8 @@ except ImportError:
     HAVE_PYGMENTS = False
 
 from flaskext.debugtoolbar.panels import DebugPanel
+from flaskext.debugtoolbar.utils import format_fname
+
 _ = lambda x: x
 
 class SQLAlchemyDebugPanel(DebugPanel):
@@ -51,10 +53,15 @@ class SQLAlchemyDebugPanel(DebugPanel):
 
     def content(self):
         queries = get_debug_queries()
+        data = []
         for query in queries:
-            query.sql = self._format_sql(query.statement, query.parameters)
-
-        return self.render('panels/sqlalchemy.html', { 'queries': queries})
+            data.append({
+                'duration': query.duration,
+                'sql': self._format_sql(query.statement, query.parameters),
+                'context_long': query.context,
+                'context': format_fname(query.context)
+            })
+        return self.render('panels/sqlalchemy.html', { 'queries': data})
 
 
     def _format_sql(self, query, args):
