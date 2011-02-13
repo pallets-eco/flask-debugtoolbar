@@ -35,6 +35,12 @@ class DebugToolbarExtension(object):
         if not app.debug:
             return
 
+        if not app.config.get('SECRET_KEY'):
+            raise RuntimeError(
+                "The Flask-DebugToolbar requires the 'SECRET_KEY' config "
+                "var to be set")
+
+
         self.app.before_request(self.process_request)
         self.app.after_request(self.process_response)
 
