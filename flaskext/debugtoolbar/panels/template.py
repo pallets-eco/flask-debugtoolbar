@@ -7,7 +7,7 @@ class TemplateDebugPanel(DebugPanel):
     """
     Panel that displays the time a response took in milliseconds.
     """
-    name = 'Timer'
+    name = 'Template'
     has_content = True
 
     def __init__(self, *args, **kwargs):
