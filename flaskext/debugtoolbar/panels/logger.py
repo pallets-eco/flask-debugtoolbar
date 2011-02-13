@@ -4,7 +4,9 @@ try:
     import threading
 except ImportError:
     threading = None
+
 from flaskext.debugtoolbar.panels import DebugPanel
+from flaskext.debugtoolbar.utils import format_fname
 
 _ = lambda x: x
 
@@ -72,7 +74,8 @@ class LoggingPanel(DebugPanel):
                 'message': record.getMessage(),
                 'time': datetime.datetime.fromtimestamp(record.created),
                 'level': record.levelname,
-                'file': record.pathname,
+                'file': format_fname(record.pathname),
+                'file_long': record.pathname,
                 'line': record.lineno,
             })
 
