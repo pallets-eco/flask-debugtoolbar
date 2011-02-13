@@ -10,6 +10,7 @@ import pstats
 from flask import current_app
 from flaskext.debugtoolbar.panels import DebugPanel
 
+from flaskext.debugtoolbar.utils import format_fname
 
 
 class ProfilerDebugPanel(DebugPanel):
@@ -111,33 +112,3 @@ class ProfilerDebugPanel(DebugPanel):
         return self.render('panels/profiler.html', context)
 
 
-def format_fname(value):
-    # If the value is not an absolute path, the it is a builtin or
-    # a relative file (thus a project file).
-    if not os.path.isabs(value):
-        if value.startswith(('{', '<')):
-            return value
-        if value.startswith('.' + os.path.sep):
-            return value
-        return '.' + os.path.sep + value
-
-    # If the file is absolute and within the project root handle it as
-    # a project file
-    if value.startswith(current_app.root_path):
-        return "." + value[len(current_app.root_path):]
-
-    # Loop through sys.path to find the longest match and return
-    # the relative path from there.
-    paths = sys.path
-    prefix = None
-    prefix_len = 0
-    for path in sys.path:
-        new_prefix = os.path.commonprefix([path, value])
-        if len(new_prefix) > prefix_len:
-            prefix = new_prefix
-            prefix_len = len(prefix)
-
-    if not prefix.endswith(os.path.sep):
-        prefix_len -= 1
-    path = value[prefix_len:]
-    return '<%s>' % path
