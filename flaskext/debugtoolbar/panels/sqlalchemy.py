@@ -3,17 +3,9 @@ try:
 except ImportError:
     get_debug_queries = None
 
-try:
-    from pygments import highlight
-    from pygments.formatters import HtmlFormatter
-    from pygments.lexers import SqlLexer
-    from pygments.styles import get_style_by_name
-    HAVE_PYGMENTS = True
-except ImportError:
-    HAVE_PYGMENTS = False
 
 from flaskext.debugtoolbar.panels import DebugPanel
-from flaskext.debugtoolbar.utils import format_fname
+from flaskext.debugtoolbar.utils import format_fname, format_sql
 
 _ = lambda x: x
 
@@ -22,10 +14,7 @@ class SQLAlchemyDebugPanel(DebugPanel):
     Panel that displays the time a response took in milliseconds.
     """
     name = 'SQLAlchemy'
-    if HAVE_PYGMENTS:
-        style = get_style_by_name('colorful')
-    else:
-        style = None
+
 
     @property
     def has_content(self):
@@ -63,13 +52,4 @@ class SQLAlchemyDebugPanel(DebugPanel):
             })
         return self.render('panels/sqlalchemy.html', { 'queries': data})
 
-
-    def _format_sql(self, query, args):
-        if not HAVE_PYGMENTS:
-            return query
-
-        return highlight(
-            query,
-            SqlLexer(encoding='utf-8'),
-            HtmlFormatter(encoding='utf-8', noclasses=True, style=self.style))
 
