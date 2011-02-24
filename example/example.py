@@ -14,6 +14,8 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 #    'flaskext.debugtoolbar.panels.logger.LoggingPanel',
 #    'flaskext.debugtoolbar.panels.timer.TimerDebugPanel',
 #)
+app.config['SECRET_KEY'] = 'asd'
+app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
 
