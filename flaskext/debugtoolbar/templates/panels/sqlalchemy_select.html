@@ -10,7 +10,8 @@
 			<dt>Time</dt>
 			<dd>{{ '%.4f'|format(duration) }} ms</dd>
 		</dl>
-		<table class="djSqlExplain">
+		{% if result %}
+		<table class="flSqlSelect">
 			<thead>
 				<tr>
 					{% for h in headers %}
@@ -28,6 +29,9 @@
 				{% endfor %}
 			</tbody>
 		</table>
+		{% else %}
+            <p>Empty set</p>
+		{% endif %}
 	</div>
 </div>
 
