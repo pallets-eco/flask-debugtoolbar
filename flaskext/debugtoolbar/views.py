@@ -29,9 +29,10 @@ def sql_select(render):
 
     db = SQLAlchemy(current_app)
 
-    result = db.engine.execute(statement, params).fetchall()
+    result = db.engine.execute(statement, params)
     return render('panels/sqlalchemy_select.html', {
-        'result': result,
+        'result': result.fetchall(),
+        'headers': result.keys(),
         'sql': format_sql(statement, params),
         'duration': float(request.args['duration']),
     })
@@ -59,9 +60,10 @@ def sql_explain(render):
     else:
         query = 'EXPLAIN %s' % statement
 
-    result = db.engine.execute(query, params).fetchall()
+    result = db.engine.execute(query, params)
     return render('panels/sqlalchemy_explain.html', {
-        'result': result,
+        'result': result.fetchall(),
+        'headers': result.keys(),
         'sql': format_sql(statement, params),
         'duration': float(request.args['duration']),
     })
