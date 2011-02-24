@@ -1,0 +1,2 @@
+recursive-include flaskext/debugtoolbar/templates/ *.html
+recursive-include flaskext/debugtoolbar/static/ *

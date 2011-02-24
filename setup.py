@@ -13,12 +13,8 @@ setup(
     namespace_packages=['flaskext'],
     zip_safe=False,
     platforms='any',
-    packages=find_packages(exclude=['ez_setup']),
-    package_data={'flaskext.debugtoolbar': [
-        'static/css/*.css', 'static/js/*.js', 'static/img/*',
-        'templates/*.html', 'templates/panels/*.html'
-    ]},
-
+    include_package_data=True,
+    packages=['flaskext.debugtoolbar'],
     install_requires=[
         'setuptools',
         'simplejson',
