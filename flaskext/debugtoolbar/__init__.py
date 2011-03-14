@@ -134,12 +134,14 @@ class DebugToolbarExtension(object):
                 redirect_to = response.location
                 redirect_code = response.status_code
                 if redirect_to:
+                    content = self.render('redirect.html', {
+                        'redirect_to': redirect_to,
+                        'redirect_code': redirect_code
+                    })
+                    response.content_length = len(content)
                     response.location = None
+                    response.response = [content]
                     response.status_code = 200
-                    response.response = [
-                        self.render('redirect.html', {
-                            'redirect_to': redirect_to,
-                            'redirect_code': redirect_code})]
 
         # If the http response code is 200 then we process to add the
         # toolbar to the returned html response.
