@@ -1,7 +1,6 @@
 import hashlib
 
-import simplejson
-from flask import Module, request, current_app, abort
+from flask import Module, request, current_app, abort, json
 from flaskext.sqlalchemy import SQLAlchemy
 from flaskext.debugtoolbar.utils import format_sql
 
@@ -52,7 +51,7 @@ def sql_explain(render):
     if not statement.lower().strip().startswith('select'):
         return abort(406)
 
-    params = simplejson.loads(params)
+    params = json.loads(params)
 
     db = SQLAlchemy(current_app)
     if db.engine.driver == 'pysqlite':

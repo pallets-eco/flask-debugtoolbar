@@ -6,8 +6,7 @@ except ImportError:
     get_debug_queries = None
 
 
-import simplejson
-from flask import current_app
+from flask import current_app, json
 from flaskext.debugtoolbar.panels import DebugPanel
 from flaskext.debugtoolbar.utils import format_fname, format_sql
 
@@ -51,7 +50,7 @@ class SQLAlchemyDebugPanel(DebugPanel):
             is_select = query.statement.strip().lower().startswith('select')
             _params = ''
             try:
-                _params = simplejson.dumps(query.parameters)
+                _params = json.dumps(query.parameters)
             except TypeError:
                 pass # object not JSON serializable
 
