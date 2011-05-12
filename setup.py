@@ -15,7 +15,7 @@ setup(
     platforms='any',
     include_package_data=True,
     packages=['flaskext',
-              'flaskext.debugtoolbar'
+              'flaskext.debugtoolbar',
               'flaskext.debugtoolbar.panels'
     ],
     install_requires=[
