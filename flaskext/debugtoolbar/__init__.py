@@ -8,7 +8,10 @@ from werkzeug.exceptions import HTTPException
 from werkzeug.urls import url_quote_plus
 
 from flaskext.debugtoolbar.toolbar import DebugToolbar
-from flaskext.debugtoolbar.views import module
+from flask import Module
+
+
+module = Module(__name__)
 
 def replace_insensitive(string, target, replacement):
     """Similar to string.replace() but is case insensitive
@@ -55,7 +58,6 @@ class DebugToolbarExtension(object):
             loader=PackageLoader(__name__, 'templates'))
         self.jinja_env.filters['urlencode'] = url_quote_plus
 
-        app.register_module(module, url_prefix='/_debug_toolbar/views')
         app.add_url_rule('/_debug_toolbar/static/<path:filename>',
             '_debug_toolbar.static', self.send_static_file)
 
@@ -70,6 +72,10 @@ class DebugToolbarExtension(object):
         """
         req = _request_ctx_stack.top.request
         app = current_app
+
+        if 'debugtoolbar' not in app.modules:
+            app.register_module(module, url_prefix='/_debug_toolbar/views')
+
         try:
             if req.routing_exception is not None:
                 raise req.routing_exception

@@ -14,8 +14,8 @@
 				<td>
 				{% if query.params %}
 					{% if query.is_select %}
-						<a class="remoteCall" href="/_debug_toolbar/views/sql_select?sql={{ query.raw_sql|urlencode }}&amp;params={{ query.params|urlencode }}&amp;duration={{ query.duration|urlencode }}&amp;hash={{ query.hash }}">SELECT</a><br />
-						<a class="remoteCall" href="/_debug_toolbar/views/sql_explain?sql={{ query.raw_sql|urlencode }}&amp;params={{ query.params|urlencode }}&amp;duration={{ query.duration|urlencode }}&amp;hash={{ query.hash }}">EXPLAIN</a><br />
+						<a class="remoteCall" href="/_debug_toolbar/views/sqlalchemy/sql_select?sql={{ query.raw_sql|urlencode }}&amp;params={{ query.params|urlencode }}&amp;duration={{ query.duration|urlencode }}&amp;hash={{ query.hash }}">SELECT</a><br />
+						<a class="remoteCall" href="/_debug_toolbar/views/sqlalchemy/sql_explain?sql={{ query.raw_sql|urlencode }}&amp;params={{ query.params|urlencode }}&amp;duration={{ query.duration|urlencode }}&amp;hash={{ query.hash }}">EXPLAIN</a><br />
 						{% if is_mysql %}
 							<a class="remoteCall" href="/__debug__/sql_profile/?sql={{ query.raw_sql|urlencode }}&amp;params={{ query.params|urlencode }}&amp;duration={{ query.duration|urlencode }}&amp;hash={{ query.hash }}">PROFILE</a><br />
 						{% endif %}
