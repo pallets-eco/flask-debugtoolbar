@@ -14,7 +14,10 @@ setup(
     zip_safe=False,
     platforms='any',
     include_package_data=True,
-    packages=['flaskext.debugtoolbar'],
+    packages=['flaskext',
+              'flaskext.debugtoolbar'
+              'flaskext.debugtoolbar.panels'
+    ],
     install_requires=[
         'setuptools',
         'simplejson',
@@ -31,4 +34,3 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules'
     ]
 )
-
