@@ -1,14 +1,20 @@
 import hashlib
 
+import simplejson
+
 try:
     from flaskext.sqlalchemy import get_debug_queries
 except ImportError:
     get_debug_queries = None
 
 
-from flask import current_app, json
+from flask import request, current_app, abort, json
 from flaskext.debugtoolbar.panels import DebugPanel
 from flaskext.debugtoolbar.utils import format_fname, format_sql
+from flaskext.sqlalchemy import SQLAlchemy
+
+from flaskext.debugtoolbar import module
+
 
 _ = lambda x: x
 
@@ -71,4 +77,62 @@ class SQLAlchemyDebugPanel(DebugPanel):
             })
         return self.render('panels/sqlalchemy.html', { 'queries': data})
 
+# Panel views
 
+@module.route('/sqlalchemy/sql_select', methods=['GET', 'POST'])
+def sql_select(render):
+    statement = request.args['sql']
+    params = request.args['params']
+
+    # Validate hash
+    hash = hashlib.sha1(
+        current_app.config['SECRET_KEY'] + statement + params).hexdigest()
+    if hash != request.args['hash']:
+        return abort(406)
+
+    # Make sure it is a select statement
+    if not statement.lower().strip().startswith('select'):
+        return abort(406)
+
+    params = simplejson.loads(params)
+
+    db = SQLAlchemy(current_app)
+
+    result = db.engine.execute(statement, params)
+    return render('panels/sqlalchemy_select.html', {
+        'result': result.fetchall(),
+        'headers': result.keys(),
+        'sql': format_sql(statement, params),
+        'duration': float(request.args['duration']),
+    })
+
+@module.route('/sqlalchemy/sql_explain', methods=['GET', 'POST'])
+def sql_explain(render):
+    statement = request.args['sql']
+    params = request.args['params']
+
+    # Validate hash
+    hash = hashlib.sha1(
+        current_app.config['SECRET_KEY'] + statement + params).hexdigest()
+    if hash != request.args['hash']:
+        return abort(406)
+
+    # Make sure it is a select statement
+    if not statement.lower().strip().startswith('select'):
+        return abort(406)
+
+    params = json.loads(params)
+
+    db = SQLAlchemy(current_app)
+    if db.engine.driver == 'pysqlite':
+        query = 'EXPLAIN QUERY PLAN %s' % statement
+    else:
+        query = 'EXPLAIN %s' % statement
+
+    result = db.engine.execute(query, params)
+    return render('panels/sqlalchemy_explain.html', {
+        'result': result.fetchall(),
+        'headers': result.keys(),
+        'sql': format_sql(statement, params),
+        'duration': float(request.args['duration']),
+    })
