@@ -8,10 +8,10 @@ from werkzeug.exceptions import HTTPException
 from werkzeug.urls import url_quote_plus
 
 from flaskext.debugtoolbar.toolbar import DebugToolbar
-from flask import Module
+from flask import Blueprint
 
 
-module = Module(__name__)
+module = Blueprint('debugtoolbar', __name__)
 
 def replace_insensitive(string, target, replacement):
     """Similar to string.replace() but is case insensitive
@@ -73,8 +73,8 @@ class DebugToolbarExtension(object):
         req = _request_ctx_stack.top.request
         app = current_app
 
-        if 'debugtoolbar' not in app.modules:
-            app.register_module(module, url_prefix='/_debug_toolbar/views')
+        if 'debugtoolbar' not in app.blueprints:
+            app.register_blueprint(module, url_prefix='/_debug_toolbar/views')
 
         try:
             if req.routing_exception is not None:
