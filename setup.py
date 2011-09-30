@@ -14,7 +14,7 @@ setup(
     zip_safe=False,
     platforms='any',
     include_package_data=True,
-    packages=['flaskext.debugtoolbar'],
+    packages=find_packages(exclude=['example']),
     install_requires=[
         'setuptools',
         'simplejson',
