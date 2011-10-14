@@ -35,7 +35,7 @@ class DebugToolbarExtension(object):
         self.app = app
         self.debug_toolbars = {}
 
-        if not app.debug:
+        if not app.debug and not app.config.get('DEBUG_TB_ENABLED'):
             return
 
         if not app.config.get('SECRET_KEY'):
