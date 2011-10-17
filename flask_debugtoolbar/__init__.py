@@ -2,12 +2,12 @@ import os
 
 from flask import current_app, request
 from flask.globals import _request_ctx_stack
-from flask.helpers import send_from_directory
+from flask import send_from_directory
 from jinja2 import Environment, PackageLoader
 from werkzeug.exceptions import HTTPException
 from werkzeug.urls import url_quote_plus
 
-from flaskext.debugtoolbar.toolbar import DebugToolbar
+from flask_debugtoolbar.toolbar import DebugToolbar
 from flask import Blueprint
 
 
@@ -42,7 +42,8 @@ class DebugToolbarExtension(object):
             raise RuntimeError(
                 "The Flask-DebugToolbar requires the 'SECRET_KEY' config "
                 "var to be set")
-
+        
+        DebugToolbar.load_panels(app.config)
 
         self.app.before_request(self.process_request)
         self.app.after_request(self.process_response)
@@ -61,6 +62,8 @@ class DebugToolbarExtension(object):
         app.add_url_rule('/_debug_toolbar/static/<path:filename>',
             '_debug_toolbar.static', self.send_static_file)
 
+        app.register_blueprint(module, url_prefix='/_debug_toolbar/views')
+
 
     def dispatch_request(self):
         """Does the request dispatching.  Matches the URL and returns the
@@ -68,37 +71,27 @@ class DebugToolbarExtension(object):
         be a response object.  In order to convert the return value to a
         proper response object, call :func:`make_response`.
 
-        This is a modified version of the default Flask.dispatch_request
+        .. versionchanged:: 0.7
+           This no longer does the exception handling, this code was
+           moved to the new :meth:`full_dispatch_request`.
         """
         req = _request_ctx_stack.top.request
         app = current_app
 
-        if 'debugtoolbar' not in app.blueprints:
-            app.register_blueprint(module, url_prefix='/_debug_toolbar/views')
-
-        try:
-            if req.routing_exception is not None:
-                raise req.routing_exception
-
-            rule = req.url_rule
-            # if we provide automatic options for this URL and the
-            # request came with the OPTIONS method, reply automatically
-            if getattr(rule, 'provide_automatic_options', False) \
-               and req.method == 'OPTIONS':
-                return app.make_default_options_response()
-
-            # otherwise dispatch to the handler for that endpoint, give the
-            # panels the ability to wrap the view_func
-            view_func = app.view_functions[rule.endpoint]
-            view_func = self.process_view(app, view_func, req.view_args)
-
-            if req.path.startswith('/_debug_toolbar/views'):
-                req.view_args['render'] = self.render
-
-            return view_func(**req.view_args)
-
-        except HTTPException, e:
-            return app.handle_http_exception(e)
+        if req.routing_exception is not None:
+            self.raise_routing_exception(req)
+        rule = req.url_rule
+        # if we provide automatic options for this URL and the
+        # request came with the OPTIONS method, reply automatically
+        if getattr(rule, 'provide_automatic_options', False) \
+           and req.method == 'OPTIONS':
+            return self.make_default_options_response()
+        # otherwise dispatch to the handler for that endpoint
+        view_func = app.view_functions[rule.endpoint]
+        #view_func = self.process_view(app, view_func, req.view_args)
+        #if req.path.startswith('/_debug_toolbar/views'):
+        #    req.view_args['render'] = self.render
+        return view_func(**req.view_args)
 
     def _show_toolbar(self):
         """Return a boolean to indicate if we need to show the toolbar."""
@@ -131,6 +124,7 @@ class DebugToolbarExtension(object):
 
     def process_response(self, response):
         if request not in self.debug_toolbars:
+            f
             return response
 
         # Intercept http redirect codes and display an html page with a
@@ -158,11 +152,13 @@ class DebugToolbarExtension(object):
             if response.is_sequence:
                 response_html = response.data.decode(response.charset)
                 toolbar_html = self.debug_toolbars[request].render_toolbar()
-                response.response = [
-                    replace_insensitive(
-                        response_html,
-                        '</body>',
-                        toolbar_html + '</body>')]
+
+                content = replace_insensitive(
+                    response_html, '</body>', toolbar_html + '</body>')
+                content = content.encode(response.charset)
+                response.response = [content]
+                response.content_length = len(content)
+
         return response
 
     def render(self, template_name, context):

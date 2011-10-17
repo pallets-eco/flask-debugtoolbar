@@ -4,15 +4,15 @@ sys.path.insert(0, '.')
 from flask import Flask, render_template, redirect, url_for
 from flaskext.script import Manager
 from flaskext.sqlalchemy import SQLAlchemy
-from flaskext.debugtoolbar import DebugToolbarExtension
+from flask_debugtoolbar import DebugToolbarExtension
 
 
 app = Flask(__name__)
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 #app.config['DEBUG_TB_PANELS'] = (
-#    'flaskext.debugtoolbar.panels.headers.HeaderDebugPanel',
-#    'flaskext.debugtoolbar.panels.logger.LoggingPanel',
-#    'flaskext.debugtoolbar.panels.timer.TimerDebugPanel',
+#    'flask_debugtoolbar.panels.headers.HeaderDebugPanel',
+#    'flask_debugtoolbar.panels.logger.LoggingPanel',
+#    'flask_debugtoolbar.panels.timer.TimerDebugPanel',
 #)
 app.config['SECRET_KEY'] = 'asd'
 app.config['DEBUG'] = True

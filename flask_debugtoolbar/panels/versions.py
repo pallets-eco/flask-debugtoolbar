@@ -1,6 +1,6 @@
 import pkg_resources
 
-from flaskext.debugtoolbar.panels import DebugPanel
+from flask_debugtoolbar.panels import DebugPanel
 
 _ = lambda x: x
 

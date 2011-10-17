@@ -5,8 +5,8 @@ try:
 except ImportError:
     threading = None
 
-from flaskext.debugtoolbar.panels import DebugPanel
-from flaskext.debugtoolbar.utils import format_fname
+from flask_debugtoolbar.panels import DebugPanel
+from flask_debugtoolbar.utils import format_fname
 
 _ = lambda x: x
 

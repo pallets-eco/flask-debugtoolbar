@@ -9,11 +9,10 @@ except ImportError:
 
 
 from flask import request, current_app, abort, json
-from flaskext.debugtoolbar.panels import DebugPanel
-from flaskext.debugtoolbar.utils import format_fname, format_sql
+from flask_debugtoolbar import module
+from flask_debugtoolbar.panels import DebugPanel
+from flask_debugtoolbar.utils import format_fname, format_sql
 from flaskext.sqlalchemy import SQLAlchemy
-
-from flaskext.debugtoolbar import module
 
 
 _ = lambda x: x
@@ -80,7 +79,8 @@ class SQLAlchemyDebugPanel(DebugPanel):
 # Panel views
 
 @module.route('/sqlalchemy/sql_select', methods=['GET', 'POST'])
-def sql_select(render):
+def sql_select(render=None):
+    return ''
     statement = request.args['sql']
     params = request.args['params']
 
@@ -107,10 +107,11 @@ def sql_select(render):
     })
 
 @module.route('/sqlalchemy/sql_explain', methods=['GET', 'POST'])
-def sql_explain(render):
+def sql_explain(render=None):
     statement = request.args['sql']
     params = request.args['params']
 
+    e
     # Validate hash
     hash = hashlib.sha1(
         current_app.config['SECRET_KEY'] + statement + params).hexdigest()
