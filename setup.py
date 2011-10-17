@@ -3,25 +3,23 @@ from setuptools import setup, find_packages
 
 setup(
     name='Flask-DebugToolbar',
-    version='0.5.1dev',
+    version='0.6dev',
     url='http://github.com/mvantellingen/flask-debugtoolbar',
     license='BSD',
     author='Michael van Tellingen',
     author_email='michaelvantellingen@gmail.com',
     description='A port of the Django debug toolbar to Flask',
     long_description=__doc__,
-    namespace_packages=['flaskext'],
     zip_safe=False,
     platforms='any',
     include_package_data=True,
-    packages=['flaskext',
-              'flaskext.debugtoolbar',
-              'flaskext.debugtoolbar.panels'
+    packages=['flask_debugtoolbar',
+              'flask_debugtoolbar.panels'
     ],
     install_requires=[
         'setuptools',
         'simplejson',
-        'Flask',
+        'Flask>=0.8',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
