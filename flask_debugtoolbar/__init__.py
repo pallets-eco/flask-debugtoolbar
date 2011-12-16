@@ -109,28 +109,32 @@ class DebugToolbarExtension(object):
         if not self._show_toolbar():
             return
 
-        self.debug_toolbars[request] = DebugToolbar(request, self.jinja_env)
-        for panel in self.debug_toolbars[request].panels:
-            panel.process_request(request)
+        real_request = request._get_current_object()
+
+        self.debug_toolbars[real_request] = DebugToolbar(real_request, self.jinja_env)
+        for panel in self.debug_toolbars[real_request].panels:
+            panel.process_request(real_request)
 
     def process_view(self, app, view_func, view_kwargs):
         """This method is called just before the flask view is called.
         This is done by the dispatch_request method.
         """
-        if request in self.debug_toolbars:
-            for panel in self.debug_toolbars[request].panels:
-                new_view = panel.process_view(request, view_func, view_kwargs)
+        real_request = request._get_current_object()
+        if real_request in self.debug_toolbars:
+            for panel in self.debug_toolbars[real_request].panels:
+                new_view = panel.process_view(real_request, view_func, view_kwargs)
                 if new_view:
                     view_func = new_view
         return view_func
 
     def process_response(self, response):
-        if request not in self.debug_toolbars:
+        real_request = request._get_current_object()
+        if real_request not in self.debug_toolbars:
             return response
 
         # Intercept http redirect codes and display an html page with a
         # link to the target.
-        if self.debug_toolbars[request].config['DEBUG_TB_INTERCEPT_REDIRECTS']:
+        if self.debug_toolbars[real_request].config['DEBUG_TB_INTERCEPT_REDIRECTS']:
             if response.status_code in self._redirect_codes:
                 redirect_to = response.location
                 redirect_code = response.status_code
@@ -147,12 +151,12 @@ class DebugToolbarExtension(object):
         # If the http response code is 200 then we process to add the
         # toolbar to the returned html response.
         if response.status_code == 200:
-            for panel in self.debug_toolbars[request].panels:
-                panel.process_response(request, response)
+            for panel in self.debug_toolbars[real_request].panels:
+                panel.process_response(real_request, response)
 
             if response.is_sequence:
                 response_html = response.data.decode(response.charset)
-                toolbar_html = self.debug_toolbars[request].render_toolbar()
+                toolbar_html = self.debug_toolbars[real_request].render_toolbar()
 
                 content = replace_insensitive(
                     response_html, '</body>', toolbar_html + '</body>')
