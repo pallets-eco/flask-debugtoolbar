@@ -1,6 +1,6 @@
 import os
 
-from flask import current_app, request
+from flask import current_app, request, g
 from flask.globals import _request_ctx_stack
 from flask import send_from_directory
 from jinja2 import Environment, PackageLoader
@@ -42,7 +42,7 @@ class DebugToolbarExtension(object):
             raise RuntimeError(
                 "The Flask-DebugToolbar requires the 'SECRET_KEY' config "
                 "var to be set")
-        
+
         DebugToolbar.load_panels(app.config)
 
         self.app.before_request(self.process_request)
@@ -104,6 +104,8 @@ class DebugToolbarExtension(object):
         return send_from_directory(self._static_dir, filename)
 
     def process_request(self):
+        g.debug_toolbar = self
+
         if not self._show_toolbar():
             return
 
@@ -124,7 +126,6 @@ class DebugToolbarExtension(object):
 
     def process_response(self, response):
         if request not in self.debug_toolbars:
-            f
             return response
 
         # Intercept http redirect codes and display an html page with a

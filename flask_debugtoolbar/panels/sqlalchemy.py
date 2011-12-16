@@ -8,7 +8,7 @@ except ImportError:
     get_debug_queries = None
 
 
-from flask import request, current_app, abort, json
+from flask import request, current_app, abort, json, g
 from flask_debugtoolbar import module
 from flask_debugtoolbar.panels import DebugPanel
 from flask_debugtoolbar.utils import format_fname, format_sql
@@ -79,7 +79,7 @@ class SQLAlchemyDebugPanel(DebugPanel):
 # Panel views
 
 @module.route('/sqlalchemy/sql_select', methods=['GET', 'POST'])
-def sql_select(render=None):
+def sql_select():
     return ''
     statement = request.args['sql']
     params = request.args['params']
@@ -96,10 +96,10 @@ def sql_select(render=None):
 
     params = simplejson.loads(params)
 
-    db = SQLAlchemy(current_app)
+    engine = SQLAlchemy().get_engine(current_app)
 
-    result = db.engine.execute(statement, params)
-    return render('panels/sqlalchemy_select.html', {
+    result = engine.execute(statement, params)
+    return g.debug_toolbar.render('panels/sqlalchemy_select.html', {
         'result': result.fetchall(),
         'headers': result.keys(),
         'sql': format_sql(statement, params),
@@ -107,11 +107,10 @@ def sql_select(render=None):
     })
 
 @module.route('/sqlalchemy/sql_explain', methods=['GET', 'POST'])
-def sql_explain(render=None):
+def sql_explain():
     statement = request.args['sql']
     params = request.args['params']
 
-    e
     # Validate hash
     hash = hashlib.sha1(
         current_app.config['SECRET_KEY'] + statement + params).hexdigest()
@@ -124,14 +123,15 @@ def sql_explain(render=None):
 
     params = json.loads(params)
 
-    db = SQLAlchemy(current_app)
-    if db.engine.driver == 'pysqlite':
+    engine = SQLAlchemy().get_engine(current_app)
+
+    if engine.driver == 'pysqlite':
         query = 'EXPLAIN QUERY PLAN %s' % statement
     else:
         query = 'EXPLAIN %s' % statement
 
-    result = db.engine.execute(query, params)
-    return render('panels/sqlalchemy_explain.html', {
+    result = engine.execute(query, params)
+    return g.debug_toolbar.render('panels/sqlalchemy_explain.html', {
         'result': result.fetchall(),
         'headers': result.keys(),
         'sql': format_sql(statement, params),
