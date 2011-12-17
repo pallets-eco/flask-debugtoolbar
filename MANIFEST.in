@@ -1,2 +1,2 @@
-recursive-include flaskext/debugtoolbar/templates/ *.html
-recursive-include flaskext/debugtoolbar/static/ *
+recursive-include flask_debugtoolbar/templates/ *.html
+recursive-include flask_debugtoolbar/static/ *
