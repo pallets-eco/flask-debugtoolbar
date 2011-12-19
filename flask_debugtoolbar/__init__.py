@@ -116,7 +116,8 @@ class DebugToolbarExtension(object):
 
         # If the http response code is 200 then we process to add the
         # toolbar to the returned html response.
-        if response.status_code == 200:
+        if (response.status_code == 200
+            and response.headers['content-type'].startswith('text/html')):
             for panel in self.debug_toolbars[real_request].panels:
                 panel.process_response(real_request, response)
 
