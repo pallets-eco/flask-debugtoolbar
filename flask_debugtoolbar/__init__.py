@@ -84,7 +84,10 @@ class DebugToolbarExtension(object):
             panel.process_request(real_request)
 
     def process_view(self, app, view_func, view_kwargs):
-        """ This method is called just before the flask view is called. """
+        """ This method is called just before the flask view is called.
+
+        # FIXME/XXX: This method is currently not called!!
+        """
         real_request = request._get_current_object()
         if real_request in self.debug_toolbars:
             for panel in self.debug_toolbars[real_request].panels:
