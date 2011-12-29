@@ -1,14 +1,11 @@
-import pkg_resources
-
+from flask import __version__ as flask_version
 from flask_debugtoolbar.panels import DebugPanel
 
 _ = lambda x: x
 
-flask_version = pkg_resources.get_distribution('Flask').version
-
 class VersionDebugPanel(DebugPanel):
     """
-    Panel that displays the Django version.
+    Panel that displays the Flask version.
     """
     name = 'Version'
     has_content = False
