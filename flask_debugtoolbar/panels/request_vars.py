@@ -1,3 +1,5 @@
+from flask import session
+
 from flask_debugtoolbar.panels import DebugPanel
 
 _ = lambda x: x
@@ -20,6 +22,7 @@ class RequestVarsDebugPanel(DebugPanel):
 
     def process_request(self, request):
         self.request = request
+        self.session = session
         self.view_func = None
         self.view_args = []
         self.view_kwargs = {}
@@ -36,12 +39,9 @@ class RequestVarsDebugPanel(DebugPanel):
             'cookies': [(k, self.request.cookies.get(k)) for k in self.request.cookies],
             'view_func': '%s.%s' % (self.view_func.__module__, self.view_func.__name__) if self.view_func else '[unknown]',
             'view_args': self.view_args,
-            'view_kwargs': self.view_kwargs or {}
+            'view_kwargs': self.view_kwargs or {},
+            'session': self.session.items(),
         })
-        if hasattr(self.request, 'session'):
-            context.update({
-                'session': [(k, self.request.session.get(k)) for k in self.request.session.iterkeys()]
-            })
 
         return self.render('panels/request_vars.html', context)
 
