@@ -16,7 +16,6 @@ class DebugToolbar(object):
             'flask_debugtoolbar.panels.sqlalchemy.SQLAlchemyDebugPanel',
             'flask_debugtoolbar.panels.logger.LoggingPanel',
             'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel',
-    
         )
     }
 
@@ -34,14 +33,18 @@ class DebugToolbar(object):
         self.create_panels()
 
     @classmethod
-    def load_panels(cls, config):
-        cls.config.update(config)
+    def load_panels(cls, app):
+        cls.config.update(app.config)
 
         for panel_path in cls.config['DEBUG_TB_PANELS']:
             dot = panel_path.rindex('.')
             panel_module, panel_classname = panel_path[:dot], panel_path[dot+1:]
 
-            mod = __import__(panel_module, {}, {}, [''])
+            try:
+                mod = __import__(panel_module, {}, {}, [''])
+            except ImportError, e:
+                app.logger.warning('Disabled %s due to ImportError: %s', panel_classname, e)
+                continue
             panel_class = getattr(mod, panel_classname)
             cls.panel_classes.append(panel_class)
 
