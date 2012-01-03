@@ -20,6 +20,7 @@ setup(
         'setuptools',
         'simplejson',
         'Flask>=0.8',
+        'Blinker',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
