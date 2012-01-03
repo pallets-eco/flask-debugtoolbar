@@ -1,18 +1,18 @@
 import hashlib
 
-import simplejson
-
 try:
-    from flaskext.sqlalchemy import get_debug_queries
+    from flaskext.sqlalchemy import get_debug_queries, SQLAlchemy
 except ImportError:
-    get_debug_queries = None
+    sqlalchemy_available = False
+    get_debug_queries = SQLAlchemy = None
+else:
+    sqlalchemy_available = True
 
-
-from flask import request, current_app, abort, json, g
+from flask import request, current_app, abort, json_available, g
+from flask.helpers import json
 from flask_debugtoolbar import module
 from flask_debugtoolbar.panels import DebugPanel
 from flask_debugtoolbar.utils import format_fname, format_sql
-from flaskext.sqlalchemy import SQLAlchemy
 
 
 _ = lambda x: x
@@ -26,7 +26,9 @@ class SQLAlchemyDebugPanel(DebugPanel):
 
     @property
     def has_content(self):
-        return True if get_debug_queries and get_debug_queries() else False
+        if not json_available or not sqlalchemy_available:
+            return True # will display an error message
+        return bool(get_debug_queries())
 
     def process_request(self, request):
         pass
@@ -38,6 +40,9 @@ class SQLAlchemyDebugPanel(DebugPanel):
         return _('SQLAlchemy')
 
     def nav_subtitle(self):
+        if not json_available or not sqlalchemy_available:
+            return 'Unavailable'
+
         if get_debug_queries:
             count = len(get_debug_queries())
             return "%d %s" % (count, "query" if count == 1 else "queries")
@@ -49,6 +54,15 @@ class SQLAlchemyDebugPanel(DebugPanel):
         return ''
 
     def content(self):
+        if not json_available or not sqlalchemy_available:
+            msg = ['Missing required libraries:', '<ul>']
+            if not json_available:
+                msg.append('<li>simplejson</li>')
+            if not sqlalchemy_available:
+                msg.append('<li>Flask-SQLAlchemy</li>')
+            msg.append('</ul>')
+            return '\n'.join(msg)
+
         queries = get_debug_queries()
         data = []
         for query in queries:
@@ -94,7 +108,7 @@ def sql_select():
     if not statement.lower().strip().startswith('select'):
         return abort(406)
 
-    params = simplejson.loads(params)
+    params = json.loads(params)
 
     engine = SQLAlchemy().get_engine(current_app)
 

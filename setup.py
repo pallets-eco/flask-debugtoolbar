@@ -18,7 +18,6 @@ setup(
     ],
     install_requires=[
         'setuptools',
-        'simplejson',
         'Flask>=0.8',
         'Blinker',
     ],
