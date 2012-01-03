@@ -6,7 +6,7 @@ to Flask.
 Usage::
 
  from flask import Flask
- from flaskext.debugtoolbar import DebugToolbarExtension
+ from flask_debugtoolbar import DebugToolbarExtension
 
  app = Flask(__name__)
  toolbar = DebugToolbarExtension(app)
