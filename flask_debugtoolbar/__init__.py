@@ -93,10 +93,10 @@ class DebugToolbarExtension(object):
         """Return a boolean to indicate if we need to show the toolbar."""
         if request.path.startswith('/_debug_toolbar/'):
             return False
-        
-        if len(self.hosts) and not request.remote_addr in self.hosts:
+
+        if self.hosts and request.remote_addr not in self.hosts:
             return False
-        
+
         return True
 
     def send_static_file(self, filename):
