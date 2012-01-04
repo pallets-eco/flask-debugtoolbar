@@ -34,6 +34,7 @@ class DebugToolbarExtension(object):
     def __init__(self, app):
         self.app = app
         self.debug_toolbars = {}
+        self.hosts = ()
 
         if not app.debug:
             return
@@ -44,6 +45,8 @@ class DebugToolbarExtension(object):
                 "var to be set")
 
         DebugToolbar.load_panels(app)
+
+        self.hosts = app.config.get('DEBUG_TB_HOSTS', ())
 
         self.app.before_request(self.process_request)
         self.app.after_request(self.process_response)
@@ -90,6 +93,10 @@ class DebugToolbarExtension(object):
         """Return a boolean to indicate if we need to show the toolbar."""
         if request.path.startswith('/_debug_toolbar/'):
             return False
+        
+        if len(self.hosts) and not request.remote_addr in self.hosts:
+            return False
+        
         return True
 
     def send_static_file(self, filename):

@@ -14,6 +14,7 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 #    'flask_debugtoolbar.panels.logger.LoggingPanel',
 #    'flask_debugtoolbar.panels.timer.TimerDebugPanel',
 #)
+#app.config['DEBUG_TB_HOSTS'] = ('127.0.0.1', '::1' )
 app.config['SECRET_KEY'] = 'asd'
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
