@@ -3,11 +3,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='Flask-DebugToolbar',
-    version='0.6dev',
-    url='http://github.com/mvantellingen/flask-debugtoolbar',
+    version='0.6',
+    url='http://github.com/mgood/flask-debugtoolbar',
     license='BSD',
     author='Michael van Tellingen',
     author_email='michaelvantellingen@gmail.com',
+    maintainer='Matt Good',
+    maintainer_email='matt@matt-good.net',
     description='A port of the Django debug toolbar to Flask',
     long_description=__doc__,
     zip_safe=False,
