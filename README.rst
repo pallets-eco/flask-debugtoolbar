@@ -16,7 +16,7 @@ Installing the debug toolbar is simple::
     toolbar = DebugToolbarExtension(app)
 
 
-The toolbar will automatically be injected into Jinja tepmlates when debug mode is on::
+The toolbar will automatically be injected into Jinja templates when debug mode is on::
 
     app.debug = True
 
