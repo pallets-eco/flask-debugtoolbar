@@ -23,6 +23,10 @@
 
 #flDebug { font-family: sans-serif; color: #000; background: #fff; }
 
+#flDebug tbody, #flDebug code {
+  font-family: Consolas, Monaco, "Bitstream Vera Sans Mono", "Lucida Console", monospace;
+}
+
 #flDebug #flDebugToolbar {
 	background:#111;
 	width:200px;
@@ -153,7 +157,6 @@
 
 #flDebug code {
 	display:block;
-	font-family:Consolas, Monaco, "Bitstream Vera Sans Mono", "Lucida Console", monospace;
 	white-space:pre;
 	overflow:auto;
 }
