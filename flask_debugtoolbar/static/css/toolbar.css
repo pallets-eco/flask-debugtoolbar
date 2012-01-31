@@ -1,5 +1,4 @@
 /* Debug Toolbar CSS Reset, adapted from Eric Meyer's CSS Reset */
-#flDebug {color:#000;background:#FFF;}
 #flDebug, #flDebug div, #flDebug span, #flDebug applet, #flDebug object, #flDebug iframe,
 #flDebug h1, #flDebug h2, #flDebug h3, #flDebug h4, #flDebug h5, #flDebug h6, #flDebug p, #flDebug blockquote, #flDebug pre,
 #flDebug a, #flDebug abbr, #flDebug acronym, #flDebug address, #flDebug big, #flDebug cite, #flDebug code,
@@ -18,9 +17,11 @@
 	color:#000;
 	vertical-align:baseline;
 	background:transparent;
-	font-family:sans-serif;
+	font-family: inherit;
 	text-align:left;
 }
+
+#flDebug { font-family: sans-serif; color: #000; background: #fff; }
 
 #flDebug #flDebugToolbar {
 	background:#111;
