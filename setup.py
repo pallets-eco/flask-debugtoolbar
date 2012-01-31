@@ -19,7 +19,6 @@ setup(
               'flask_debugtoolbar.panels'
     ],
     install_requires=[
-        'setuptools',
         'Flask>=0.8',
         'Blinker',
     ],
