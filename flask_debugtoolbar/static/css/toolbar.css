@@ -22,6 +22,11 @@
 	text-align:left;
 }
 
+#flDebug caption, #flDebug tbody, #flDebug tfoot, #flDebug thead, #flDebug tr, #flDebug th, #flDebug td {
+	font-family: 'ubuntu mono', menlo, monaco, consolas, courier, mono, sans-serif;
+}
+
+
 #flDebug #flDebugToolbar {
 	background:#111;
 	width:200px;
