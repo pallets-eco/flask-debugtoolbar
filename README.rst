@@ -24,7 +24,7 @@ The toolbar will automatically be injected into Jinja tepmlates when debug mode 
 Installation
 ------------
 
-Installing is simple with pip:
+Installing is simple with pip::
 
     $ pip install flask-debugtoolbar
 
