@@ -25,11 +25,13 @@ def replace_insensitive(string, target, replacement):
         return string
 
 
-def _printable(string):
-    if isinstance(string, unicode):
-        return string.encode('unicode_escape')
+def _printable(value):
+    if isinstance(value, unicode):
+        return value.encode('unicode_escape')
+    elif isinstance(value, str):
+        return value.encode('string_escape')
     else:
-        return string.encode('string_escape')
+        return repr(value)
 
 
 class DebugToolbarExtension(object):
