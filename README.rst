@@ -1,7 +1,7 @@
 Flask Debug-toolbar
 ===================
 
-This is a port of the excellent `django-debug-toolbar <github.com/robhudson/django-debug-toolbar>`_
+This is a port of the excellent `django-debug-toolbar <github.com/django-debug-toolbar/django-debug-toolbar>`_
 for Flask applications.
 
 Usage
@@ -13,12 +13,18 @@ Installing the debug toolbar is simple::
     from flask_debugtoolbar import DebugToolbarExtension
 
     app = Flask(__name__)
+
+    # the toolbar is only enabled in debug mode:
+    app.debug = True
+
+    # set a 'SECRET_KEY' to enable the Flask session cookies
+    app.config['SECRET_KEY'] = '<replace with a secret key>'
+
     toolbar = DebugToolbarExtension(app)
 
 
-The toolbar will automatically be injected into Jinja templates when debug mode is on::
-
-    app.debug = True
+The toolbar will automatically be injected into Jinja templates when debug mode is on.
+In production, setting ``app.debug = False`` will disable the toolbar.
 
 
 Installation
