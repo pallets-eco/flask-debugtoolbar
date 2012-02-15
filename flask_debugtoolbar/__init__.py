@@ -57,6 +57,7 @@ class DebugToolbarExtension(object):
 
         self.app.before_request(self.process_request)
         self.app.after_request(self.process_response)
+        self.app.teardown_request(self.teardown_request)
 
         # Monkey-patch the Flask.dispatch_request method
         app.dispatch_request = self.dispatch_request
@@ -174,6 +175,9 @@ class DebugToolbarExtension(object):
                 response.content_length = len(content)
 
         return response
+
+    def teardown_request(self, exc):
+        self.debug_toolbars.pop(request._get_current_object(), None)
 
     def render(self, template_name, context):
         template = self.jinja_env.get_template(template_name)
