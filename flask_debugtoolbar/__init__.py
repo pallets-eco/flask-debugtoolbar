@@ -25,6 +25,13 @@ def replace_insensitive(string, target, replacement):
         return string
 
 
+def _printable(string):
+    if isinstance(string, unicode):
+        return string.encode('unicode_escape')
+    else:
+        return string.encode('string_escape')
+
+
 class DebugToolbarExtension(object):
     _static_dir = os.path.realpath(
         os.path.join(os.path.dirname(__file__), 'static'))
@@ -61,6 +68,7 @@ class DebugToolbarExtension(object):
             extensions=['jinja2.ext.i18n'],
             loader=PackageLoader(__name__, 'templates'))
         self.jinja_env.filters['urlencode'] = url_quote_plus
+        self.jinja_env.filters['printable'] = _printable
 
         app.add_url_rule('/_debug_toolbar/static/<path:filename>',
             '_debug_toolbar.static', self.send_static_file)
