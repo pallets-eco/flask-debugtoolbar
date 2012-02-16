@@ -4,10 +4,19 @@ Flask Debug-toolbar
 This is a port of the excellent `django-debug-toolbar <https://github.com/django-debug-toolbar/django-debug-toolbar>`_
 for Flask applications.
 
+
+Installation
+------------
+
+Installing is simple with pip::
+
+    $ pip install flask-debugtoolbar
+
+
 Usage
 -----
 
-Installing the debug toolbar is simple::
+Setting up the debug toolbar is simple::
 
     from flask import Flask
     from flask_debugtoolbar import DebugToolbarExtension
@@ -26,11 +35,6 @@ Installing the debug toolbar is simple::
 The toolbar will automatically be injected into Jinja templates when debug mode is on.
 In production, setting ``app.debug = False`` will disable the toolbar.
 
+See the `documentation`_ for more information.
 
-Installation
-------------
-
-Installing is simple with pip::
-
-    $ pip install flask-debugtoolbar
-
+.. _documentation: http://flask-debugtoolbar.readthedocs.org
