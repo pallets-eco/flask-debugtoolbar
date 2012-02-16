@@ -59,6 +59,12 @@ To change one of the config options, set it in the Flask app's config like::
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 
+Contributing
+------------
+
+Fork us `on GitHub <https://github.com/mgood/flask-debugtoolbar>`_
+
+
 Indices and tables
 ==================
 
