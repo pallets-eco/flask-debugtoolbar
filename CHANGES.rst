@@ -1,6 +1,17 @@
 Changes
 =======
 
+0.6.2 (2012-02-18)
+------------------
+
+Fixes:
+
+- Installation issue on Windows with trailing slashes in MANIFEST.in
+
+- JavaScript error when using conditional comments for ``<html>`` tag
+  (like in HTML5 Boilerplate)
+
+
 0.6.1 (2012-02-15)
 ------------------
 
