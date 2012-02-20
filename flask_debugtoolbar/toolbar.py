@@ -1,3 +1,5 @@
+import urllib
+
 from flask import url_for, current_app
 
 
@@ -52,7 +54,8 @@ class DebugToolbar(object):
         """
         Populate debug panels
         """
-        activated = self.request.cookies.get('fldt_active', '').split(';')
+        activated = self.request.cookies.get('fldt_active', '')
+        activated = urllib.unquote(activated).split(';')
 
         for panel_class in self.panel_classes:
             panel_instance = panel_class(
