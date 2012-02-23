@@ -11,7 +11,7 @@
 	</thead>
 	<tbody>
         {% for row in function_calls %}
-			<tr class="{{ loop.cycle('flDebugOdd' 'flDebugEven') }}">
+			<tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
 				<td>{{ row.ncalls }}</td>
 				<td>{{ row.tottime }}</td>
 				<td>{{ '%.4f'|format(row.percall) }}</td>

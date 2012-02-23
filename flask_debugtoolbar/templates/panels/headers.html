@@ -7,7 +7,7 @@
 	</thead>
 	<tbody>
 		{% for key, value in headers.iteritems() %}
-			<tr class="{{ loop.cycle('djDebugOdd' 'djDebugEven') }}">
+			<tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
 				<td>{{ key|escape }}</td>
 				<td>{{ value|escape }}</td>
 			</tr>
