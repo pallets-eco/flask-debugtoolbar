@@ -10,7 +10,7 @@
             </thead>
             <tbody>
             {% set outer_loop = loop %}
-            {% for k, v in template.context.items() %}
+            {% for k, v in template.context|dictsort %}
                 <tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
                     <td>{{ k }}</td>
                     <td>{{ v|printable }}</td>
