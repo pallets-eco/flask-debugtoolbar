@@ -10,7 +10,7 @@
 			<dt>Time</dt>
 			<dd>{{ '%.4f'|format(duration) }} ms</dd>
 		</dl>
-		<table class="djSqlExplain">
+		<table class="flSqlExplain">
 			<thead>
 				<tr>
 					{% for h in headers %}
@@ -20,7 +20,7 @@
 			</thead>
 			<tbody>
 				{% for row in result %}
-				    <tr class="{{ loop.cycle('fjDebugOdd' 'fjDebugEven') }}">
+				    <tr class="{{ loop.cycle('fjDebugOdd', 'fjDebugEven') }}">
 						{% for column in row %}
 							<td>{{ column }}</td>
 						{% endfor %}
