@@ -10,7 +10,7 @@
 		</thead>
 		<tbody>
 			{% for record in records %}
-				<tr class="{{ loop.cycle('fjDebugOdd' 'fjDebugEven') }}">
+				<tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
 					<td>{{ record.level }}</td>
 					<td>{{ record.time }}</td>
 					<td>{{ record.message }}</td>

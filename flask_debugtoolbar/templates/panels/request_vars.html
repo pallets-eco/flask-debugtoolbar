@@ -39,7 +39,7 @@
         </thead>
         <tbody>
             {% for key, value in map %}
-                <tr class="{{ loop.cycle('flDebugOdd' 'flDebugEven') }}">
+                <tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
                     <td>{{ key|printable }}</td>
                     <td>{{ value|printable }}</td>
                 </tr>
@@ -74,7 +74,7 @@
         </thead>
         <tbody>
             {% for key, value in map %}
-                <tr class="{{ loop.cycle('flDebugOdd' 'flDebugEven') }}">
+                <tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
                     <td>{{ key|printable }}</td>
                     <td>
                       {%- set sep = joiner() -%}

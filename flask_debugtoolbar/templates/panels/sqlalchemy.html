@@ -9,7 +9,7 @@
 	</thead>
 	<tbody>
 		{% for query in queries %}
-			<tr class="{{ loop.cycle('flDebugOdd' 'flDebugEven') }}">
+			<tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
 				<td>{{ '%.4f'|format(query.duration) }}</td>
 				<td>
 				{% if query.params %}
@@ -26,7 +26,7 @@
                     {{ query.context }}
 				</td>
 				<td class="syntax">
-					<div class="djDebugSqlWrap">
+					<div class="flDebugSqlWrap">
 						<div class="flDebugSql">{{ query.sql|safe }}</div>
                         {#
 						{% if query.stacktrace %}

@@ -1,22 +1,23 @@
 {% if templates %}
-	<table>
-		<thead>
-			<tr>
-				<th>Filename</th>
-				<th>Context vars</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for template in templates %}
-				<tr class="{{ loop.cycle('fjDebugOdd' 'fjDebugEven') }}">
-					<td>{{ template.template.name }}</td>
-					<td>{{ template.context.keys()|join(', ') }}</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+    {% for template in templates %}
+        <h4>{{ template.template.name }}</h4>
+        <table>
+            <thead>
+            <tr>
+                <th>Variable</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for k, v in template.context|dictsort %}
+                <tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
+                    <td>{{ k }}</td>
+                    <td>{{ v|printable }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
 {% else %}
-	<p>No templates rendered.</p>
+    <p>No template rendered</p>
 {% endif %}
-
-
