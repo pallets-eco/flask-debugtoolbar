@@ -168,6 +168,12 @@ class DebugToolbarExtension(object):
 
             if response.is_sequence:
                 response_html = response.data.decode(response.charset)
+
+                if not "</body>" in response_html:
+                    raise RuntimeError(
+                        "The Flask-DebugToolbar requires there to be a "
+                        "closing body tag in the html.")
+
                 toolbar_html = self.debug_toolbars[real_request].render_toolbar()
 
                 content = replace_insensitive(
