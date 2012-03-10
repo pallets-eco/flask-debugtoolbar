@@ -1,4 +1,5 @@
 import os
+import warnings
 
 from flask import current_app, request, g
 from flask.globals import _request_ctx_stack
@@ -169,18 +170,16 @@ class DebugToolbarExtension(object):
             if response.is_sequence:
                 response_html = response.data.decode(response.charset)
 
-                if not "</body>" in response_html:
-                    raise RuntimeError(
-                        "The Flask-DebugToolbar requires there to be a "
-                        "closing body tag in the html.")
+                if "</body>" in response_html:
+                    toolbar_html = self.debug_toolbars[real_request].render_toolbar()
 
-                toolbar_html = self.debug_toolbars[real_request].render_toolbar()
-
-                content = replace_insensitive(
-                    response_html, '</body>', toolbar_html + '</body>')
-                content = content.encode(response.charset)
-                response.response = [content]
-                response.content_length = len(content)
+                    content = replace_insensitive(
+                        response_html, '</body>', toolbar_html + '</body>')
+                    content = content.encode(response.charset)
+                    response.response = [content]
+                    response.content_length = len(content)
+                else:
+                    warnings.warn("Could not insert debug toolbar. <body> element not found in response.")
 
         return response
 
