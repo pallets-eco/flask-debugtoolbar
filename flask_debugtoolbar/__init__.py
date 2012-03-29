@@ -161,20 +161,41 @@ class DebugToolbarExtension(object):
 
         # If the http response code is 200 then we process to add the
         # toolbar to the returned html response.
-        if (response.status_code == 200
-            and response.headers['content-type'].startswith('text/html')):
-            for panel in self.debug_toolbars[real_request].panels:
-                panel.process_response(real_request, response)
+        if response.status_code == 200:
 
-            if response.is_sequence:
-                response_html = response.data.decode(response.charset)
-                toolbar_html = self.debug_toolbars[real_request].render_toolbar()
+            debug_all_responses = False
+            app = current_app
 
-                content = replace_insensitive(
-                    response_html, '</body>', toolbar_html + '</body>')
-                content = content.encode(response.charset)
-                response.response = [content]
-                response.content_length = len(content)
+            # check if explicitly specified that toolbar is needed
+            if (app.config.get('DEBUG_TB_FORCE_DEBUG_PARAMETER')
+                and request.args.get(
+                    app.config.get('DEBUG_TB_FORCE_DEBUG_PARAMETER'))):
+
+                response.headers['content-type'] = 'text/html'
+                debug_all_responses = True
+
+            # add toolbar only in case if it's text/html response
+            if response.headers['content-type'].startswith('text/html'):
+
+                for panel in self.debug_toolbars[real_request].panels:
+                    panel.process_response(real_request, response)
+
+                if response.is_sequence:
+                    response_html = response.data.decode(response.charset)
+                    toolbar_html = self.debug_toolbars[real_request].render_toolbar()
+
+                    if '</body>' in response_html:
+                        content = replace_insensitive(
+                            response_html, '</body>', toolbar_html + '</body>')
+                    elif debug_all_responses:
+                        content = response_html + toolbar_html
+                    else:
+                        # do not mess up ajax request if it's not requested
+                        content = response_html
+
+                    content = content.encode(response.charset)
+                    response.response = [content]
+                    response.content_length = len(content)
 
         return response
 
