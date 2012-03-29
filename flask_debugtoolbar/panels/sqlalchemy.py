@@ -94,7 +94,6 @@ class SQLAlchemyDebugPanel(DebugPanel):
 
 @module.route('/sqlalchemy/sql_select', methods=['GET', 'POST'])
 def sql_select():
-    return ''
     statement = request.args['sql']
     params = request.args['params']
 
