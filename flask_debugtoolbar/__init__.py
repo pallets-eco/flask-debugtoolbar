@@ -159,12 +159,22 @@ class DebugToolbarExtension(object):
                     response.response = [content]
                     response.status_code = 200
 
+        app = current_app
+        toolbar_html = None
+        # check if explicitly specified to process response
+        if app.config.get('DEBUG_TB_FORCE_DEBUG'):
+            for panel in self.debug_toolbars[real_request].panels:
+                panel.process_response(real_request, response)
+            toolbar_html = self.debug_toolbars[real_request].render_toolbar()
+
+            if app.config.get('DEBUG_TB_DUMP_CALLBACK'):
+                app.config.get('DEBUG_TB_DUMP_CALLBACK')(toolbar_html)
+
         # If the http response code is 200 then we process to add the
         # toolbar to the returned html response.
         if response.status_code == 200:
 
             debug_all_responses = False
-            app = current_app
 
             # check if explicitly specified that toolbar is needed
             if (app.config.get('DEBUG_TB_FORCE_DEBUG_PARAMETER')
@@ -177,12 +187,13 @@ class DebugToolbarExtension(object):
             # add toolbar only in case if it's text/html response
             if response.headers['content-type'].startswith('text/html'):
 
-                for panel in self.debug_toolbars[real_request].panels:
-                    panel.process_response(real_request, response)
+                if not toolbar_html:
+                    for panel in self.debug_toolbars[real_request].panels:
+                        panel.process_response(real_request, response)
+                    toolbar_html = self.debug_toolbars[real_request].render_toolbar()
 
                 if response.is_sequence:
                     response_html = response.data.decode(response.charset)
-                    toolbar_html = self.debug_toolbars[real_request].render_toolbar()
 
                     if '</body>' in response_html:
                         content = replace_insensitive(
