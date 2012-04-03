@@ -18,6 +18,7 @@ class DebugToolbar(object):
             'flask_debugtoolbar.panels.sqlalchemy.SQLAlchemyDebugPanel',
             'flask_debugtoolbar.panels.logger.LoggingPanel',
             'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel',
+            'flask_debugtoolbar.panels.memory.MemoryProfilerDebugPanel',
         )
     }
 
@@ -72,5 +73,3 @@ class DebugToolbar(object):
 
         template = self.jinja_env.get_template('base.html')
         return template.render(**context)
-
-
