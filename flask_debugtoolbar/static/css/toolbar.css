@@ -81,7 +81,7 @@
 	background-repeat:no-repeat;
 	background-position:left center;
 	background-color:#333;
-	padding-left:10px;	
+	padding-left:10px;
 }
 
 #flDebug #flDebugToolbar li.active a:hover {
@@ -420,3 +420,34 @@
 #flDebug .highlight .s2 { color:#333 } /* Literal.String.Double */
 #flDebug .highlight .cp { color:#333 } /* Comment.Preproc */
 
+/* tablesorted */
+#flDebug table.tablesorter {
+    width: 100%;
+}
+#flDebug table.tablesorter thead tr th, table.tablesorter tfoot tr th {
+    padding-right: 20px;
+}
+#flDebug table.tablesorter thead tr .header {
+    background-image: url(../img/bg.gif);
+    background-repeat: no-repeat;
+    background-position: center right;
+    cursor: pointer;
+}
+#flDebug table.tablesorter tbody td {
+    color: #3D3D3D;
+    padding: 4px;
+    background-color: #FFF;
+    vertical-align: top;
+}
+#flDebug table.tablesorter tbody tr.odd td {
+    background-color:#F0F0F6;
+}
+#flDebug table.tablesorter thead tr .headerSortUp {
+    background-image: url(../img/asc.gif);
+}
+#flDebug table.tablesorter thead tr .headerSortDown {
+    background-image: url(../img/desc.gif);
+}
+#flDebug table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
+    background-color: #8dbdd8;
+}
