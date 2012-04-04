@@ -14,7 +14,7 @@ except:
 
 setup(
     name='Flask-DebugToolbar',
-    version='0.6.3',
+    version='0.6.4a',
     url='http://github.com/mgood/flask-debugtoolbar',
     license='BSD',
     author='Michael van Tellingen',
@@ -32,6 +32,7 @@ setup(
     install_requires=[
         'Flask>=0.8',
         'Blinker',
+        'Pympler',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
