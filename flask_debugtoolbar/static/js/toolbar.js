@@ -108,9 +108,8 @@
 			} else {
 				fldt.show_toolbar(false);
 			}
-            if ($("#debug_toolbar_profiler_table")) {
-                $("#debug_toolbar_profiler_table").tablesorter();
-            }
+                    $('.tablesorter').each(function(index, table) {
+                        $(table).tablesorter();});
 		},
 		toggle_content: function(elem) {
 			if (elem.is(':visible')) {
