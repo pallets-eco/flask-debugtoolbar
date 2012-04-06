@@ -30,9 +30,16 @@ class MemoryProfilerDebugPanel(DebugPanel):
         self.summary = None
         self.tracker = None
         self.tracked = None
+        if current_app.config.get('DEBUG_TB_PROFILER_ENABLED'):
+            self.track_usage = True
+        else:
+            self.track_usage = False
 
     def has_content(self):
-        return self.summary is not None and self.tracked is not None
+        if self.track_usage:
+            return self.summary is not None and self.tracked is not None
+        else:
+            return self.summary is not None
 
     def nav_title(self):
         if self.is_active:
@@ -45,11 +52,13 @@ class MemoryProfilerDebugPanel(DebugPanel):
 
     def nav_subtitle(self):
         if self.is_active:
-            print(dir(self.tracked))
-            generated = sum(map(itemgetter(2), self.tracked))
             overall = sum(map(itemgetter(2), self.summary))
-            return 'Usage: {} ({})'.format(pretty_bytes(generated),
-                                           pretty_bytes(overall))
+            if self.track_usage:
+                generated = sum(map(itemgetter(2), self.tracked))
+                return 'Usage: {} ({})'.format(pretty_bytes(overall),
+                                               pretty_bytes(generated))
+            else:
+                return 'Usage: {}'.format(pretty_bytes(overall))
         else:
             return 'Deactivated'
 
@@ -59,15 +68,17 @@ class MemoryProfilerDebugPanel(DebugPanel):
     def process_request(self, request):
         if not self.is_active:
             return
-        self.tracker = tracker.SummaryTracker()
-        # drop previous diff, we want to see what was
-        # created during request processing
-        self.tracker.diff()
+        if self.track_usage:
+            self.tracker = tracker.SummaryTracker()
+            # drop previous diff, we want to see what was
+            # created during request processing
+            self.tracker.diff()
 
     def process_response(self, request, response):
         if not self.is_active:
             return False
-        self.tracked = self.tracker.diff()
+        if self.track_usage:
+            self.tracked = self.tracker.diff()
         self.summary = summary.summarize(muppy.get_objects())
 
     def content(self):
