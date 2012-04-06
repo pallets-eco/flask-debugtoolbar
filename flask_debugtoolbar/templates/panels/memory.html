@@ -1,44 +1,46 @@
+{% if tracked %}
 <div id="memory-tracker" class="memory">
-<h5>Memory allocated during request processing</h5>
-<table class="tablesorter">
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Quantity</th>
-      <th>Total size</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for row in tracked %}
-    <tr>
-      <td>{{row[0]}}</td>
-      <td>{{row[1]}}</td>
-      <td>{{row[2]}}</td>
-    </tr>
-    {% endfor %}
-  <tbody>
-</table>
+  <h5>Memory allocated during request processing</h5>
+  <table class="tablesorter">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Quantity</th>
+        <th>Total size</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in tracked %}
+      <tr>
+        <td>{{row[0]}}</td>
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+      </tr>
+      {% endfor %}
+    <tbody>
+  </table>
 
 </div>
+{% endif %}
 
 <div id="memory-summary" class="memory">
-<h5>Overall memory at the end of processing</h5>
-<table class="tablesorter">
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Quantity</th>
-      <th>Total size</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for row in summary %}
-    <tr>
-      <td>{{row[0]}}</td>
-      <td>{{row[1]}}</td>
-      <td>{{row[2]}}</td>
-    </tr>
-    {% endfor %}
-  <tbody>
-</table>
+  <h5>Overall memory at the end of processing</h5>
+  <table class="tablesorter">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Quantity</th>
+        <th>Total size</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in summary %}
+      <tr>
+        <td>{{row[0]}}</td>
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+      </tr>
+      {% endfor %}
+    <tbody>
+  </table>
 </div>
