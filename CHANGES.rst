@@ -1,6 +1,13 @@
 Changes
 =======
 
+0.6.3 (2012-04-16)
+------------------
+Fixes:
+
+- Compatibility with Flask-SQLAlchemy 0.16 package name
+
+
 0.6.2 (2012-02-18)
 ------------------
 
