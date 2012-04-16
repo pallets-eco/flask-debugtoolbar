@@ -1,7 +1,7 @@
 import hashlib
 
 try:
-    from flaskext.sqlalchemy import get_debug_queries, SQLAlchemy
+    from flask.ext.sqlalchemy import get_debug_queries, SQLAlchemy
 except ImportError:
     sqlalchemy_available = False
     get_debug_queries = SQLAlchemy = None
