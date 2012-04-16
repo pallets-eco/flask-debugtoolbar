@@ -1,6 +1,16 @@
 Changes
 =======
 
+0.6.4a (2012-04-04)
+--------
+
+New dependency -- Pympler
+
+Features:
+
+- Memory profiling added
+- Tables in reports can be sorted automatically by adding class="tablesorter"
+
 0.6.2 (2012-02-18)
 ------------------
 
