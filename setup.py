@@ -14,7 +14,7 @@ except:
 
 setup(
     name='Flask-DebugToolbar',
-    version='0.6.4a',
+    version='0.6.4b',
     url='http://github.com/mgood/flask-debugtoolbar',
     license='BSD',
     author='Michael van Tellingen',

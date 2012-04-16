@@ -30,7 +30,7 @@ class MemoryProfilerDebugPanel(DebugPanel):
         self.summary = None
         self.tracker = None
         self.tracked = None
-        if current_app.config.get('DEBUG_TB_PROFILER_ENABLED'):
+        if current_app.config.get('DEBUG_TB_PROFILER_MEMORY_ENABLED'):
             self.track_usage = True
         else:
             self.track_usage = False
