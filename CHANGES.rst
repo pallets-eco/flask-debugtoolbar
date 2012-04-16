@@ -1,6 +1,12 @@
 Changes
 =======
 
+0.6.3.1 (2012-04-16)
+------------------
+
+New release to add missing changelog for 0.6.3
+
+
 0.6.3 (2012-04-16)
 ------------------
 Fixes:
