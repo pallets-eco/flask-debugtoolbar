@@ -161,14 +161,14 @@ class DebugToolbarExtension(object):
 
         app = current_app
         toolbar_html = None
-        # check if explicitly specified to process response
-        if app.config.get('DEBUG_TB_FORCE_DEBUG'):
+        # check if explicitly specified to dump all debug information
+        # force processing of toolbar in this case
+        if app.config.get('DEBUG_TB_DUMP_CALLBACK'):
             for panel in self.debug_toolbars[real_request].panels:
                 panel.process_response(real_request, response)
             toolbar_html = self.debug_toolbars[real_request].render_toolbar()
 
-            if app.config.get('DEBUG_TB_DUMP_CALLBACK'):
-                app.config.get('DEBUG_TB_DUMP_CALLBACK')(toolbar_html)
+            app.config.get('DEBUG_TB_DUMP_CALLBACK')(toolbar_html)
 
         # If the http response code is 200 then we process to add the
         # toolbar to the returned html response.
