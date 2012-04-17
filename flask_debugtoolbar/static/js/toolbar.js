@@ -108,6 +108,9 @@
 			} else {
 				fldt.show_toolbar(false);
 			}
+			$('#flDebug table.tablesorter').each(function(index, table) {
+				$(table).tablesorter();
+			});
 		},
 		toggle_content: function(elem) {
 			if (elem.is(':visible')) {
