@@ -108,9 +108,21 @@
             } else {
                 fldt.show_toolbar(false);
             }
-            $('#flDebug table.tablesorter').each(function(index, table) {
-                $(table).tablesorter();
-            });
+            $('#flDebug table.tablesorter')
+                .tablesorter()
+                .bind('sortStart', function() {
+                    $(this).find('tbody tr')
+                        .removeClass('flDebugEven')
+                        .removeClass('flDebugOdd');
+                })
+                .bind('sortEnd', function() {
+                    $(this).find('tbody tr').each(function(idx, elem) {
+                        var even = idx % 2 == 0;
+                        $(elem)
+                            .toggleClass('flDebugEven', even)
+                            .toggleClass('flDebugOdd', !even);
+                    });
+                });
         },
         toggle_content: function(elem) {
             if (elem.is(':visible')) {

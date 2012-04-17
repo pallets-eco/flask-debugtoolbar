@@ -8,7 +8,7 @@
     line-height:1.5em;
     color:#000;
     vertical-align:baseline;
-    background:transparent;
+    background: none;
     font-family: inherit;
     text-align:left;
 }
@@ -416,30 +416,22 @@
 #flDebug table.tablesorter {
     width: 100%;
 }
-#flDebug table.tablesorter thead tr th, table.tablesorter tfoot tr th {
+#flDebug table.tablesorter thead th, table.tablesorter tfoot th {
     padding-right: 20px;
 }
-#flDebug table.tablesorter thead tr .header {
-    background-image: url(../img/bg.gif);
-    background-repeat: no-repeat;
-    background-position: center right;
+#flDebug table.tablesorter thead th {
+    background: url(../img/bg.gif) center right no-repeat;
     cursor: pointer;
 }
-#flDebug table.tablesorter tbody td {
-    color: #3D3D3D;
-    padding: 4px;
-    background-color: #FFF;
-    vertical-align: top;
-}
 #flDebug table.tablesorter tbody tr.odd td {
-    background-color:#F0F0F6;
+    background-color: #F0F0F6;
 }
-#flDebug table.tablesorter thead tr .headerSortUp {
+#flDebug table.tablesorter thead .headerSortUp {
     background-image: url(../img/asc.gif);
 }
-#flDebug table.tablesorter thead tr .headerSortDown {
+#flDebug table.tablesorter thead .headerSortDown {
     background-image: url(../img/desc.gif);
 }
-#flDebug table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
+#flDebug table.tablesorter thead .headerSortDown, #flDebug table.tablesorter thead .headerSortUp {
     background-color: #8dbdd8;
 }
