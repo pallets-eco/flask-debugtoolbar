@@ -2,17 +2,17 @@ import sys
 sys.path.insert(0, '.')
 
 from flask import Flask, render_template, redirect, url_for
-from flaskext.script import Manager
-from flaskext.sqlalchemy import SQLAlchemy
-from flask_debugtoolbar import DebugToolbarExtension
+from flask.ext.script import Manager
+from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.debugtoolbar import DebugToolbarExtension
 
 
 app = Flask(__name__)
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 #app.config['DEBUG_TB_PANELS'] = (
-#    'flask_debugtoolbar.panels.headers.HeaderDebugPanel',
-#    'flask_debugtoolbar.panels.logger.LoggingPanel',
-#    'flask_debugtoolbar.panels.timer.TimerDebugPanel',
+#    'flask.ext.debugtoolbar.panels.headers.HeaderDebugPanel',
+#    'flask.ext.debugtoolbar.panels.logger.LoggingPanel',
+#    'flask.ext.debugtoolbar.panels.timer.TimerDebugPanel',
 #)
 #app.config['DEBUG_TB_HOSTS'] = ('127.0.0.1', '::1' )
 app.config['SECRET_KEY'] = 'asd'
