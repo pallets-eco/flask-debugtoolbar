@@ -2,8 +2,8 @@ import sys
 sys.path.insert(0, '.')
 
 from flask import Flask, render_template, redirect, url_for
-from flaskext.script import Manager
-from flaskext.sqlalchemy import SQLAlchemy
+from flask.ext.script import Manager
+from flask.ext.sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
 
 
