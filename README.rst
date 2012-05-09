@@ -19,7 +19,7 @@ Usage
 Setting up the debug toolbar is simple::
 
     from flask import Flask
-    from flask_debugtoolbar import DebugToolbarExtension
+    from flask.ext.debugtoolbar import DebugToolbarExtension
 
     app = Flask(__name__)
 
