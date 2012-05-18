@@ -68,7 +68,7 @@ class DebugToolbarExtension(object):
         # for static data
         self.jinja_env = Environment(
             autoescape=True,
-            extensions=['jinja2.ext.i18n'],
+            extensions=['jinja2.ext.i18n', 'jinja2.ext.with_'],
             loader=PackageLoader(__name__, 'templates'))
         self.jinja_env.filters['urlencode'] = url_quote_plus
         self.jinja_env.filters['printable'] = _printable

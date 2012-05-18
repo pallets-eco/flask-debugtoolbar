@@ -45,14 +45,15 @@ Configuration
 
 The toolbar support several configuration options:
 
-================================  =====================================   ==========================
-Name                              Description                             Default
-================================  =====================================   ==========================
-``DEBUG_TB_ENABLED``              Enable the toolbar?                     ``app.debug``
-``DEBUG_TB_HOSTS``                Whitelist of hosts to display toolbar   any host
-``DEBUG_TB_INTERCEPT_REDIRECTS``  Should intercept redirects?             ``True``
-``DEBUG_TB_PANELS``               List of module/class names of panels    enable all built-in panels
-================================  =====================================   ==========================
+====================================  =====================================   ==========================
+Name                                  Description                             Default
+====================================  =====================================   ==========================
+``DEBUG_TB_ENABLED``                  Enable the toolbar?                     ``app.debug``
+``DEBUG_TB_HOSTS``                    Whitelist of hosts to display toolbar   any host
+``DEBUG_TB_INTERCEPT_REDIRECTS``      Should intercept redirects?             ``True``
+``DEBUG_TB_PANELS``                   List of module/class names of panels    enable all built-in panels
+``DEBUG_TB_TEMPLATE_EDITOR_ENABLED``  Enable the template editor              ``False``
+====================================  =====================================   ==========================
 
 To change one of the config options, set it in the Flask app's config like::
 

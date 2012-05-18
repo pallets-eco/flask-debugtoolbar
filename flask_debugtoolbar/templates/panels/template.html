@@ -1,4 +1,17 @@
 {% if templates %}
+    {% if editable %}
+    <script>
+        function loadHref() {
+          $.get(this.href, function(data, status, xhr) {
+            document.open();
+            document.write(xhr.responseText);
+            document.close();
+          });
+          return false;
+        }
+    </script>
+    <a href="/_debug_toolbar/views/template/{{ key }}" onclick="return loadHref.apply(this);">Edit templates</a>
+    {% endif %}
     {% for template in templates %}
         <h4>{{ template.template.name }}</h4>
         <table>
