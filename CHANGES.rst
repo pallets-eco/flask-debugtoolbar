@@ -1,6 +1,14 @@
 Changes
 =======
 
+0.7 (unreleased)
+----------------
+
+Enhancements:
+
+- Add an in-browser template editor to the template panel
+
+
 0.6.3.1 (2012-04-16)
 ------------------
 
