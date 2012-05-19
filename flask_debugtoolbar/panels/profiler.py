@@ -20,6 +20,11 @@ class ProfilerDebugPanel(DebugPanel):
 
     user_activate = True
 
+    def __init__(self, jinja_env, context={}):
+        DebugPanel.__init__(self, jinja_env, context=context)
+        if current_app.config.get('DEBUG_TB_PROFILER_ENABLED'):
+            self.is_active = True
+
     def has_content(self):
         return bool(self.profiler)
 
