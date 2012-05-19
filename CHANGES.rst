@@ -1,6 +1,14 @@
 Changes
 =======
 
+0.7.1 (2012-05-18)
+------------------
+
+Fixes:
+
+- loading template editor in-place over current page
+
+
 0.7 (2012-05-18)
 ----------------
 

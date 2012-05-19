@@ -175,10 +175,19 @@
             var uarr = String.fromCharCode(0x25b6);
             var darr = String.fromCharCode(0x25bc);
             elem.html(elem.html() == uarr ? darr : uarr);
+        },
+        load_href: function(href) {
+          $.get(href, function(data, status, xhr) {
+            document.open();
+            document.write(xhr.responseText);
+            document.close();
+          });
+          return false;
         }
     };
     $(document).ready(function() {
         fldt.init();
     });
+    window.fldt = fldt;
 
 })(jQuery.noConflict(true));
