@@ -7,6 +7,8 @@ Changes
 Enhancements:
 
 - Add an in-browser template editor to the template panel
+- ``DEBUG_TB_PROFILER_ENABLED`` config option to enable the profiler on all
+  requests (normally it is user-enabled by clicking the checkmark)
 
 
 0.6.3.1 (2012-04-16)
