@@ -55,7 +55,6 @@ class DebugToolbar(object):
         """
         activated = self.request.cookies.get('fldt_active', '')
         activated = urllib.unquote(activated).split(';')
-        self.page_time = '232.03'
         for panel_class in self.panel_classes:
             panel_instance = panel_class(
                 context=self.template_context,
