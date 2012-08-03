@@ -27,7 +27,6 @@ class DebugToolbar(object):
         self.jinja_env = jinja_env
         self.request = request
         self.panels = []
-
         self.template_context = {
             'static_path': url_for('_debug_toolbar.static', filename='')
         }
@@ -56,7 +55,6 @@ class DebugToolbar(object):
         """
         activated = self.request.cookies.get('fldt_active', '')
         activated = urllib.unquote(activated).split(';')
-
         for panel_class in self.panel_classes:
             panel_instance = panel_class(
                 context=self.template_context,
@@ -64,13 +62,20 @@ class DebugToolbar(object):
 
             if panel_instance.dom_id() in activated:
                 panel_instance.is_active = True
+
             self.panels.append(panel_instance)
 
     def render_toolbar(self):
         context = self.template_context.copy()
         context.update({'panels': self.panels})
-
+            
+        context['page_time']= self._get_page_time()
         template = self.jinja_env.get_template('base.html')
         return template.render(**context)
 
+
+    def _get_page_time(self):
+        for panel in self.panels:
+            if panel.name == 'Timer':
+                return '%0.2fms' % panel.total_time
 
