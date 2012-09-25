@@ -10,7 +10,7 @@
 	<tbody>
 		{% for query in queries %}
 			<tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
-				<td>{{ '%.4f'|format(query.duration) }}</td>
+				<td>{{ '%.4f'|format(query.duration * 1000) }}</td>
 				<td>
 				{% if query.params %}
 					{% if query.is_select %}
