@@ -37,7 +37,9 @@ class ProfilerDebugPanel(DebugPanel):
 
     def process_view(self, request, view_func, view_kwargs):
         if self.is_active:
-            return functools.partial(self.profiler.runcall, view_func)
+            func = functools.partial(self.profiler.runcall, view_func)
+            functools.update_wrapper(func, view_func)
+            return func
 
     def process_response(self, request, response):
         if not self.is_active:
