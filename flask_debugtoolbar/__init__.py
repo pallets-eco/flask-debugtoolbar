@@ -31,7 +31,10 @@ def _printable(value):
     elif isinstance(value, str):
         return value.encode('string_escape')
     else:
-        return repr(value)
+        try:
+            return repr(value)
+        except:
+            return value
 
 
 class DebugToolbarExtension(object):
