@@ -1,0 +1,29 @@
+{% if records %}
+	<table>
+		<thead>
+			<tr>
+				<th>Level</th>
+        <th>Location</th>
+				<th>Time</th>
+        <th>Channel</th>
+				<th>Message</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for record in records %}
+				<tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
+          <td>{{ record.level }}</td>
+          <td title="{{ record.file_long }}">
+            {{ record.file }}:{{ record.line }}</td>
+          <td>{{ record.time }}</td>
+          <td>{{ record.channel }}</td>
+          <td>{{ record.message }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>No messages logged.</p>
+{% endif %}
+
+
