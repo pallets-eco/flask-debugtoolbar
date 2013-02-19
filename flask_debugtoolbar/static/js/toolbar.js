@@ -183,7 +183,8 @@
             document.close();
           });
           return false;
-        }
+        },
+        $: $
     };
     $(document).ready(function() {
         fldt.init();
