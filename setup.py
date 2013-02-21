@@ -32,6 +32,7 @@ setup(
     install_requires=[
         'Flask>=0.8',
         'Blinker',
+        'itsdangerous',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

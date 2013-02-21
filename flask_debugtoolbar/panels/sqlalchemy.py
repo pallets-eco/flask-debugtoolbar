@@ -1,4 +1,3 @@
-import hashlib
 
 try:
     from flask.ext.sqlalchemy import get_debug_queries, SQLAlchemy
@@ -9,13 +8,42 @@ else:
     sqlalchemy_available = True
 
 from flask import request, current_app, abort, json_available, g
-from flask.helpers import json
 from flask_debugtoolbar import module
 from flask_debugtoolbar.panels import DebugPanel
 from flask_debugtoolbar.utils import format_fname, format_sql
+import itsdangerous
 
 
 _ = lambda x: x
+
+
+def query_signer():
+    return itsdangerous.URLSafeSerializer(current_app.config['SECRET_KEY'],
+                                          salt='fdt-sql-query')
+
+
+def dump_query(statement, params):
+    if not params or not statement.lower().strip().startswith('select'):
+        return None
+
+    try:
+        return query_signer().dumps([statement, params])
+    except TypeError:
+        return None
+
+
+def load_query(data):
+    try:
+        statement, params = query_signer().loads(request.args['query'])
+    except (itsdangerous.BadSignature, TypeError):
+        abort(406)
+
+    # Make sure it is a select statement
+    if not statement.lower().strip().startswith('select'):
+        abort(406)
+
+    return statement, params
+
 
 class SQLAlchemyDebugPanel(DebugPanel):
     """
@@ -66,25 +94,10 @@ class SQLAlchemyDebugPanel(DebugPanel):
         queries = get_debug_queries()
         data = []
         for query in queries:
-            is_select = query.statement.strip().lower().startswith('select')
-            _params = ''
-            try:
-                _params = json.dumps(query.parameters)
-            except TypeError:
-                pass # object not JSON serializable
-
-
-            hash = hashlib.sha1(
-                current_app.config['SECRET_KEY'] +
-                query.statement + _params).hexdigest()
-
             data.append({
                 'duration': query.duration,
                 'sql': format_sql(query.statement, query.parameters),
-                'raw_sql': query.statement,
-                'hash': hash,
-                'params': _params,
-                'is_select': is_select,
+                'signed_query': dump_query(query.statement, query.parameters),
                 'context_long': query.context,
                 'context': format_fname(query.context)
             })
@@ -94,21 +107,7 @@ class SQLAlchemyDebugPanel(DebugPanel):
 
 @module.route('/sqlalchemy/sql_select', methods=['GET', 'POST'])
 def sql_select():
-    statement = request.args['sql']
-    params = request.args['params']
-
-    # Validate hash
-    hash = hashlib.sha1(
-        current_app.config['SECRET_KEY'] + statement + params).hexdigest()
-    if hash != request.args['hash']:
-        return abort(406)
-
-    # Make sure it is a select statement
-    if not statement.lower().strip().startswith('select'):
-        return abort(406)
-
-    params = json.loads(params)
-
+    statement, params = load_query(request.args['query'])
     engine = SQLAlchemy().get_engine(current_app)
 
     result = engine.execute(statement, params)
@@ -121,21 +120,7 @@ def sql_select():
 
 @module.route('/sqlalchemy/sql_explain', methods=['GET', 'POST'])
 def sql_explain():
-    statement = request.args['sql']
-    params = request.args['params']
-
-    # Validate hash
-    hash = hashlib.sha1(
-        current_app.config['SECRET_KEY'] + statement + params).hexdigest()
-    if hash != request.args['hash']:
-        return abort(406)
-
-    # Make sure it is a select statement
-    if not statement.lower().strip().startswith('select'):
-        return abort(406)
-
-    params = json.loads(params)
-
+    statement, params = load_query(request.args['query'])
     engine = SQLAlchemy().get_engine(current_app)
 
     if engine.driver == 'pysqlite':
