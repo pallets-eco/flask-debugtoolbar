@@ -46,18 +46,27 @@ _init_lock = threading.Lock()
 
 
 def _init_once():
-  # Initialize the logging handler once, but after werkzeug has set up its
-  # default logger.  Otherwise, if this sets up the logging first, werkzeug
-  # will not create a default logger, so the development server's output will
-  # not get printed.
-  global handler
-  if handler is not None:
-    return
-  with _init_lock:
+    global handler
     if handler is not None:
-      return
-    handler = ThreadTrackingHandler()
-    logging.root.addHandler(handler)
+        return
+    with _init_lock:
+        if handler is not None:
+            return
+
+        # Call werkzeug's internal logging to make sure it gets configured
+        # before we add our handler.  Otherwise werkzeug will see our handler
+        # and not configure console logging for the request log.
+        # Werkzeug's default log level is INFO so this message probably won't be
+        # seen.
+        try:
+            from werkzeug._internal import _log
+        except ImportError:
+            pass
+        else:
+            _log('debug', 'Initializing Flask-DebugToolbar log handler')
+
+        handler = ThreadTrackingHandler()
+        logging.root.addHandler(handler)
 
 
 class LoggingPanel(DebugPanel):
