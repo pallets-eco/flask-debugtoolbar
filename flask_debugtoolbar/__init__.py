@@ -30,8 +30,11 @@ def _printable(value):
         return value.encode('unicode_escape')
     elif isinstance(value, str):
         return value.encode('string_escape')
-    else:
+    try:
         return repr(value)
+    except Exception, e:
+        return '<repr(%s) raised %s: %s>' % (
+               object.__repr__(value), type(e).__name__, e)
 
 
 class DebugToolbarExtension(object):
