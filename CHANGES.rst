@@ -1,6 +1,24 @@
 Changes
 =======
 
+0.8 (2013-02-21)
+----------------
+
+Enhancements:
+
+- Use `itsdangerous <http://pythonhosted.org/itsdangerous/>`_ to sign SQL queries
+- Expose the jQuery object as ``fldt.$`` so extensions can use the toolbar's
+  copy of jQuery (#42)
+
+Fixes:
+
+- Don't intercept redirects on XHR requests (#41)
+- Fix SQL query time display as milliseconds (#36)
+- Fix ``functools.partial`` error (#35)
+- Fix werkzeug request logging with logging panel (#33)
+- Fix SQL panel unicode encoding error (#31)
+
+
 0.7.1 (2012-05-18)
 ------------------
 
@@ -20,7 +38,7 @@ Enhancements:
 
 
 0.6.3.1 (2012-04-16)
-------------------
+--------------------
 
 New release to add missing changelog for 0.6.3
 
