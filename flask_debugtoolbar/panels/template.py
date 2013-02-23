@@ -83,12 +83,14 @@ def template_editor(key):
     # TODO set up special loader that caches templates it loads
     # and can override template contents
     templates = [t['template'] for t in TemplateDebugPanel.get_cache_for_key(key)]
+
+    encoding = current_app.config.get('DEBUG_TB_TEMPLATE_EDITOR_ENCODING', 'utf-8')
     return g.debug_toolbar.render('panels/template_editor.html', {
         'static_path': url_for('_debug_toolbar.static', filename=''),
         'request': request,
         'templates': [
             {'name': t.name,
-             'source': open(t.filename).read()}
+             'source': open(t.filename).read().decode(encoding)}
             for t in templates
         ]
     })
