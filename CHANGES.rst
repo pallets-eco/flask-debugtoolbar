@@ -1,6 +1,14 @@
 Changes
 =======
 
+0.8.1 ()
+--------
+
+Fixes:
+
+- Fix template editor with non-ASCII templates (#46)
+
+
 0.8 (2013-02-21)
 ----------------
 
