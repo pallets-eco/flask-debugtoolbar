@@ -12,14 +12,9 @@
 			<tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
 				<td>{{ '%.4f'|format(query.duration * 1000) }}</td>
 				<td>
-				{% if query.params %}
-					{% if query.is_select %}
-						<a class="remoteCall" href="/_debug_toolbar/views/sqlalchemy/sql_select?sql={{ query.raw_sql|urlencode }}&amp;params={{ query.params|urlencode }}&amp;duration={{ query.duration|urlencode }}&amp;hash={{ query.hash }}">SELECT</a><br />
-						<a class="remoteCall" href="/_debug_toolbar/views/sqlalchemy/sql_explain?sql={{ query.raw_sql|urlencode }}&amp;params={{ query.params|urlencode }}&amp;duration={{ query.duration|urlencode }}&amp;hash={{ query.hash }}">EXPLAIN</a><br />
-						{% if is_mysql %}
-							<a class="remoteCall" href="/__debug__/sql_profile/?sql={{ query.raw_sql|urlencode }}&amp;params={{ query.params|urlencode }}&amp;duration={{ query.duration|urlencode }}&amp;hash={{ query.hash }}">PROFILE</a><br />
-						{% endif %}
-					{% endif %}
+				{% if query.signed_query %}
+					<a class="remoteCall" href="/_debug_toolbar/views/sqlalchemy/sql_select?query={{ query.signed_query }}&amp;duration={{ query.duration|urlencode }}">SELECT</a><br />
+					<a class="remoteCall" href="/_debug_toolbar/views/sqlalchemy/sql_explain?query={{ query.signed_query }}&amp;duration={{ query.duration|urlencode }}">EXPLAIN</a><br />
 				{% endif %}
 				</td>
 				<td title="{{ query.context_long }}">

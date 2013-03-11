@@ -77,6 +77,16 @@ def require_enabled():
         abort(403)
 
 
+def _get_source(template):
+    with open(template.filename, 'rb') as fp:
+        source = fp.read()
+    return source.decode(_template_encoding())
+
+
+def _template_encoding():
+    return getattr(current_app.jinja_loader, 'encoding', 'utf-8')
+
+
 @module.route('/template/<key>')
 def template_editor(key):
     require_enabled()
@@ -87,8 +97,7 @@ def template_editor(key):
         'static_path': url_for('_debug_toolbar.static', filename=''),
         'request': request,
         'templates': [
-            {'name': t.name,
-             'source': open(t.filename).read()}
+            {'name': t.name, 'source': _get_source(t)}
             for t in templates
         ]
     })
@@ -98,8 +107,8 @@ def template_editor(key):
 def save_template(key):
     require_enabled()
     template = TemplateDebugPanel.get_cache_for_key(key)[0]['template']
-    content = request.form['content']
-    with open(template.filename, 'w') as fp:
+    content = request.form['content'].encode(_template_encoding())
+    with open(template.filename, 'wb') as fp:
         fp.write(content)
     return 'ok'
 
