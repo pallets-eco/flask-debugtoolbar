@@ -11,6 +11,12 @@ try:
 except ImportError:
     HAVE_PYGMENTS = False
 
+try:
+    import sqlparse
+    HAVE_SQLPARSE = True
+except ImportError:
+    HAVE_SQLPARSE = False
+
 
 from flask import current_app
 
@@ -46,6 +52,9 @@ def format_fname(value):
     return '<%s>' % path
 
 def format_sql(query, args):
+    if HAVE_SQLPARSE:
+        query = sqlparse.format(query, reindent=True, keyword_case='upper')
+
     if not HAVE_PYGMENTS:
         return query
 
