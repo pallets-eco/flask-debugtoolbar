@@ -1,0 +1,28 @@
+<h4>Installed Packages</h4>
+<table>
+    <thead>
+        <tr>
+            <th>Package</th>
+            <th>Version</th>
+            <th>Develop?</th>
+            <th>Installed Path</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for package in packages %}
+            <tr class="{{ loop.cycle('flDebugOdd' 'flDebugEven') }}">
+                <td>{{ package.project_name }}</td>
+                <td>{{ package.version }}</td>
+                <td>{{ package.develop_mode }}</td>
+                <td>{{ package.location }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td>yolk</td>
+                <td>NOT INSTALLED</td>
+                <td>&nbsp;</td>
+                <td>Install Yolk to display installed packages and version information</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
