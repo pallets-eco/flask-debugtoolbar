@@ -1,5 +1,4 @@
 from distutils.sysconfig import get_python_lib
-import sys
 
 from flask import __version__ as flask_version
 from flask_debugtoolbar.panels import DebugPanel
@@ -27,17 +26,14 @@ class VersionDebugPanel(DebugPanel):
 
     def content(self):
         try:
-            from yolk import yolklib
+            import pkg_resources
         except ImportError:
-            "Requires yolk to provide package information"
             context = self.context.copy()
             context.update({
-                'packages': [],
-                'paths': sys.path
+                'packages': []
                 })
         else:
-            dist = yolklib.Distributions()
-            active_packages = dist.get_packages('active')
+            active_packages = pkg_resources.WorkingSet()
             _pkgs = dict([(p.project_name, p) for p in active_packages])
             packages = [_pkgs[key] for key in sorted(_pkgs.iterkeys())]
             for package in packages:
@@ -45,8 +41,7 @@ class VersionDebugPanel(DebugPanel):
 
             context = self.context.copy()
             context.update({
-                'packages': packages,
-                'paths': sys.path,
+                'packages': packages
             })
 
         return self.render('panels/versions.html', context)
