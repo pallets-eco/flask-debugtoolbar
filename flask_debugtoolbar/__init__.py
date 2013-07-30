@@ -105,7 +105,7 @@ class DebugToolbarExtension(object):
 
     def _show_toolbar(self):
         """Return a boolean to indicate if we need to show the toolbar."""
-        if request.path.startswith('/_debug_toolbar/'):
+        if request.blueprint == 'debugtoolbar':
             return False
 
         if self.hosts and request.remote_addr not in self.hosts:
