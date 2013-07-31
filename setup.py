@@ -33,6 +33,7 @@ setup(
         'Flask>=0.8',
         'Blinker',
         'itsdangerous',
+        'werkzeug',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

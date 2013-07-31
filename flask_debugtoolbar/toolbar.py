@@ -1,9 +1,12 @@
 import urllib
 
 from flask import url_for, current_app
+from werkzeug.utils import import_string
 
 
 class DebugToolbar(object):
+
+    _cached_panel_classes = {}
 
     def __init__(self, request, jinja_env):
         self.jinja_env = jinja_env
@@ -16,19 +19,6 @@ class DebugToolbar(object):
 
         self.create_panels()
 
-    def _load_panels(self):
-        for panel_path in current_app.config['DEBUG_TB_PANELS']:
-            dot = panel_path.rindex('.')
-            panel_module, panel_classname = panel_path[:dot], panel_path[dot+1:]
-
-            try:
-                mod = __import__(panel_module, {}, {}, [''])
-            except ImportError, e:
-                app.logger.warning('Disabled %s due to ImportError: %s', panel_classname, e)
-                continue
-            panel_class = getattr(mod, panel_classname)
-            yield panel_class(jinja_env=self.jinja_env, context=self.template_context)
-
     def create_panels(self):
         """
         Populate debug panels
@@ -36,7 +26,13 @@ class DebugToolbar(object):
         activated = self.request.cookies.get('fldt_active', '')
         activated = urllib.unquote(activated).split(';')
 
-        for panel_instance in self._load_panels():
+        for panel_path in current_app.config['DEBUG_TB_PANELS']:
+            panel_class = self._import_panel(panel_path)
+            if panel_class is None:
+                continue
+
+            panel_instance = panel_class(jinja_env=self.jinja_env, context=self.template_context)
+
             if panel_instance.dom_id() in activated:
                 panel_instance.is_active = True
             self.panels.append(panel_instance)
@@ -48,4 +44,19 @@ class DebugToolbar(object):
         template = self.jinja_env.get_template('base.html')
         return template.render(**context)
 
+    def _import_panel(self, path):
+        cache = self._cached_panel_classes
 
+        try:
+            return cache[path]
+        except KeyError:
+            pass
+
+        try:
+            panel_class = import_string(path)
+        except ImportError, e:
+            current_app.logger.warning('Disabled %s due to ImportError: %s', path, e)
+            panel_class = None
+
+        cache[path] = panel_class
+        return panel_class
