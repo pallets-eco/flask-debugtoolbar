@@ -6,7 +6,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for name, value in settings.items() %}
+        {% for name, value in settings|dictsort %}
             <tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
                 <td>{{ name }}</td>
                 <td><code>{{ value|printable }}</code></td>
