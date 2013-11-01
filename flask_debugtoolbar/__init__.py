@@ -94,6 +94,7 @@ class DebugToolbarExtension(object):
                 'flask_debugtoolbar.panels.timer.TimerDebugPanel',
                 'flask_debugtoolbar.panels.headers.HeaderDebugPanel',
                 'flask_debugtoolbar.panels.request_vars.RequestVarsDebugPanel',
+                'flask_debugtoolbar.panels.settings_vars.SettingsVarsDebugPanel',
                 'flask_debugtoolbar.panels.template.TemplateDebugPanel',
                 'flask_debugtoolbar.panels.sqlalchemy.SQLAlchemyDebugPanel',
                 'flask_debugtoolbar.panels.logger.LoggingPanel',

@@ -1,0 +1,16 @@
+<table>
+    <thead>
+        <tr>
+            <th>Setting</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for name, value in settings.items() %}
+            <tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
+                <td>{{ name }}</td>
+                <td><code>{{ value|printable }}</code></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
