@@ -8,6 +8,7 @@ from werkzeug.exceptions import HTTPException
 from werkzeug.urls import url_quote_plus
 
 from flask_debugtoolbar.toolbar import DebugToolbar
+from flask_debugtoolbar.compat import iteritems
 from flask import Blueprint
 
 
@@ -27,13 +28,9 @@ def replace_insensitive(string, target, replacement):
 
 
 def _printable(value):
-    if isinstance(value, unicode):
-        return value.encode('unicode_escape')
-    elif isinstance(value, str):
-        return value.encode('string_escape')
     try:
         return repr(value)
-    except Exception, e:
+    except Exception as e:
         return '<repr(%s) raised %s: %s>' % (
                object.__repr__(value), type(e).__name__, e)
 
@@ -61,7 +58,7 @@ class DebugToolbarExtension(object):
             self.init_app(app)
 
     def init_app(self, app):
-        for k, v in self._default_config(app).iteritems():
+        for k, v in iteritems(self._default_config(app)):
             app.config.setdefault(k, v)
 
         if not app.config['DEBUG_TB_ENABLED']:

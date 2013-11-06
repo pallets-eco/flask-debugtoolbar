@@ -6,7 +6,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for key, value in headers.iteritems() %}
+    {% for key, value in headers|dictsort %}
       <tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
         <td>{{ key|escape }}</td>
         <td>{{ value|escape }}</td>
