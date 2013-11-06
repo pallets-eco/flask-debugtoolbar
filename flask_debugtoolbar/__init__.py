@@ -69,6 +69,8 @@ class DebugToolbarExtension(object):
                 "The Flask-DebugToolbar requires the 'SECRET_KEY' config "
                 "var to be set")
 
+        DebugToolbar.load_panels(app)
+
         app.before_request(self.process_request)
         app.after_request(self.process_response)
         app.teardown_request(self.teardown_request)

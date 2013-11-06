@@ -29,15 +29,12 @@ class DebugToolbar(object):
         activated = self.request.cookies.get('fldt_active', '')
         activated = unquote(activated).split(';')
 
-        for panel_path in current_app.config['DEBUG_TB_PANELS']:
-            panel_class = self._import_panel(panel_path)
-            if panel_class is None:
-                continue
-
+        for panel_class in self._iter_panels(current_app):
             panel_instance = panel_class(jinja_env=self.jinja_env, context=self.template_context)
 
             if panel_instance.dom_id() in activated:
                 panel_instance.is_active = True
+
             self.panels.append(panel_instance)
 
     def render_toolbar(self):
@@ -47,8 +44,22 @@ class DebugToolbar(object):
         template = self.jinja_env.get_template('base.html')
         return template.render(**context)
 
-    def _import_panel(self, path):
-        cache = self._cached_panel_classes
+    @classmethod
+    def load_panels(cls, app):
+        for panel_class in cls._iter_panels(app):
+            # just loop to make sure they've been loaded
+            pass
+
+    @classmethod
+    def _iter_panels(cls, app):
+        for panel_path in app.config['DEBUG_TB_PANELS']:
+            panel_class = cls._import_panel(app, panel_path)
+            if panel_class is not None:
+                yield panel_class
+
+    @classmethod
+    def _import_panel(cls, app, path):
+        cache = cls._cached_panel_classes
 
         try:
             return cache[path]
@@ -58,7 +69,7 @@ class DebugToolbar(object):
         try:
             panel_class = import_string(path)
         except ImportError as e:
-            current_app.logger.warning('Disabled %s due to ImportError: %s', path, e)
+            app.logger.warning('Disabled %s due to ImportError: %s', path, e)
             panel_class = None
 
         cache[path] = panel_class
