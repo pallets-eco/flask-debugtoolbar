@@ -88,6 +88,7 @@ class DebugToolbarExtension(object):
             'DEBUG_TB_ENABLED': app.debug,
             'DEBUG_TB_HOSTS': (),
             'DEBUG_TB_INTERCEPT_REDIRECTS': True,
+            'DEBUG_TB_ROLL_OWN_JQUERY': False,
             'DEBUG_TB_PANELS': (
                 'flask_debugtoolbar.panels.versions.VersionDebugPanel',
                 'flask_debugtoolbar.panels.timer.TimerDebugPanel',

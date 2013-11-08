@@ -1,6 +1,12 @@
 <div id="flDebug" style="display:none;">
   <script type="text/javascript">var DEBUG_TOOLBAR_STATIC_PATH = '{{ static_path }}'</script>
+  {% if not roll_own_jquery %}
   <script type="text/javascript" src="{{ static_path }}js/jquery.js"></script>
+  {% else %}
+  <script type="text/javascript">
+      $.noConflict();
+  </script>
+  {% endif %}
   <script type="text/javascript" src="{{ static_path }}js/jquery.tablesorter.js"></script>
   <script type="text/javascript" src="{{ static_path }}js/toolbar.js"></script>
 
