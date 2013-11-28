@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import os.path
 import sys
 
@@ -14,6 +13,7 @@ except ImportError:
 
 
 from flask import current_app
+
 
 def format_fname(value):
     # If the value is not an absolute path, the it is a builtin or
@@ -46,6 +46,7 @@ def format_fname(value):
     path = value[prefix_len:]
     return '<%s>' % path
 
+
 def format_sql(query, args):
     if not HAVE_PYGMENTS:
         return query
@@ -54,4 +55,3 @@ def format_sql(query, args):
         query,
         SqlLexer(encoding='utf-8'),
         HtmlFormatter(encoding='utf-8', noclasses=True, style=PYGMENT_STYLE))
-

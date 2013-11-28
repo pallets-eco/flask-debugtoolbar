@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import sys
 try:
     import cProfile as profile

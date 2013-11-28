@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from flask import session
 
 from flask_debugtoolbar.panels import DebugPanel

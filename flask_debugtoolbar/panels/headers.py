@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from flask_debugtoolbar.panels import DebugPanel
 
 _ = lambda x: x

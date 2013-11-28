@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from flask import __version__ as flask_version
 from flask_debugtoolbar.panels import DebugPanel
 

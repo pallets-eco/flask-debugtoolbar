@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 try:
     from flask.ext.sqlalchemy import get_debug_queries, SQLAlchemy
 except ImportError:
