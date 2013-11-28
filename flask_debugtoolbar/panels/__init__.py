@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Base DebugPanel class"""
 
 class DebugPanel(object):

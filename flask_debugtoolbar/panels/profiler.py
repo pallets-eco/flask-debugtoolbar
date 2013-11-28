@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 try:
     import cProfile as profile
@@ -118,6 +119,3 @@ class ProfilerDebugPanel(DebugPanel):
             'function_calls': self.function_calls,
         }
         return self.render('panels/profiler.html', context)
-
-
-

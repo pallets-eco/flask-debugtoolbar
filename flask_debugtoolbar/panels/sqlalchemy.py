@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 try:
     from flask.ext.sqlalchemy import get_debug_queries, SQLAlchemy
 except ImportError:
@@ -51,11 +51,10 @@ class SQLAlchemyDebugPanel(DebugPanel):
     """
     name = 'SQLAlchemy'
 
-
     @property
     def has_content(self):
         if not json_available or not sqlalchemy_available:
-            return True # will display an error message
+            return True  # will display an error message
         return bool(get_debug_queries())
 
     def process_request(self, request):
@@ -101,9 +100,10 @@ class SQLAlchemyDebugPanel(DebugPanel):
                 'context_long': query.context,
                 'context': format_fname(query.context)
             })
-        return self.render('panels/sqlalchemy.html', { 'queries': data})
+        return self.render('panels/sqlalchemy.html', {'queries': data})
 
 # Panel views
+
 
 @module.route('/sqlalchemy/sql_select', methods=['GET', 'POST'])
 def sql_select():
@@ -117,6 +117,7 @@ def sql_select():
         'sql': format_sql(statement, params),
         'duration': float(request.args['duration']),
     })
+
 
 @module.route('/sqlalchemy/sql_explain', methods=['GET', 'POST'])
 def sql_explain():

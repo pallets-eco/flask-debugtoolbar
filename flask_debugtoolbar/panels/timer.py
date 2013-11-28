@@ -1,18 +1,20 @@
+# -*- coding: utf-8 -*-
 try:
     import resource
 except ImportError:
-    pass # Will fail on Win32 systems
+    pass  # Will fail on Win32 systems
 import time
 from flask_debugtoolbar.panels import DebugPanel
 
 _ = lambda x: x
+
 
 class TimerDebugPanel(DebugPanel):
     """
     Panel that displays the time a response took in milliseconds.
     """
     name = 'Timer'
-    try: # if resource module not available, don't show content panel
+    try:  # if resource module not available, don't show content panel
         resource
     except NameError:
         has_content = False
@@ -91,4 +93,3 @@ class TimerDebugPanel(DebugPanel):
         })
 
         return self.render('panels/timer.html', context)
-

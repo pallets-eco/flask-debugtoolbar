@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 
 from flask import current_app, request, g
@@ -17,13 +18,14 @@ module = Blueprint('debugtoolbar', __name__)
 
 def replace_insensitive(string, target, replacement):
     """Similar to string.replace() but is case insensitive
-    Code borrowed from: http://forums.devshed.com/python-programming-11/case-insensitive-string-replace-490921.html
+    Code borrowed from:
+    http://forums.devshed.com/python-programming-11/case-insensitive-string-replace-490921.html
     """
     no_case = string.lower()
     index = no_case.rfind(target.lower())
     if index >= 0:
         return string[:index] + replacement + string[index + len(target):]
-    else: # no results so return the original string
+    else:  # no results so return the original string
         return string
 
 
@@ -79,7 +81,7 @@ class DebugToolbarExtension(object):
         app.dispatch_request = self.dispatch_request
 
         app.add_url_rule('/_debug_toolbar/static/<path:filename>',
-            '_debug_toolbar.static', self.send_static_file)
+                         '_debug_toolbar.static', self.send_static_file)
 
         app.register_blueprint(module, url_prefix='/_debug_toolbar/views')
 
@@ -171,7 +173,7 @@ class DebugToolbarExtension(object):
         # link to the target.
         if current_app.config['DEBUG_TB_INTERCEPT_REDIRECTS']:
             if (response.status_code in self._redirect_codes and
-                not real_request.is_xhr):
+                    not real_request.is_xhr):
                 redirect_to = response.location
                 redirect_code = response.status_code
                 if redirect_to:
@@ -186,8 +188,8 @@ class DebugToolbarExtension(object):
 
         # If the http response code is 200 then we process to add the
         # toolbar to the returned html response.
-        if (response.status_code == 200
-            and response.headers['content-type'].startswith('text/html')):
+        if (response.status_code == 200 and
+                response.headers['content-type'].startswith('text/html')):
             for panel in self.debug_toolbars[real_request].panels:
                 panel.process_response(real_request, response)
 

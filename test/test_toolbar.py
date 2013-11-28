@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 def load_app(name):
     app = __import__(name).app
     app.config['TESTING'] = True

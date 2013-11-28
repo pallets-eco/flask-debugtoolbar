@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import with_statement
 
 import datetime
@@ -12,13 +13,14 @@ from flask_debugtoolbar.utils import format_fname
 
 _ = lambda x: x
 
+
 class ThreadTrackingHandler(logging.Handler):
     def __init__(self):
         if threading is None:
             raise NotImplementedError("threading module is not available, \
                 the logging panel cannot be used without it")
         logging.Handler.__init__(self)
-        self.records = {} # a dictionary that maps threads to log records
+        self.records = {}  # a dictionary that maps threads to log records
 
     def emit(self, record):
         self.get_records().append(record)
@@ -87,7 +89,8 @@ class LoggingPanel(DebugPanel):
 
     def nav_subtitle(self):
         # FIXME l10n: use ngettext
-        return "%s message%s" % (len(handler.get_records()), (len(handler.get_records()) == 1) and '' or 's')
+        return "%s message%s" % \
+            (len(handler.get_records()), (len(handler.get_records()) == 1) and '' or 's')
 
     def title(self):
         return _('Log Messages')
@@ -111,5 +114,3 @@ class LoggingPanel(DebugPanel):
         context.update({'records': records})
 
         return self.render('panels/logger.html', context)
-
-

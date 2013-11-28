@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 sys.path.insert(0, '.')
 
@@ -22,15 +23,18 @@ db = SQLAlchemy(app)
 
 toolbar = DebugToolbarExtension(app)
 
+
 class ExampleModel(db.Model):
     __tablename__ = 'examples'
     value = db.Column(db.String(100), primary_key=True)
+
 
 @app.route('/')
 def index():
     app.logger.info("Hello there")
     ExampleModel.query.get(1)
     return render_template('index.html')
+
 
 @app.route('/redirect')
 def redirect_example():
@@ -44,4 +48,3 @@ if __name__ == "__main__":
 
     manager = Manager(app)
     manager.run()
-

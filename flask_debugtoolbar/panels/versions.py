@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from flask import __version__ as flask_version
 from flask_debugtoolbar.panels import DebugPanel
 
 _ = lambda x: x
+
 
 class VersionDebugPanel(DebugPanel):
     """
@@ -24,5 +26,3 @@ class VersionDebugPanel(DebugPanel):
 
     def content(self):
         return None
-
-

@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 from flask import session
 
 from flask_debugtoolbar.panels import DebugPanel
 
 _ = lambda x: x
+
 
 class RequestVarsDebugPanel(DebugPanel):
     """
@@ -37,11 +39,11 @@ class RequestVarsDebugPanel(DebugPanel):
             'get': [(k, self.request.args.getlist(k)) for k in self.request.args],
             'post': [(k, self.request.form.getlist(k)) for k in self.request.form],
             'cookies': [(k, self.request.cookies.get(k)) for k in self.request.cookies],
-            'view_func': '%s.%s' % (self.view_func.__module__, self.view_func.__name__) if self.view_func else '[unknown]',
+            'view_func': ('%s.%s' % (self.view_func.__module__, self.view_func.__name__)
+                          if self.view_func else '[unknown]'),
             'view_args': self.view_args,
             'view_kwargs': self.view_kwargs or {},
             'session': self.session.items(),
         })
 
         return self.render('panels/request_vars.html', context)
-
