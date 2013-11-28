@@ -58,10 +58,8 @@ class ProfilerDebugPanel(DebugPanel):
                 info = stats.stats[func]
 
                 # Number of calls
-                if info[0] != info[1]:
-                    current['ncalls'] = '%d/%d' % (info[1], info[0])
-                else:
-                    current['ncalls'] = info[1]
+                current['ncalls'] = info[0]
+                current['pcalls'] = info[1]
 
                 # Total time
                 current['tottime'] = info[2] * 1000
@@ -118,6 +116,3 @@ class ProfilerDebugPanel(DebugPanel):
             'function_calls': self.function_calls,
         }
         return self.render('panels/profiler.html', context)
-
-
-
