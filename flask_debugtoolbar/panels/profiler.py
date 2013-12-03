@@ -118,6 +118,3 @@ class ProfilerDebugPanel(DebugPanel):
             'function_calls': self.function_calls,
         }
         return self.render('panels/profiler.html', context)
-
-
-

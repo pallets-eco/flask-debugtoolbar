@@ -5,7 +5,10 @@ import traceback
 import uuid
 from jinja2.exceptions import TemplateSyntaxError
 
-from flask import template_rendered, request, g, render_template_string, Response, current_app, abort, url_for
+from flask import (
+    template_rendered, request, g, render_template_string,
+    Response, current_app, abort, url_for
+)
 from flask_debugtoolbar import module
 from flask_debugtoolbar.panels import DebugPanel
 

@@ -1,5 +1,6 @@
 from flask import current_app
 from flask_debugtoolbar.panels import DebugPanel
+
 _ = lambda x: x
 
 
