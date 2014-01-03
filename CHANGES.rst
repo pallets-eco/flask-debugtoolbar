@@ -1,8 +1,15 @@
 Changes
 =======
 
-0.8.1 ()
+0.9.0 (2014-01-03)
 --------
+
+Enhancements:
+
+- Python 3 compatibility (#54, thanks justinmayer and jmagnusson)
+- Support .init_app() (#38)
+- New "Config" panel displaying Flask config values (#51, thanks Alexey Diyan)
+- Better PEP8-style formatting (#63, thanks Ivan Ivaschenko)
 
 Fixes:
 
