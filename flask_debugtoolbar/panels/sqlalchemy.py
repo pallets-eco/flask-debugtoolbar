@@ -21,8 +21,13 @@ def query_signer():
                                           salt='fdt-sql-query')
 
 
+def is_select(statement):
+    prefix = b'select' if isinstance(statement, bytes) else 'select'
+    return statement.lower().strip().startswith(prefix)
+
+
 def dump_query(statement, params):
-    if not params or not statement.lower().strip().startswith('select'):
+    if not params or not is_select(statement):
         return None
 
     try:
@@ -38,7 +43,7 @@ def load_query(data):
         abort(406)
 
     # Make sure it is a select statement
-    if not statement.lower().strip().startswith('select'):
+    if not is_select(statement):
         abort(406)
 
     return statement, params
