@@ -1,6 +1,6 @@
 import os
 
-from flask import current_app, request, g
+from flask import current_app, request, g, _compat
 from flask.globals import _request_ctx_stack
 from flask import send_from_directory
 from jinja2 import Environment, PackageLoader
@@ -30,7 +30,7 @@ def replace_insensitive(string, target, replacement):
 
 def _printable(value):
     try:
-        return repr(value)
+        return _compat.text_type(repr(value))
     except Exception as e:
         return '<repr(%s) raised %s: %s>' % (
                object.__repr__(value), type(e).__name__, e)
