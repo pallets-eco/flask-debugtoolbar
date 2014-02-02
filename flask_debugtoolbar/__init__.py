@@ -30,7 +30,10 @@ def replace_insensitive(string, target, replacement):
 
 def _printable(value):
     try:
-        return repr(value)
+        value = repr(value)
+        if isinstance(value, bytes):
+            value = value.decode('ascii', 'replace')
+        return value
     except Exception as e:
         return '<repr(%s) raised %s: %s>' % (
                object.__repr__(value), type(e).__name__, e)
