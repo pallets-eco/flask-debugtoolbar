@@ -1,0 +1,21 @@
+
+<table>
+	<thead>
+		<tr>
+			<th>Flask routes</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% if routes %}
+			{% for route in routes %}
+				<tr>
+					<td>{{ route }}</td>
+				</tr>
+			{% endfor %}
+		{% else %}
+			<tr>
+				<td>No routes have been configured.</td>
+			</tr>
+		{% endif %}
+	</tbody>
+</table>

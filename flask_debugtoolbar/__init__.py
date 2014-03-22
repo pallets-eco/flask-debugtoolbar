@@ -101,6 +101,7 @@ class DebugToolbarExtension(object):
                 'flask_debugtoolbar.panels.template.TemplateDebugPanel',
                 'flask_debugtoolbar.panels.sqlalchemy.SQLAlchemyDebugPanel',
                 'flask_debugtoolbar.panels.logger.LoggingPanel',
+                'flask_debugtoolbar.panels.route_list.RouteListDebugPanel',
                 'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel',
             ),
         }
