@@ -33,7 +33,6 @@ class RouteListDebugPanel(DebugPanel):
         # iterate through the routes
         for rule in current_app.url_map.iter_rules():
             if rule.endpoint != 'static':
-                print(rule)
                 self.routes.append(rule)
 
     def content(self):
