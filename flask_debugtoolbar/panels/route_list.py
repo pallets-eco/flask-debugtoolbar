@@ -27,9 +27,14 @@ class RouteListDebugPanel(DebugPanel):
         return "%s routes" % (len(current_app.url_map._rules) - 1)
 
     def process_request(self, request):
+        # Clear existing routes
+        self.routes = []
+
+        # iterate through the routes
         for rule in current_app.url_map.iter_rules():
             if rule.endpoint != 'static':
-                self.routes.append(str(rule.rule))
+                print(rule)
+                self.routes.append(rule)
 
     def content(self):
         context = self.context.copy()
