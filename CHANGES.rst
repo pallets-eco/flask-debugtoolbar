@@ -1,8 +1,17 @@
 Changes
 =======
 
+0.9.1 (2014-11-24)
+------------------
+
+Fixes:
+
+- Fix SQL queries with byte strings on Python 3
+- Fix displaying values whose `repr()` contains unprintable characters
+
+
 0.9.0 (2014-01-03)
---------
+------------------
 
 Enhancements:
 
