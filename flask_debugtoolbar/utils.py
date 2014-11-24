@@ -12,7 +12,7 @@ except ImportError:
     HAVE_PYGMENTS = False
 
 
-from flask import current_app
+from flask import current_app, Markup
 
 
 def format_fname(value):
@@ -51,7 +51,7 @@ def format_sql(query, args):
     if not HAVE_PYGMENTS:
         return query
 
-    return highlight(
+    return Markup(highlight(
         query,
         SqlLexer(encoding='utf-8'),
-        HtmlFormatter(encoding='utf-8', noclasses=True, style=PYGMENT_STYLE))
+        HtmlFormatter(encoding='utf-8', noclasses=True, style=PYGMENT_STYLE)))
