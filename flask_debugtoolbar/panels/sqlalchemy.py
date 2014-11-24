@@ -110,31 +110,20 @@ class SQLAlchemyDebugPanel(DebugPanel):
 
 
 @module.route('/sqlalchemy/sql_select', methods=['GET', 'POST'])
-def sql_select():
+@module.route('/sqlalchemy/sql_explain', methods=['GET', 'POST'],
+              defaults=dict(explain=True))
+def sql_select(explain=False):
     statement, params = load_query(request.args['query'])
     engine = SQLAlchemy().get_engine(current_app)
+
+    if explain:
+        if engine.driver == 'pysqlite':
+            statement = 'EXPLAIN QUERY PLAN\n%s' % statement
+        else:
+            statement = 'EXPLAIN\n%s' % statement
 
     result = engine.execute(statement, params)
     return g.debug_toolbar.render('panels/sqlalchemy_select.html', {
-        'result': result.fetchall(),
-        'headers': result.keys(),
-        'sql': format_sql(statement, params),
-        'duration': float(request.args['duration']),
-    })
-
-
-@module.route('/sqlalchemy/sql_explain', methods=['GET', 'POST'])
-def sql_explain():
-    statement, params = load_query(request.args['query'])
-    engine = SQLAlchemy().get_engine(current_app)
-
-    if engine.driver == 'pysqlite':
-        query = 'EXPLAIN QUERY PLAN %s' % statement
-    else:
-        query = 'EXPLAIN %s' % statement
-
-    result = engine.execute(query, params)
-    return g.debug_toolbar.render('panels/sqlalchemy_explain.html', {
         'result': result.fetchall(),
         'headers': result.keys(),
         'sql': format_sql(statement, params),

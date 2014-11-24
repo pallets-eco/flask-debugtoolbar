@@ -1,14 +1,14 @@
 <div class="flDebugPanelTitle">
   <a class="flDebugClose flDebugBack" href="">Back</a>
-  <h3>SQL Explained</h3>
+  <h3>SQL Details</h3>
 </div>
 <div class="flDebugPanelContent">
   <div class="scroll">
     <dl>
       <dt>Executed SQL</dt>
       <dd>{{ sql }}</dd>
-      <dt>Time</dt>
-      <dd>{{ '%.4f'|format(duration) }} ms</dd>
+      <dt>Original query duration</dt>
+      <dd>{{ '%.4f'|format(duration * 1000) }} ms</dd>
     </dl>
     {% if result %}
     <table class="flSqlSelect">

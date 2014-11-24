@@ -322,10 +322,6 @@
   text-align: left;
 }
 
-#flDebug .flSqlExplain td {
-  white-space: pre;
-}
-
 #flDebug span.flDebugLineChart {
   background-color:#777;
   height:3px;
