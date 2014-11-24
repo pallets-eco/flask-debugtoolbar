@@ -20,7 +20,7 @@
       </thead>
       <tbody>
         {% for row in result %}
-            <tr class="{{ loop.cycle('fjDebugOdd', 'fjDebugEven') }}">
+            <tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
             {% for column in row %}
               <td>{{ column }}</td>
             {% endfor %}
