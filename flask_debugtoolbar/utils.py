@@ -16,6 +16,10 @@ from flask import current_app, Markup
 
 
 def format_fname(value):
+    # Keep path lowercased because os.path.commonprefix isn't case
+    # insensitive yet
+    value = value.lower()
+
     # If the value is not an absolute path, the it is a builtin or
     # a relative file (thus a project file).
     if not os.path.isabs(value):
@@ -36,7 +40,7 @@ def format_fname(value):
     prefix = None
     prefix_len = 0
     for path in sys.path:
-        new_prefix = os.path.commonprefix([path, value])
+        new_prefix = os.path.commonprefix([path.lower(), value])
         if len(new_prefix) > prefix_len:
             prefix = new_prefix
             prefix_len = len(prefix)
