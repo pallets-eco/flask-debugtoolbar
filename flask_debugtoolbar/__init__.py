@@ -1,15 +1,14 @@
 import os
 
-from flask import current_app, request, g
+from flask import Blueprint, current_app, request, g, send_from_directory
 from flask.globals import _request_ctx_stack
-from flask import send_from_directory
 from jinja2 import Environment, PackageLoader
 from werkzeug.exceptions import HTTPException
 from werkzeug.urls import url_quote_plus
 
-from flask_debugtoolbar.toolbar import DebugToolbar
 from flask_debugtoolbar.compat import iteritems
-from flask import Blueprint
+from flask_debugtoolbar.toolbar import DebugToolbar
+from flask_debugtoolbar.utils import decode_text
 
 
 module = Blueprint('debugtoolbar', __name__)
@@ -30,10 +29,7 @@ def replace_insensitive(string, target, replacement):
 
 def _printable(value):
     try:
-        value = repr(value)
-        if isinstance(value, bytes):
-            value = value.decode('ascii', 'replace')
-        return value
+        return decode_text(repr(value))
     except Exception as e:
         return '<repr(%s) raised %s: %s>' % (
                object.__repr__(value), type(e).__name__, e)

@@ -26,7 +26,8 @@ def format_fname(value):
     # If the file is absolute, try normalizing it relative to the project root
     # to handle it as a project file
     if os.path.isabs(value):
-        value = _shortest_relative_path(value, [current_app.root_path], os.path)
+        value = _shortest_relative_path(
+            value, [current_app.root_path], os.path)
 
     # If the value is a relative path, it is a project file
     if not os.path.isabs(value):
@@ -53,11 +54,24 @@ def _relative_paths(value, paths, path_module):
             yield relval
 
 
+def decode_text(value):
+    """
+        Decode a text-like value for display.
+
+        Unicode values are returned unchanged. Byte strings will be decoded
+        with a text-safe replacement for unrecognized characters.
+    """
+    if isinstance(value, bytes):
+        return value.decode('ascii', 'replace')
+    else:
+        return value
+
+
 def format_sql(query, args):
     if not HAVE_PYGMENTS:
-        return query
+        return decode_text(query)
 
     return Markup(highlight(
         query,
-        SqlLexer(encoding='utf-8'),
-        HtmlFormatter(encoding='utf-8', noclasses=True, style=PYGMENT_STYLE)))
+        SqlLexer(),
+        HtmlFormatter(noclasses=True, style=PYGMENT_STYLE)))
