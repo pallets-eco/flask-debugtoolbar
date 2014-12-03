@@ -1,3 +1,4 @@
+import itertools
 import os.path
 import sys
 
@@ -16,35 +17,40 @@ from flask import current_app, Markup
 
 
 def format_fname(value):
-    # If the value is not an absolute path, the it is a builtin or
-    # a relative file (thus a project file).
+    # If the value has a builtin prefix, return it unchanged
+    if value.startswith(('{', '<')):
+        return value
+
+    value = os.path.normpath(value)
+
+    # If the file is absolute, try normalizing it relative to the project root
+    # to handle it as a project file
+    if os.path.isabs(value):
+        value = _shortest_relative_path(value, [current_app.root_path], os.path)
+
+    # If the value is a relative path, it is a project file
     if not os.path.isabs(value):
-        if value.startswith(('{', '<')):
-            return value
-        if value.startswith('.' + os.path.sep):
-            return value
-        return '.' + os.path.sep + value
+        return os.path.join('.', value)
 
-    # If the file is absolute and within the project root handle it as
-    # a project file
-    if value.startswith(current_app.root_path):
-        return "." + value[len(current_app.root_path):]
+    # Otherwise, normalize other paths relative to sys.path
+    return '<%s>' % _shortest_relative_path(value, sys.path, os.path)
 
-    # Loop through sys.path to find the longest match and return
-    # the relative path from there.
-    paths = sys.path
-    prefix = None
-    prefix_len = 0
-    for path in sys.path:
-        new_prefix = os.path.commonprefix([path, value])
-        if len(new_prefix) > prefix_len:
-            prefix = new_prefix
-            prefix_len = len(prefix)
 
-    if not prefix.endswith(os.path.sep):
-        prefix_len -= 1
-    path = value[prefix_len:]
-    return '<%s>' % path
+def _shortest_relative_path(value, paths, path_module):
+    relpaths = _relative_paths(value, paths, path_module)
+    return min(itertools.chain(relpaths, [value]), key=len)
+
+
+def _relative_paths(value, paths, path_module):
+    for path in paths:
+        try:
+            relval = path_module.relpath(value, path)
+        except ValueError:
+            # on Windows, relpath throws a ValueError for
+            # paths with different drives
+            continue
+        if not relval.startswith(path_module.pardir):
+            yield relval
 
 
 def format_sql(query, args):
