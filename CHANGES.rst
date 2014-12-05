@@ -1,6 +1,15 @@
 Changes
 =======
 
+0.9.2 (2014-12-05)
+------------------
+
+Fixes:
+
+- HTML escape SQL queries when syntax highlighting is not available
+- Use case-insensitive comparison to normalize filenames on Windows
+- Fix exception when SQL query contained non-ASCII characters
+
 0.9.1 (2014-11-24)
 ------------------
 
