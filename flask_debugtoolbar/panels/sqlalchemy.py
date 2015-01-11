@@ -12,6 +12,19 @@ from flask_debugtoolbar.panels import DebugPanel
 from flask_debugtoolbar.utils import format_fname, format_sql
 import itsdangerous
 
+_engine = None
+
+@module.record_once
+def store_engine(state):
+    global _engine
+    _engine = state.options.get('sqlalchemy_engine')
+
+
+def get_engine():
+    if _engine is not None:
+        return _engine
+    elif sqlalchemy_available:
+        return SQLAlchemy().get_engine(current_app)
 
 _ = lambda x: x
 
@@ -94,6 +107,9 @@ class SQLAlchemyDebugPanel(DebugPanel):
             msg.append('</ul>')
             return '\n'.join(msg)
 
+        if not _engine and not sqlalchemy_available:
+            return 'No SQLAlchemy engine has been configured.'
+
         queries = get_debug_queries()
         data = []
         for query in queries:
@@ -114,7 +130,9 @@ class SQLAlchemyDebugPanel(DebugPanel):
               defaults=dict(explain=True))
 def sql_select(explain=False):
     statement, params = load_query(request.args['query'])
-    engine = SQLAlchemy().get_engine(current_app)
+    engine = get_engine()
+    if engine is None:
+        return 'No SQLAlchemy engine has been configured.'
 
     if explain:
         if engine.driver == 'pysqlite':
