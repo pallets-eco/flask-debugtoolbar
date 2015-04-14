@@ -6,9 +6,9 @@ _ = lambda x: x
 
 class RouteListDebugPanel(DebugPanel):
     """
-    Panel that displays the time a response took in milliseconds.
+    Panel that displays the URL routing rules.
     """
-    name = 'Route List'
+    name = 'RouteList'
     has_content = True
     routes = []
 
@@ -22,23 +22,13 @@ class RouteListDebugPanel(DebugPanel):
         return ''
 
     def nav_subtitle(self):
-
-        # get the count of routes. We need to -1 to get an acurate route count
-        return "%s routes" % (len(current_app.url_map._rules) - 1)
+        count = len(self.routes)
+        return '%s %s' % (count, 'route' if count == 1 else 'routes')
 
     def process_request(self, request):
-        # Clear existing routes
-        self.routes = []
-
-        # iterate through the routes
-        for rule in current_app.url_map.iter_rules():
-            if rule.endpoint != 'static':
-                self.routes.append(rule)
+        self.routes = list(current_app.url_map.iter_rules())
 
     def content(self):
-        context = self.context.copy()
-        context.update({
+        return self.render('panels/route_list.html', {
             'routes': self.routes,
         })
-
-        return self.render('panels/route_list.html', context)
