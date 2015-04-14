@@ -14,7 +14,7 @@
         <tr>
           <td>{{ route.rule }}</td>
           <td>{{ route.endpoint }}</td>
-          <td>{{ route.methods|sort }}</td>
+          <td>{{ route.methods|sort|join(', ') }}</td>
           <td>{{ route.alias }}</td>
           <td>{{ route.redirect_to }}</td>
         </tr>
