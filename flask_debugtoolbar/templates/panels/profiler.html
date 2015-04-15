@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th>Calls</th>
+      <th>Primitive Calls</th>
       <th>Total Time (ms)</th>
       <th>Per Call (ms)</th>
       <th>Cumulative Time (ms)</th>
@@ -13,6 +14,7 @@
     {% for row in function_calls %}
       <tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
         <td>{{ row.ncalls }}</td>
+        <td>{{ row.pcalls }}</td>
         <td>{{ row.tottime }}</td>
         <td>{{ '%.4f'|format(row.percall) }}</td>
         <td>{{ row.cumtime }}</td>
