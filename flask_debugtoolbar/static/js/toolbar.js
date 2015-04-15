@@ -113,11 +113,6 @@
           });
           $(this).tablesorter({headers: headers});
         })
-        .bind('sortStart', function() {
-          $(this).find('tbody tr')
-            .removeClass('flDebugEven')
-            .removeClass('flDebugOdd');
-        })
         .bind('sortEnd', function() {
           $(this).find('tbody tr').each(function(idx, elem) {
             var even = idx % 2 === 0;
