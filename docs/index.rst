@@ -1,20 +1,18 @@
-.. Flask-DebugToolbar documentation master file, created by
-   sphinx-quickstart on Wed Feb 15 18:08:39 2012.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Flask-DebugToolbar
 ==================
 
-This is a port of the excellent `django-debug-toolbar <https://github.com/django-debug-toolbar/django-debug-toolbar>`_
-for Flask applications.
+This extension adds a toolbar overlay to Flask applications containing useful information for debugging.
+
+.. image:: _static/example.gif
 
 Installation
 ------------
 
-Installing is simple with pip::
+Installing is simple with `pip`_::
 
     $ pip install flask-debugtoolbar
+
+.. _pip: https://pip.pypa.io/
 
 
 Usage
@@ -36,8 +34,8 @@ Setting up the debug toolbar is simple::
     toolbar = DebugToolbarExtension(app)
 
 
-The toolbar will automatically be injected into Jinja templates when debug mode is on.
-In production, setting ``app.debug = False`` will disable the toolbar.
+The toolbar will automatically be injected into HTML responses when debug mode
+is on. In production, setting ``app.debug = False`` will disable the toolbar.
 
 
 Configuration
@@ -61,11 +59,22 @@ To change one of the config options, set it in the Flask app's config like::
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 
+Panels
+------
+
+.. toctree::
+
+   panels
+
 Contributing
 ------------
 
 Fork us `on GitHub <https://github.com/mgood/flask-debugtoolbar>`_
 
+Thanks
+------
+
+This was based on the original `django-debug-toolbar <https://github.com/django-debug-toolbar/django-debug-toolbar>`_ .
 
 Indices and tables
 ==================
