@@ -1,9 +1,20 @@
+import os
 from distutils.sysconfig import get_python_lib
 
 from flask import __version__ as flask_version
 from flask_debugtoolbar.panels import DebugPanel
 
 _ = lambda x: x
+
+def relpath(location, python_lib):
+    location = os.path.normpath(location)
+    relative = os.path.relpath(location, python_lib)
+    if relative == os.path.curdir:
+        return ''
+    elif relative.startswith(os.path.pardir):
+        return location
+    return relative
+
 
 class VersionDebugPanel(DebugPanel):
     """
@@ -28,20 +39,13 @@ class VersionDebugPanel(DebugPanel):
         try:
             import pkg_resources
         except ImportError:
-            context = self.context.copy()
-            context.update({
-                'packages': []
-                })
+            packages = []
         else:
-            active_packages = pkg_resources.WorkingSet()
-            _pkgs = dict([(p.project_name, p) for p in active_packages])
-            packages = [_pkgs[key] for key in sorted(_pkgs.iterkeys())]
-            for package in packages:
-                package.develop_mode = not (package.location.lower().startswith(get_python_lib().lower()))
+            packages = sorted(pkg_resources.working_set,
+                              key=lambda p: p.project_name.lower())
 
-            context = self.context.copy()
-            context.update({
-                'packages': packages
-            })
-
-        return self.render('panels/versions.html', context)
+        return self.render('panels/versions.html', {
+            'packages': packages,
+            'python_lib': os.path.normpath(get_python_lib()),
+            'relpath': relpath,
+        })
