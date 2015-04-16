@@ -37,6 +37,13 @@ Setting up the debug toolbar is simple::
 The toolbar will automatically be injected into HTML responses when debug mode
 is on. In production, setting ``app.debug = False`` will disable the toolbar.
 
+This extension also supports the Flask app factory pattern by separately
+creating the toolbar and later initializing it for an app::
+
+    toolbar = DebugToolbarExtension()
+    # Then later on.
+    app = create_app('the-config.cfg')
+    toolbar.init_app(app)
 
 Configuration
 -------------
