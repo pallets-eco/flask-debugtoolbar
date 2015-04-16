@@ -1,4 +1,5 @@
 import os
+import warnings
 
 from flask import Blueprint, current_app, request, g, send_from_directory
 from flask.globals import _request_ctx_stack
@@ -194,13 +195,17 @@ class DebugToolbarExtension(object):
 
             if response.is_sequence:
                 response_html = response.data.decode(response.charset)
+
                 toolbar_html = self.debug_toolbars[real_request].render_toolbar()
 
                 content = replace_insensitive(
                     response_html, '</body>', toolbar_html + '</body>')
-                content = content.encode(response.charset)
-                response.response = [content]
-                response.content_length = len(content)
+                if content is response_html:
+                    warnings.warn('Could not insert debug toolbar. </body> tag not found in response.')
+                else:
+                    content = content.encode(response.charset)
+                    response.response = [content]
+                    response.content_length = len(content)
 
         return response
 
