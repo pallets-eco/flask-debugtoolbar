@@ -1,12 +1,10 @@
 import collections
 import json
 import sys
-import traceback
 import uuid
-from jinja2.exceptions import TemplateSyntaxError
 
 from flask import (
-    template_rendered, request, g, render_template_string,
+    template_rendered, request, g,
     Response, current_app, abort, url_for
 )
 from flask_debugtoolbar import module
@@ -95,7 +93,8 @@ def template_editor(key):
     require_enabled()
     # TODO set up special loader that caches templates it loads
     # and can override template contents
-    templates = [t['template'] for t in TemplateDebugPanel.get_cache_for_key(key)]
+    templates = [t['template'] for t in
+                 TemplateDebugPanel.get_cache_for_key(key)]
     return g.debug_toolbar.render('panels/template_editor.html', {
         'static_path': url_for('_debug_toolbar.static', filename=''),
         'request': request,
@@ -131,6 +130,7 @@ def template_preview(key):
             while tb.tb_next:
                 tb = tb.tb_next
             msg = {'lineno': tb.tb_lineno, 'error': str(e)}
-            return Response(json.dumps(msg), status=400, mimetype='application/json')
+            return Response(json.dumps(msg), status=400,
+                            mimetype='application/json')
         finally:
             del tb

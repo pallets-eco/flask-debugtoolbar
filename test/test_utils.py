@@ -6,7 +6,7 @@ import ntpath
 from flask import Markup
 
 from flask_debugtoolbar.utils import (_relative_paths, _shortest_relative_path,
-   format_sql, decode_text, HAVE_PYGMENTS)
+                                      format_sql, decode_text, HAVE_PYGMENTS)
 
 
 @pytest.mark.parametrize('value,paths,expected,path_module', [
@@ -24,7 +24,8 @@ from flask_debugtoolbar.utils import (_relative_paths, _shortest_relative_path,
 
     # should yield all results when multiple parents match
     ('/foo/bar/baz', ['/foo', '/foo/bar'], ['bar/baz', 'baz'], posixpath),
-    ('c:\\foo\\bar\\baz', ['c:\\foo', 'c:\\foo\\bar'], ['bar\\baz', 'baz'], ntpath),
+    ('c:\\foo\\bar\\baz', ['c:\\foo', 'c:\\foo\\bar'],
+        ['bar\\baz', 'baz'], ntpath),
 
     # should ignore case differences on windows
     ('c:\\Foo\\bar', ['c:\\foo'], ['bar'], ntpath),
@@ -41,7 +42,7 @@ def test_relative_paths(value, paths, expected, path_module):
     # should yield relative path to the parent directory
     ('/foo/bar', ['/foo'], 'bar', posixpath),
     ('c:\\foo\\bar', ['c:\\foo'], 'bar', ntpath),
-    
+
     # should return the original value if no path is a parent directory
     ('/foo/bar', ['/baz'], '/foo/bar', posixpath),
     ('c:\\foo\\bar', ['c:\\baz'], 'c:\\foo\\bar', ntpath),
@@ -99,7 +100,8 @@ def test_format_sql_no_pygments_escape_html(no_pygments):
     assert Markup('%s') % formatted == 'select x &lt; 1'
 
 
-@pytest.mark.skipif(not HAVE_PYGMENTS, reason='test requires the "Pygments" library')
+@pytest.mark.skipif(not HAVE_PYGMENTS,
+                    reason='test requires the "Pygments" library')
 def test_format_sql_pygments():
     sql = 'select 1'
     html = format_sql(sql, {})
@@ -109,7 +111,8 @@ def test_format_sql_pygments():
     assert '1' in html
 
 
-@pytest.mark.skipif(not HAVE_PYGMENTS, reason='test requires the "Pygments" library')
+@pytest.mark.skipif(not HAVE_PYGMENTS,
+                    reason='test requires the "Pygments" library')
 def test_format_sql_pygments_non_ascii():
     sql = b"select 'abc \xff xyz'"
     html = format_sql(sql, {})

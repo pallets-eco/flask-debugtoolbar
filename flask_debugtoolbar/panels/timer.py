@@ -37,12 +37,13 @@ class TimerDebugPanel(DebugPanel):
 
     def nav_subtitle(self):
         # TODO l10n
-        if self.has_resource:
-            utime = self._end_rusage.ru_utime - self._start_rusage.ru_utime
-            stime = self._end_rusage.ru_stime - self._start_rusage.ru_stime
-            return 'CPU: %0.2fms (%0.2fms)' % ((utime + stime) * 1000.0, self.total_time)
-        else:
+        if not self.has_resource:
             return 'TOTAL: %0.2fms' % (self.total_time)
+
+        utime = self._end_rusage.ru_utime - self._start_rusage.ru_utime
+        stime = self._end_rusage.ru_stime - self._start_rusage.ru_stime
+        return 'CPU: %0.2fms (%0.2fms)' % (
+               (utime + stime) * 1000.0, self.total_time)
 
     def title(self):
         return _('Resource Usage')
@@ -51,7 +52,8 @@ class TimerDebugPanel(DebugPanel):
         return ''
 
     def _elapsed_ru(self, name):
-        return getattr(self._end_rusage, name) - getattr(self._start_rusage, name)
+        return (getattr(self._end_rusage, name)
+                - getattr(self._start_rusage, name))
 
     def content(self):
 
@@ -59,8 +61,8 @@ class TimerDebugPanel(DebugPanel):
         stime = 1000 * self._elapsed_ru('ru_stime')
         vcsw = self._elapsed_ru('ru_nvcsw')
         ivcsw = self._elapsed_ru('ru_nivcsw')
-        minflt = self._elapsed_ru('ru_minflt')
-        majflt = self._elapsed_ru('ru_majflt')
+        # minflt = self._elapsed_ru('ru_minflt')
+        # majflt = self._elapsed_ru('ru_majflt')
 
 # these are documented as not meaningful under Linux.  If you're running BSD
 # feel free to enable them, and add any others that I hadn't gotten to before
@@ -81,9 +83,9 @@ class TimerDebugPanel(DebugPanel):
             (_('Total CPU time'), '%0.3f msec' % (utime + stime)),
             (_('Elapsed time'), '%0.3f msec' % self.total_time),
             (_('Context switches'), '%d voluntary, %d involuntary' % (vcsw, ivcsw)),
-#            ('Memory use', '%d max RSS, %d shared, %d unshared' % (rss, srss, urss + usrss)),
-#            ('Page faults', '%d no i/o, %d requiring i/o' % (minflt, majflt)),
-#            ('Disk operations', '%d in, %d out, %d swapout' % (blkin, blkout, swap)),
+            # ('Memory use', '%d max RSS, %d shared, %d unshared' % (rss, srss, urss + usrss)),
+            # ('Page faults', '%d no i/o, %d requiring i/o' % (minflt, majflt)),
+            # ('Disk operations', '%d in, %d out, %d swapout' % (blkin, blkout, swap)),
         )
 
         context = self.context.copy()

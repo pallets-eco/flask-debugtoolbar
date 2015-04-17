@@ -30,7 +30,8 @@ class DebugToolbar(object):
         activated = unquote(activated).split(';')
 
         for panel_class in self._iter_panels(current_app):
-            panel_instance = panel_class(jinja_env=self.jinja_env, context=self.template_context)
+            panel_instance = panel_class(jinja_env=self.jinja_env,
+                                         context=self.template_context)
 
             if panel_instance.dom_id() in activated:
                 panel_instance.is_active = True

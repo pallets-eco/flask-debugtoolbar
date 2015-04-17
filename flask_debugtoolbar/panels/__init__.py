@@ -6,7 +6,9 @@ class DebugPanel(object):
     Base class for debug panels.
     """
     # name = Base
-    has_content = False  # If content returns something, set to true in subclass
+
+    # If content returns something, set to true in subclass
+    has_content = False
 
     # If the client is able to activate/de-activate the panel
     user_enable = False

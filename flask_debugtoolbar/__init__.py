@@ -4,7 +4,6 @@ import warnings
 from flask import Blueprint, current_app, request, g, send_from_directory
 from flask.globals import _request_ctx_stack
 from jinja2 import Environment, PackageLoader
-from werkzeug.exceptions import HTTPException
 from werkzeug.urls import url_quote_plus
 
 from flask_debugtoolbar.compat import iteritems
@@ -148,7 +147,9 @@ class DebugToolbarExtension(object):
 
         real_request = request._get_current_object()
 
-        self.debug_toolbars[real_request] = DebugToolbar(real_request, self.jinja_env)
+        self.debug_toolbars[real_request] = (
+            DebugToolbar(real_request, self.jinja_env))
+
         for panel in self.debug_toolbars[real_request].panels:
             panel.process_request(real_request)
 
@@ -157,11 +158,16 @@ class DebugToolbarExtension(object):
         This is done by the dispatch_request method.
         """
         real_request = request._get_current_object()
-        if real_request in self.debug_toolbars:
-            for panel in self.debug_toolbars[real_request].panels:
-                new_view = panel.process_view(real_request, view_func, view_kwargs)
-                if new_view:
-                    view_func = new_view
+        try:
+            toolbar = self.debug_toolbars[real_request]
+        except KeyError:
+            return view_func
+
+        for panel in toolbar.panels:
+            new_view = panel.process_view(real_request, view_func, view_kwargs)
+            if new_view:
+                view_func = new_view
+
         return view_func
 
     def process_response(self, response):
@@ -205,7 +211,8 @@ class DebugToolbarExtension(object):
             before = response_html
             after = ''
         else:
-            warnings.warn('Could not insert debug toolbar. </body> tag not found in response.')
+            warnings.warn('Could not insert debug toolbar.'
+                          ' </body> tag not found in response.')
             return response
 
         toolbar = self.debug_toolbars[real_request]

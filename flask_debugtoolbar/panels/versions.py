@@ -6,6 +6,7 @@ from flask_debugtoolbar.panels import DebugPanel
 
 _ = lambda x: x
 
+
 def relpath(location, python_lib):
     location = os.path.normpath(location)
     relative = os.path.relpath(location, python_lib)
