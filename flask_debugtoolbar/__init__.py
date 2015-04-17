@@ -188,24 +188,37 @@ class DebugToolbarExtension(object):
 
         # If the http response code is 200 then we process to add the
         # toolbar to the returned html response.
-        if (response.status_code == 200 and
+        if not (response.status_code == 200 and
+                response.is_sequence and
                 response.headers['content-type'].startswith('text/html')):
-            for panel in self.debug_toolbars[real_request].panels:
-                panel.process_response(real_request, response)
+            return response
 
-            if response.is_sequence:
-                response_html = response.data.decode(response.charset)
+        response_html = response.data.decode(response.charset)
 
-                toolbar_html = self.debug_toolbars[real_request].render_toolbar()
+        no_case = response_html.lower()
+        body_end = no_case.rfind('</body>')
 
-                content = replace_insensitive(
-                    response_html, '</body>', toolbar_html + '</body>')
-                if content is response_html:
-                    warnings.warn('Could not insert debug toolbar. </body> tag not found in response.')
-                else:
-                    content = content.encode(response.charset)
-                    response.response = [content]
-                    response.content_length = len(content)
+        if body_end >= 0:
+            before = response_html[:body_end]
+            after = response_html[body_end:]
+        elif no_case.startswith('<!doctype html>'):
+            before = response_html
+            after = ''
+        else:
+            warnings.warn('Could not insert debug toolbar. </body> tag not found in response.')
+            return response
+
+        toolbar = self.debug_toolbars[real_request]
+
+        for panel in toolbar.panels:
+            panel.process_response(real_request, response)
+
+        toolbar_html = toolbar.render_toolbar()
+
+        content = ''.join((before, toolbar_html, after))
+        content = content.encode(response.charset)
+        response.response = [content]
+        response.content_length = len(content)
 
         return response
 
