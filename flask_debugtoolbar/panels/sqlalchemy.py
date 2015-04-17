@@ -49,6 +49,25 @@ def load_query(data):
     return statement, params
 
 
+def extension_used():
+    return 'sqlalchemy' in current_app.extensions
+
+
+def recording_enabled():
+    return current_app.debug or current_app.config.get('SQLALCHEMY_RECORD_QUERIES')
+
+
+def is_available():
+    return json_available and sqlalchemy_available and extension_used() and recording_enabled()
+
+
+def get_queries():
+    if get_debug_queries:
+        return get_debug_queries()
+    else:
+        return []
+
+
 class SQLAlchemyDebugPanel(DebugPanel):
     """
     Panel that displays the time a response took in milliseconds.
@@ -57,9 +76,7 @@ class SQLAlchemyDebugPanel(DebugPanel):
 
     @property
     def has_content(self):
-        if not json_available or not sqlalchemy_available:
-            return True  # will display an error message
-        return bool(get_debug_queries())
+        return bool(get_queries()) or not is_available()
 
     def process_request(self, request):
         pass
@@ -71,12 +88,12 @@ class SQLAlchemyDebugPanel(DebugPanel):
         return _('SQLAlchemy')
 
     def nav_subtitle(self):
-        if not json_available or not sqlalchemy_available:
+        count = len(get_queries())
+
+        if not count and not is_available():
             return 'Unavailable'
 
-        if get_debug_queries:
-            count = len(get_debug_queries())
-            return "%d %s" % (count, "query" if count == 1 else "queries")
+        return '%d %s' % (count, 'query' if count == 1 else 'queries')
 
     def title(self):
         return _('SQLAlchemy queries')
@@ -85,16 +102,16 @@ class SQLAlchemyDebugPanel(DebugPanel):
         return ''
 
     def content(self):
-        if not json_available or not sqlalchemy_available:
-            msg = ['Missing required libraries:', '<ul>']
-            if not json_available:
-                msg.append('<li>simplejson</li>')
-            if not sqlalchemy_available:
-                msg.append('<li>Flask-SQLAlchemy</li>')
-            msg.append('</ul>')
-            return '\n'.join(msg)
+        queries = get_queries()
 
-        queries = get_debug_queries()
+        if not queries and not is_available():
+            return self.render('panels/sqlalchemy_error.html', {
+                'json_available': json_available,
+                'sqlalchemy_available': sqlalchemy_available,
+                'extension_used': extension_used(),
+                'recording_enabled': recording_enabled(),
+            })
+
         data = []
         for query in queries:
             data.append({
