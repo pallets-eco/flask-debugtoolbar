@@ -21,7 +21,7 @@ setup(
     author_email='michaelvantellingen@gmail.com',
     maintainer='Matt Good',
     maintainer_email='matt@matt-good.net',
-    description='A port of the Django debug toolbar to Flask',
+    description='A toolbar overlay for debugging Flask applications.',
     long_description=README + '\n\n' + CHANGES,
     zip_safe=False,
     platforms='any',
