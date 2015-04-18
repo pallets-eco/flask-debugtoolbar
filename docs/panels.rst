@@ -5,7 +5,7 @@ Versions
 --------
     flask_debugtoolbar.panels.versions.VersionDebugPanel
 
-Shows the installed Flask version.
+Shows the installed Flask version. The expanded view displays all installed packages and their versions as detected by ``setuptools``.
 
 
 Time
