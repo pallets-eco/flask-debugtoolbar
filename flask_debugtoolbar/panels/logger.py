@@ -101,7 +101,7 @@ class LoggingPanel(DebugPanel):
         records = []
         for record in self.get_and_delete():
             records.append({
-                'message': record.getMessage(),
+                'message': record.getMessage().decode('utf-8'),
                 'time': datetime.datetime.fromtimestamp(record.created),
                 'level': record.levelname,
                 'file': format_fname(record.pathname),
