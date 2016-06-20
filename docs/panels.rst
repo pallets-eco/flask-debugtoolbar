@@ -70,7 +70,7 @@ Shows SQL queries run during the current request.
    :ref:`flasksqlalchemy:quickstart` section to configure it.
 
    For additional details on query recording see the
-   :py:func:`~flask.ext.sqlalchemy.get_debug_queries` documentation.
+   :py:func:`~flask_sqlalchemy.get_debug_queries` documentation.
 
 .. image:: _static/screenshot-sqlalchemy-panel.png
 
