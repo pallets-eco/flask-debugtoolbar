@@ -1,0 +1,25 @@
+<table>
+  <colgroup>
+    <col style="width:20%"/>
+    <col/>
+  </colgroup>
+  <tbody>
+      <tr class="flDebugOdd">
+        <td>Branch</td>
+        <td>{{ branch|escape }}</td>
+      </tr>
+      <tr class="flDebugEven">
+        <td>Commit</td>
+        <td>{{ commit|escape }}</td>
+      </tr>
+      <tr class="flDebugOdd">
+        <td>Status</td>
+        <td>
+          {% for stat in status %}
+            <p>{{ stat|escape }}</p>
+          {% endfor %}
+        </td>
+      </tr>
+  </tbody>
+</table>
+
