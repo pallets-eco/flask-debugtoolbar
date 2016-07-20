@@ -99,6 +99,7 @@ class DebugToolbarExtension(object):
                 'flask_debugtoolbar.panels.logger.LoggingPanel',
                 'flask_debugtoolbar.panels.route_list.RouteListDebugPanel',
                 'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel',
+                'flask_debugtoolbar.panels.mail.MailDebugPanel',
             ),
         }
 

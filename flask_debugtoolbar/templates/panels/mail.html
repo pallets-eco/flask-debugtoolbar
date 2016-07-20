@@ -1,0 +1,118 @@
+<a href="#" onclick="return removeAll()">remove all</a>
+
+{% for key, mail in mails.items() %}
+<div class="mail" id="mail-{{ key }}">
+
+<a href="#" onclick="return removeMail( {{ key }} )">remove</a>
+
+<table>
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr class="flDebugOdd">
+          <td>subject</td>
+          <td>{{ mail.subject }}</td>
+        </tr>
+        
+        <tr class="flDebugEven">
+          <td>recipients</td>
+          <td>{{ mail.recipients }}</td>
+        </tr>
+        
+        <tr class="flDebugOdd">
+          <td>body</td>
+          <td>{{ mail.body }}</td>
+        </tr>
+        
+        <tr class="flDebugEven">
+          <td>html</td>
+          <td>{{ mail.html | safe }}</td>
+        </tr>
+        
+        <tr class="flDebugOdd">
+          <td>sender</td>
+          <td>{{ mail.sender }}</td>
+        </tr>
+        
+        <tr class="flDebugEven">
+          <td>cc</td>
+          <td>{{ mail.cc }}</td>
+        </tr>
+        
+        <tr class="flDebugOdd">
+          <td>bcc</td>
+          <td>{{ mail.bcc }}</td>
+        </tr>
+        
+        <tr class="flDebugEven">
+          <td>attachments</td>
+          <td>{{ mail.attachments }}</td>
+        </tr>
+        
+        <tr class="flDebugOdd">
+          <td>reply_to</td>
+          <td>{{ mail.reply_to }}</td>
+        </tr>
+        
+        <tr class="flDebugEven">
+          <td>date</td>
+          <td>{{ mail.date }}</td>
+        </tr>
+
+        <tr class="flDebugEven">
+          <td>charset</td>
+          <td>{{ mail.charset }}</td>
+        </tr>
+        
+        <tr class="flDebugEven">
+          <td>extra_headers</td>
+          <td>{{ mail.extra_headers }}</td>
+        </tr>
+
+        <tr class="flDebugEven">
+          <td>mail_options</td>
+          <td>{{ mail.mail_options }}</td>
+        </tr>
+        
+        <tr class="flDebugEven">
+          <td>rcpt_options</td>
+          <td>{{ mail.rcpt_options }}</td>
+        </tr>        
+               
+      </tbody>
+    </table>
+</div>
+{% endfor %}
+<script>
+function removeMail(key) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      var d = document.getElementById("mail-"+key);
+      d.parentElement.removeChild(d);
+    }
+  };
+  xhttp.open("GET", "/_debug_toolbar/views/mail/remove/"+key, true);
+  xhttp.send();
+  return false;
+}
+function removeAll() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      var d = document.getElementsByClassName("mail");
+      while (d.length > 0) {
+	      d[0].parentElement.removeChild(d[0]);
+      }
+    }
+  };
+  xhttp.open("GET", "/_debug_toolbar/views/mail/remove/all", true);
+  xhttp.send();
+  return false;
+}
+</script>

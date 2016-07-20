@@ -104,3 +104,10 @@ Profiler
 Reports profiling data for the current request. Due to the performance overhead, profiling is disabled by default. Click the checkmark to toggle profiling on or off. After enabling the profiler, refresh the page to re-run it with profiling.
 
 .. image:: _static/screenshot-profiler-panel.png
+
+Mail
+--------
+
+    flask_debugtoolbar.panels.mail.MailDebugPanel
+
+Shows mails send with flask_mail.
