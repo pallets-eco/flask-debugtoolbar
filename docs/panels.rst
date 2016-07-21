@@ -114,4 +114,4 @@ Git
 
     flask_debugtoolbar.panels.git.GitDebugPanel
 
-Displays current git informations which are branch, commit hash ans status.
+Displays current git informations which are branch, commit hash and status.
