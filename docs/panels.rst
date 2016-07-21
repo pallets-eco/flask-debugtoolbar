@@ -112,6 +112,6 @@ Optional Panels
 Git
 ---
 
-    flask_debugtoolbar.pannels.git.GitDebugPannel
+    flask_debugtoolbar.panels.git.GitDebugPanel
 
 Displays current git informations which are branch, commit hash ans status.
