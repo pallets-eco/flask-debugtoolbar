@@ -90,7 +90,7 @@ pygments_style = 'sphinx'
 #modindex_common_prefix = []
 
 intersphinx_mapping = {
-    'flasksqlalchemy': ('http://flask-sqlalchemy.pocoo.org/2.0/', None)
+    'flasksqlalchemy': ('http://flask-sqlalchemy.pocoo.org/latest/', None)
 }
 
 
