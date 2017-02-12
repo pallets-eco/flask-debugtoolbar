@@ -1,9 +1,8 @@
-import pytest
-
-import posixpath
 import ntpath
+import posixpath
 
 from flask import Markup
+import pytest
 
 from flask_debugtoolbar.utils import (_relative_paths, _shortest_relative_path,
                                       format_sql, decode_text, HAVE_PYGMENTS)

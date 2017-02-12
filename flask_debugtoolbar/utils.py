@@ -18,7 +18,6 @@ try:
 except ImportError:
     HAVE_SQLPARSE = False
 
-
 from flask import current_app, Markup
 
 

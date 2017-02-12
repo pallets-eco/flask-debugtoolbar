@@ -1,6 +1,8 @@
 from flask import Flask, render_template
-from flask_debugtoolbar import DebugToolbarExtension
 from flask_sqlalchemy import SQLAlchemy
+
+from flask_debugtoolbar import DebugToolbarExtension
+
 
 app = Flask('basic_app')
 app.debug = True
