@@ -17,7 +17,8 @@ class DebugToolbar(object):
         self.panels = []
 
         self.template_context = {
-            'static_path': url_for('_debug_toolbar.static', filename='')
+            'static_path': url_for('_debug_toolbar.static', filename=''),
+            'roll_own_jquery': current_app.config['DEBUG_TB_ROLL_OWN_JQUERY'],
         }
 
         self.create_panels()
