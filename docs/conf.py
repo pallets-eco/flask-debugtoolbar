@@ -11,9 +11,14 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import datetime
 import os
 import pkg_resources
 import sys
+import time
+
+
+BUILD_DATE = datetime.datetime.utcfromtimestamp(int(os.environ.get('SOURCE_DATE_EPOCH', time.time())))
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -46,7 +51,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Flask-DebugToolbar'
-copyright = u'2012-2015'
+copyright = u'2012-{0}'.format(BUILD_DATE.year)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
