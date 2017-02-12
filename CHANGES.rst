@@ -1,6 +1,17 @@
 Changes
 =======
 
+0.10.1 (2017-02-12)
+-------------------
+
+Enhancements:
+- Add support for Python wheels
+
+Fixes:
+
+- Switch imports from deprecated flask.ext.* to flask_* syntax (#94, thanks
+  Michael Lenzen & #97 thanks Iuri de Silvio)
+
 0.10.0 (2015-04-17)
 -------------------
 
