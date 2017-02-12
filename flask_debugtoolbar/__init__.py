@@ -100,6 +100,7 @@ class DebugToolbarExtension(object):
                 'flask_debugtoolbar.panels.route_list.RouteListDebugPanel',
                 'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel',
             ),
+            'DEBUG_TB_COOKIE': None,
         }
 
     def dispatch_request(self):
@@ -132,6 +133,11 @@ class DebugToolbarExtension(object):
         hosts = current_app.config['DEBUG_TB_HOSTS']
         if hosts and request.remote_addr not in hosts:
             return False
+
+        # No cookie - no toolbar. 
+        debug_cookie = current_app.config['DEBUG_TB_COOKIE']
+        if debug_cookie and debug_cookie not in request.cookies:
+            return False 
 
         return True
 
