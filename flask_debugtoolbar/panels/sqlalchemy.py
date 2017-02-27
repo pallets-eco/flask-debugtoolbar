@@ -73,7 +73,7 @@ def recording_enabled():
 
 def is_available():
     return (json_available and sqlalchemy_available
-            and extension_used() and recording_enabled())
+            and (extension_used() or (_engine is not None)) and recording_enabled())
 
 
 def get_queries():
