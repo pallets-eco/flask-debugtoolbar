@@ -72,10 +72,14 @@ Shows SQL queries run during the current request.
    For additional details on query recording see the
    :py:func:`~flask_sqlalchemy.get_debug_queries` documentation.
 
+   If you use raw sqlalchemy with `Flask-SQLAlchemy-Session`_ pass the engine
+   in like DebugToolbarExtension(app, sqlalchemy_engine=engine)
+
+
 .. image:: _static/screenshot-sqlalchemy-panel.png
 
 .. _Flask-SQLAlchemy: http://flask-sqlalchemy.pocoo.org/
-
+.. _Flask-SQLAlchemy-Session: https://pypi.python.org/pypi/Flask-SQLAlchemy-Session
 
 Logging
 -------
