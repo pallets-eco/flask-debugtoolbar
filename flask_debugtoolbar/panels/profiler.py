@@ -1,10 +1,8 @@
-import sys
 try:
     import cProfile as profile
 except ImportError:
     import profile
 import functools
-import os.path
 import pstats
 
 from flask import current_app

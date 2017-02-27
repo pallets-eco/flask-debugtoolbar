@@ -15,7 +15,7 @@
 
 #flDebug { font-family: sans-serif; color: #000; background: #fff; }
 
-#flDebug tbody, #flDebug code {
+#flDebug tbody, #flDebug code, #flDebug pre {
   font-family: Consolas, Monaco, "Bitstream Vera Sans Mono", "Lucida Console", monospace;
 }
 
@@ -148,7 +148,7 @@
 }
 
 #flDebug code {
-  display:block;
+  display:inline;
   white-space:pre;
   overflow:auto;
 }
@@ -219,6 +219,10 @@
   margin-top:0.8em;
 }
 
+#flDebug h5 {
+  font-size: 14px;
+}
+
 #flDebug .panelContent table {
   border:1px solid #ccc;
   border-collapse:collapse;
@@ -244,6 +248,18 @@
   text-align:right;
   color:#666;
   padding-right:.5em;
+}
+
+#flDebug .panelContent ol li {
+  margin: 0 0 1em 2em;
+}
+
+#flDebug .panelContent pre {
+  border:1px solid #ccc;
+  background-color:#fff;
+  display:block;
+  margin:0.8em 0;
+  padding: 0.2em 0.5em;
 }
 
 #flDebug .flTemplateHideContextDiv {

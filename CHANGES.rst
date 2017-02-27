@@ -1,6 +1,39 @@
 Changes
 =======
 
+0.11.0 (Unreleased)
+-------------------
+
+-??
+
+0.10.1 (2017-02-12)
+-------------------
+
+Enhancements:
+- Add support for Python wheels
+
+Fixes:
+
+- Switch imports from deprecated flask.ext.* to flask_* syntax (#94, thanks
+  Michael Lenzen & #97 thanks Iuri de Silvio)
+
+0.10.0 (2015-04-17)
+-------------------
+
+Enhancements:
+
+- Added new "Routes" panel displaying URL routing rules (#69, thanks Justin McKay)
+- "Versions" panel displays versions of all installed packages (#49, thanks Lucas Taylor)
+- SQLAlchemy displays necessary setup steps to set up query recording
+- Support reformatting SQL queries if ``sqlparse`` library is available (#48, thanks Hyunjun Kim)
+- Enable sorting SQLAlchemy queries (#81, thanks Eric Workman)
+- Support inserting toolbar on HTML5 pages without ``</body>`` tag
+- Log a warning if unable to insert the toolbar (#20, thanks Rune Halvorsen)
+
+Fixes:
+
+- Ensure numeric sorting of profiler "Calls" column
+
 0.9.2 (2014-12-05)
 ------------------
 

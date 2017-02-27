@@ -1,5 +1,5 @@
 import os
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -14,14 +14,14 @@ except:
 
 setup(
     name='Flask-DebugToolbar',
-    version='0.9.2',
-    url='http://flask-debugtoolbar.rtfd.org/',
+    version='0.11.dev0',
+    url='https://flask-debugtoolbar.readthedocs.io/',
     license='BSD',
     author='Michael van Tellingen',
     author_email='michaelvantellingen@gmail.com',
     maintainer='Matt Good',
     maintainer_email='matt@matt-good.net',
-    description='A port of the Django debug toolbar to Flask',
+    description='A toolbar overlay for debugging Flask applications.',
     long_description=README + '\n\n' + CHANGES,
     zip_safe=False,
     platforms='any',

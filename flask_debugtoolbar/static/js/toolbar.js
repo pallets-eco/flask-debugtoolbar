@@ -106,16 +106,16 @@
       } else {
         fldt.show_toolbar(false);
       }
-      $('#flDebug table.tablesorter')
-        .tablesorter()
-        .bind('sortStart', function() {
-          $(this).find('tbody tr')
-            .removeClass('flDebugEven')
-            .removeClass('flDebugOdd');
+      $('#flDebug table.tablesorter').each(function() {
+          var headers = {};
+          $(this).find('thead th').each(function(idx, elem) {
+            headers[idx] = $(elem).data();
+          });
+          $(this).tablesorter({headers: headers});
         })
         .bind('sortEnd', function() {
           $(this).find('tbody tr').each(function(idx, elem) {
-            var even = idx % 2 == 0;
+            var even = idx % 2 === 0;
             $(elem)
               .toggleClass('flDebugEven', even)
               .toggleClass('flDebugOdd', !even);

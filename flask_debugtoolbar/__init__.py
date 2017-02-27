@@ -1,9 +1,9 @@
 import os
+import warnings
 
 from flask import Blueprint, current_app, request, g, send_from_directory
 from flask.globals import _request_ctx_stack
 from jinja2 import Environment, PackageLoader
-from werkzeug.exceptions import HTTPException
 from werkzeug.urls import url_quote_plus
 
 from flask_debugtoolbar.compat import iteritems
@@ -109,6 +109,7 @@ class DebugToolbarExtension(object):
                 'flask_debugtoolbar.panels.template.TemplateDebugPanel',
                 'flask_debugtoolbar.panels.sqlalchemy.SQLAlchemyDebugPanel',
                 'flask_debugtoolbar.panels.logger.LoggingPanel',
+                'flask_debugtoolbar.panels.route_list.RouteListDebugPanel',
                 'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel',
             ),
         }
@@ -158,7 +159,9 @@ class DebugToolbarExtension(object):
 
         real_request = request._get_current_object()
 
-        self.debug_toolbars[real_request] = DebugToolbar(real_request, self.jinja_env)
+        self.debug_toolbars[real_request] = (
+            DebugToolbar(real_request, self.jinja_env))
+
         for panel in self.debug_toolbars[real_request].panels:
             panel.process_request(real_request)
 
@@ -167,11 +170,16 @@ class DebugToolbarExtension(object):
         This is done by the dispatch_request method.
         """
         real_request = request._get_current_object()
-        if real_request in self.debug_toolbars:
-            for panel in self.debug_toolbars[real_request].panels:
-                new_view = panel.process_view(real_request, view_func, view_kwargs)
-                if new_view:
-                    view_func = new_view
+        try:
+            toolbar = self.debug_toolbars[real_request]
+        except KeyError:
+            return view_func
+
+        for panel in toolbar.panels:
+            new_view = panel.process_view(real_request, view_func, view_kwargs)
+            if new_view:
+                view_func = new_view
+
         return view_func
 
     def process_response(self, response):
@@ -198,20 +206,38 @@ class DebugToolbarExtension(object):
 
         # If the http response code is 200 then we process to add the
         # toolbar to the returned html response.
-        if (response.status_code == 200 and
+        if not (response.status_code == 200 and
+                response.is_sequence and
                 response.headers['content-type'].startswith('text/html')):
-            for panel in self.debug_toolbars[real_request].panels:
-                panel.process_response(real_request, response)
+            return response
 
-            if response.is_sequence:
-                response_html = response.data.decode(response.charset)
-                toolbar_html = self.debug_toolbars[real_request].render_toolbar()
+        response_html = response.data.decode(response.charset)
 
-                content = replace_insensitive(
-                    response_html, '</body>', toolbar_html + '</body>')
-                content = content.encode(response.charset)
-                response.response = [content]
-                response.content_length = len(content)
+        no_case = response_html.lower()
+        body_end = no_case.rfind('</body>')
+
+        if body_end >= 0:
+            before = response_html[:body_end]
+            after = response_html[body_end:]
+        elif no_case.startswith('<!doctype html>'):
+            before = response_html
+            after = ''
+        else:
+            warnings.warn('Could not insert debug toolbar.'
+                          ' </body> tag not found in response.')
+            return response
+
+        toolbar = self.debug_toolbars[real_request]
+
+        for panel in toolbar.panels:
+            panel.process_response(real_request, response)
+
+        toolbar_html = toolbar.render_toolbar()
+
+        content = ''.join((before, toolbar_html, after))
+        content = content.encode(response.charset)
+        response.response = [content]
+        response.content_length = len(content)
 
         return response
 

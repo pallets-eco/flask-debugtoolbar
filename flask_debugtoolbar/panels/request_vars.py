@@ -35,10 +35,11 @@ class RequestVarsDebugPanel(DebugPanel):
     def content(self):
         context = self.context.copy()
         context.update({
-            'get': [(k, self.request.args.getlist(k)) for k in self.request.args],
-            'post': [(k, self.request.form.getlist(k)) for k in self.request.form],
-            'cookies': [(k, self.request.cookies.get(k)) for k in self.request.cookies],
-            'view_func': ('%s.%s' % (self.view_func.__module__, self.view_func.__name__)
+            'get': self.request.args.lists(),
+            'post': self.request.form.lists(),
+            'cookies': self.request.cookies.items(),
+            'view_func': ('%s.%s' % (self.view_func.__module__,
+                                     self.view_func.__name__)
                           if self.view_func else '[unknown]'),
             'view_args': self.view_args,
             'view_kwargs': self.view_kwargs or {},

@@ -40,4 +40,4 @@ In production, setting ``app.debug = False`` will disable the toolbar.
 
 See the `documentation`_ for more information.
 
-.. _documentation: http://flask-debugtoolbar.readthedocs.org
+.. _documentation: https://flask-debugtoolbar.readthedocs.io/
