@@ -84,7 +84,7 @@ class DebugToolbarExtension(object):
         if self.engine:
             # use 'internal' API from flask_sqlalchemy to install events.
             # maybe re-implement this for flask-debugtoolbar
-            from flask.ext.sqlalchemy import _EngineDebuggingSignalEvents, _record_queries
+            from flask_sqlalchemy import _EngineDebuggingSignalEvents, _record_queries
             if _record_queries(app):
                 _EngineDebuggingSignalEvents(
                      engine=self.engine,
