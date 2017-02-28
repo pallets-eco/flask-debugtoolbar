@@ -41,8 +41,9 @@ class DebugToolbarExtension(object):
 
     _redirect_codes = [301, 302, 303, 304]
 
-    def __init__(self, app=None):
+    def __init__(self, app=None, sqlalchemy_engine=None):
         self.app = app
+        self.engine = sqlalchemy_engine
         self.debug_toolbars = {}
 
         # Configure jinja for the internal templates and add url rules
@@ -80,8 +81,19 @@ class DebugToolbarExtension(object):
 
         app.add_url_rule('/_debug_toolbar/static/<path:filename>',
                          '_debug_toolbar.static', self.send_static_file)
+        if self.engine:
+            # use 'internal' API from flask_sqlalchemy to install events.
+            # maybe re-implement this for flask-debugtoolbar
+            from flask_sqlalchemy import _EngineDebuggingSignalEvents, _record_queries
+            if _record_queries(app):
+                _EngineDebuggingSignalEvents(
+                     engine=self.engine,
+                     import_name=app.import_name).register()
 
-        app.register_blueprint(module, url_prefix='/_debug_toolbar/views')
+        app.register_blueprint(
+            module,
+            url_prefix='/_debug_toolbar/views',
+            sqlalchemy_engine=self.engine)
 
     def _default_config(self, app):
         return {

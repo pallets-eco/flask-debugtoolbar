@@ -12,6 +12,19 @@ from flask_debugtoolbar.panels import DebugPanel
 from flask_debugtoolbar.utils import format_fname, format_sql
 import itsdangerous
 
+_engine = None
+
+@module.record_once
+def store_engine(state):
+    global _engine
+    _engine = state.options.get('sqlalchemy_engine')
+
+
+def get_engine():
+    if _engine is not None:
+        return _engine
+    elif sqlalchemy_available:
+        return SQLAlchemy().get_engine(current_app)
 
 _ = lambda x: x
 
@@ -60,7 +73,7 @@ def recording_enabled():
 
 def is_available():
     return (json_available and sqlalchemy_available
-            and extension_used() and recording_enabled())
+            and (extension_used() or (_engine is not None)) and recording_enabled())
 
 
 def get_queries():
@@ -110,6 +123,7 @@ class SQLAlchemyDebugPanel(DebugPanel):
             return self.render('panels/sqlalchemy_error.html', {
                 'json_available': json_available,
                 'sqlalchemy_available': sqlalchemy_available,
+                'sqlalchemy_engine_available': _engine is not None,
                 'extension_used': extension_used(),
                 'recording_enabled': recording_enabled(),
             })
@@ -125,6 +139,7 @@ class SQLAlchemyDebugPanel(DebugPanel):
             })
         return self.render('panels/sqlalchemy.html', {'queries': data})
 
+
 # Panel views
 
 
@@ -133,7 +148,9 @@ class SQLAlchemyDebugPanel(DebugPanel):
               defaults=dict(explain=True))
 def sql_select(explain=False):
     statement, params = load_query(request.args['query'])
-    engine = SQLAlchemy().get_engine(current_app)
+    engine = get_engine()
+    if engine is None:
+        return 'No SQLAlchemy engine has been configured.'
 
     if explain:
         if engine.driver == 'pysqlite':
