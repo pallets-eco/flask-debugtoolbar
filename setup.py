@@ -12,6 +12,31 @@ except Exception:
     CHANGES = ''
 
 
+install_requires = [
+    'Flask>=0.8',
+    'Blinker',
+    'itsdangerous',
+    'werkzeug',
+],
+
+tests_require = [
+    'pytest>=3.0.5',
+    'Flask-SQLAlchemy'
+]
+
+extras_require = {
+    'tests': tests_require,
+}
+
+setup_requires = [
+    'pytest-runner>=2.6.2'
+]
+
+extras_require['all'] = []
+for reqs in extras_require.values():
+    extras_require['all'].extend(reqs)
+
+
 setup(
     name='Flask-DebugToolbar',
     version='0.12.dev0',
@@ -30,12 +55,10 @@ setup(
         'flask_debugtoolbar',
         'flask_debugtoolbar.panels'
     ],
-    install_requires=[
-        'Flask>=0.8',
-        'Blinker',
-        'itsdangerous',
-        'werkzeug',
-    ],
+    extras_require=extras_require,
+    install_requires=install_requires,
+    tests_require=tests_require,
+    setup_requires=setup_requires,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',

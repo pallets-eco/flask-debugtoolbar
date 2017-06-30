@@ -4,3 +4,5 @@ build/
 dist/
 docs/_build
 .tox
+.cache/
+.eggs/

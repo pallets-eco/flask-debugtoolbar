@@ -41,3 +41,11 @@ In production, setting ``app.debug = False`` will disable the toolbar.
 See the `documentation`_ for more information.
 
 .. _documentation: https://flask-debugtoolbar.readthedocs.io/
+
+
+Tests
+-----
+
+To run the included unit tests, run `python setup.py test`.
+
+To run individual tests, you first need to install the requirements with `pip install .[tests]`, before running the tests with `python -m pytest test/<test_file>.py::<test>`
