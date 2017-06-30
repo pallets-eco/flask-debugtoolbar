@@ -12,8 +12,9 @@ def mock_env_development(monkeypatch):
 
 
 @pytest.fixture
-def app(request):
-    app = Flask(__name__)
+def app_no_extensions(request):
+    """ Flask app only, without any extensions. """
+    _app = Flask(__name__)
 
     app.debug = True
     app.config["TESTING"] = True
@@ -27,6 +28,13 @@ def app(request):
     if "config" in request.keywords:
         for key, value in request.keywords["config"].kwargs.items():
             app.config[key] = value
+
+    return _app
+
+
+@pytest.fixture
+def app(request, app_no_extensions):
+    app = app_no_extensions
 
     toolbar = DebugToolbarExtension(app)
     db = SQLAlchemy(app)
