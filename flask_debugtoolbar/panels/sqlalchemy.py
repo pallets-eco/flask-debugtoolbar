@@ -128,8 +128,8 @@ class SQLAlchemyDebugPanel(DebugPanel):
 # Panel views
 
 
-@module.route('/sqlalchemy/sql_select', methods=['GET', 'POST'])
-@module.route('/sqlalchemy/sql_explain', methods=['GET', 'POST'],
+@module.route('/sqlalchemy/sql_select', methods=['GET'])
+@module.route('/sqlalchemy/sql_explain', methods=['GET'],
               defaults=dict(explain=True))
 def sql_select(explain=False):
     statement, params = load_query(request.args['query'])

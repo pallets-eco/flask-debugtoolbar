@@ -58,7 +58,7 @@
         return false;
       });
       $('#flDebug a.remoteCall').click(function() {
-        $('#flDebugWindow').load(this.href, {}, function() {
+        $('#flDebugWindow').load(this.href, function() {
           $('#flDebugWindow a.flDebugBack').click(function() {
             $(this).parent().parent().hide();
             return false;
