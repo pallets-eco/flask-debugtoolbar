@@ -6,16 +6,11 @@
 </p>
 
 <ol>
-  {% if not json_available or not sqlalchemy_available %}
+  {% if not sqlalchemy_available %}
   <li>
     <h5>Install required libraries:</h5>
     <ul>
-      {% if not json_available %}
-      <li>simplejson</li>
-      {% endif %}
-      {% if not sqlalchemy_available %}
       <li>Flask-SQLAlchemy</li>
-      {% endif %}
     </ul>
   </li>
   {% endif %}
