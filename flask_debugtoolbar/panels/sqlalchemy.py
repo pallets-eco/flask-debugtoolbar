@@ -6,7 +6,7 @@ except ImportError:
 else:
     sqlalchemy_available = True
 
-from flask import request, current_app, abort, json_available, g
+from flask import request, current_app, abort, g
 from flask_debugtoolbar import module
 from flask_debugtoolbar.panels import DebugPanel
 from flask_debugtoolbar.utils import format_fname, format_sql
@@ -59,8 +59,7 @@ def recording_enabled():
 
 
 def is_available():
-    return (json_available and sqlalchemy_available
-            and extension_used() and recording_enabled())
+    return sqlalchemy_available and extension_used() and recording_enabled()
 
 
 def get_queries():
@@ -108,7 +107,6 @@ class SQLAlchemyDebugPanel(DebugPanel):
 
         if not queries and not is_available():
             return self.render('panels/sqlalchemy_error.html', {
-                'json_available': json_available,
                 'sqlalchemy_available': sqlalchemy_available,
                 'extension_used': extension_used(),
                 'recording_enabled': recording_enabled(),
