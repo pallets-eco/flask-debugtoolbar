@@ -72,9 +72,13 @@ Shows SQL queries run during the current request.
    For additional details on query recording see the
    :py:func:`~flask_sqlalchemy.get_debug_queries` documentation.
 
+.. note:: SQL syntax highlighting requires `Pygments`_ to be installed.
+
 .. image:: _static/screenshot-sqlalchemy-panel.png
 
 .. _Flask-SQLAlchemy: http://flask-sqlalchemy.pocoo.org/
+
+.. _Pygments: http://pygments.org/
 
 
 Logging
