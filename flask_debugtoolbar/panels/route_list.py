@@ -26,7 +26,8 @@ class RouteListDebugPanel(DebugPanel):
         return '%s %s' % (count, 'route' if count == 1 else 'routes')
 
     def process_request(self, request):
-        self.routes = list(current_app.url_map.iter_rules())
+        self.routes = [r for r in current_app.url_map.iter_rules()
+                       if not '_debug_toolbar' in r.rule]
 
     def content(self):
         return self.render('panels/route_list.html', {
