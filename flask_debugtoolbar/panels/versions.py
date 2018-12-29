@@ -3,13 +3,15 @@ from distutils.sysconfig import get_python_lib
 
 from flask import __version__ as flask_version
 from flask_debugtoolbar.panels import DebugPanel
+from flask import current_app
 
 _ = lambda x: x
 
 
 def relpath(location, python_lib):
     location = os.path.normpath(location)
-    relative = os.path.relpath(location, python_lib)
+    # relative = os.path.relpath(location, python_lib)
+    relative = current_app.root_path
     if relative == os.path.curdir:
         return ''
     elif relative.startswith(os.path.pardir):
