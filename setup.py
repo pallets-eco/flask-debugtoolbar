@@ -30,7 +30,7 @@ setup(
               'flask_debugtoolbar.panels'
     ],
     install_requires=[
-        'Flask>=0.8',
+        'Flask>=0.8,!=1.1.0',
         'Blinker',
         'itsdangerous',
         'werkzeug',
