@@ -13,7 +13,7 @@ Time
 
     flask_debugtoolbar.panels.timer.TimerDebugPanel
 
-Shows the time taken to process the current request. The exapanded view includes the breakdown of CPU time, by user and system, wall clock time, and context switches.
+Shows the time taken to process the current request. The expanded view includes the breakdown of CPU time, by user and system, wall clock time, and context switches.
 
 .. image:: _static/screenshot-time-panel.png
 
