@@ -13,8 +13,8 @@
         <td>{{ '%.4f'|format(query.duration * 1000) }}</td>
         <td>
         {% if query.signed_query %}
-          <a class="remoteCall" href="/_debug_toolbar/views/sqlalchemy/sql_select?query={{ query.signed_query }}&amp;duration={{ query.duration|urlencode }}">SELECT</a><br />
-          <a class="remoteCall" href="/_debug_toolbar/views/sqlalchemy/sql_explain?query={{ query.signed_query }}&amp;duration={{ query.duration|urlencode }}">EXPLAIN</a><br />
+          <a class="remoteCall" href="{{ url_for('debugtoolbar.sql_select', explain=False, query=query.signed_query, duration=query.duration )}}">SELECT</a><br />
+          <a class="remoteCall" href="{{ url_for('debugtoolbar.sql_select', explain=True, query=query.signed_query, duration=query.duration )}}">EXPLAIN</a><br />
         {% endif %}
         </td>
         <td title="{{ query.context_long }}">
