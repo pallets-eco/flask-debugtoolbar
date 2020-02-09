@@ -1,7 +1,7 @@
 import os
 import warnings
 
-from flask import Blueprint, current_app, request, g, send_from_directory
+from flask import Blueprint, current_app, request, g, send_from_directory, url_for
 from flask.globals import _request_ctx_stack
 from jinja2 import Environment, PackageLoader
 from werkzeug.urls import url_quote_plus
@@ -53,6 +53,7 @@ class DebugToolbarExtension(object):
             loader=PackageLoader(__name__, 'templates'))
         self.jinja_env.filters['urlencode'] = url_quote_plus
         self.jinja_env.filters['printable'] = _printable
+        self.jinja_env.globals['url_for'] = url_for
 
         if app is not None:
             self.init_app(app)
