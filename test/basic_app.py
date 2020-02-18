@@ -8,6 +8,9 @@ app = Flask('basic_app')
 app.debug = True
 app.config['SECRET_KEY'] = 'abc123'
 
+# TODO: This can be removed once flask_sqlalchemy 3.0 ships
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 # make sure these are printable in the config panel
 app.config['BYTES_VALUE'] = b'\x00'
 app.config['UNICODE_VALUE'] = u'\uffff'

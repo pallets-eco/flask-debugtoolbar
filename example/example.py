@@ -17,6 +17,10 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 #app.config['DEBUG_TB_HOSTS'] = ('127.0.0.1', '::1' )
 app.config['SECRET_KEY'] = 'asd'
 app.config['DEBUG'] = True
+
+# TODO: This can be removed once flask_sqlalchemy 3.0 ships
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
 
