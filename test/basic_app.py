@@ -5,7 +5,6 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 
 app = Flask('basic_app')
-app.debug = True
 app.config['SECRET_KEY'] = 'abc123'
 
 # TODO: This can be removed once flask_sqlalchemy 3.0 ships
@@ -29,7 +28,3 @@ def index():
     db.create_all()
     Foo.query.filter_by(id=1).all()
     return render_template('basic_app.html')
-
-
-if __name__ == '__main__':
-    app.run()
