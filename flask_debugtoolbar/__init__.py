@@ -178,8 +178,7 @@ class DebugToolbarExtension(object):
         # Intercept http redirect codes and display an html page with a
         # link to the target.
         if current_app.config['DEBUG_TB_INTERCEPT_REDIRECTS']:
-            if (response.status_code in self._redirect_codes and
-                    not real_request.is_xhr):
+            if response.status_code in self._redirect_codes:
                 redirect_to = response.location
                 redirect_code = response.status_code
                 if redirect_to:
