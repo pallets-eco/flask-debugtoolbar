@@ -7,7 +7,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 try:
     README = open(os.path.join(here, 'README.rst')).read()
     CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
-except:
+except Exception:
     README = ''
     CHANGES = ''
 
@@ -26,8 +26,9 @@ setup(
     zip_safe=False,
     platforms='any',
     include_package_data=True,
-    packages=['flask_debugtoolbar',
-              'flask_debugtoolbar.panels'
+    packages=[
+        'flask_debugtoolbar',
+        'flask_debugtoolbar.panels'
     ],
     install_requires=[
         'Flask>=0.8',
