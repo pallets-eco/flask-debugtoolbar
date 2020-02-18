@@ -1,8 +1,6 @@
-import sys
-sys.path.insert(0, '.')
+# Run using: `FLASK_ENV=development flask run`
 
 from flask import Flask, render_template, redirect, url_for
-from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -16,7 +14,6 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 #)
 #app.config['DEBUG_TB_HOSTS'] = ('127.0.0.1', '::1' )
 app.config['SECRET_KEY'] = 'asd'
-app.config['DEBUG'] = True
 
 # TODO: This can be removed once flask_sqlalchemy 3.0 ships
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -46,8 +43,6 @@ def redirect_example():
     response.set_cookie('test_cookie', '1')
     return response
 
+
 if __name__ == "__main__":
     db.create_all()
-
-    manager = Manager(app)
-    manager.run()
