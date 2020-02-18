@@ -1,10 +1,22 @@
 Changes
 =======
 
-0.11.0 (Unreleased)
+0.11.0 (2020-02-18)
 -------------------
 
--??
+Enhancements:
+
+- Switch to Flask's native CLI, dropping flask_script in the process (b92391d, thanks @jeffwidman)
+- Do not show DebugToolbar routes in the route map (#86, thanks @floqqi)
+- Document Pygments for SQL highlighting (#127, thanks @pgiraud)
+
+Fixes:
+
+- Remove deprecated flask.json_available (#119, thanks @davidism)
+- Remove deprecated request.is_xhr (7ce099c, thanks @jeffwidman)
+- Explicitly disable `SQLALCHEMY_TRACK_MODIFICATIONS` (9c7db48, thanks @jeffwidman)
+- Fix typo (#142, thanks @timgates42)
+
 
 0.10.1 (2017-02-12)
 -------------------
