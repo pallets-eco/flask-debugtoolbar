@@ -10,6 +10,16 @@ from flask_debugtoolbar.compat import iteritems
 from flask_debugtoolbar.toolbar import DebugToolbar
 from flask_debugtoolbar.utils import decode_text
 
+try:
+    # Python 3.8+
+    from importlib.metadata import version
+
+    __version__ = version("Flask-DebugToolbar")
+except ImportError:
+    import pkg_resources
+
+    __version__ = pkg_resources.get_distribution("factory_boy").version
+
 
 module = Blueprint('debugtoolbar', __name__)
 
