@@ -18,7 +18,7 @@ try:
 except ImportError:
     import pkg_resources
 
-    __version__ = pkg_resources.get_distribution("factory_boy").version
+    __version__ = pkg_resources.get_distribution("Flask-DebugToolbar").version
 
 
 module = Blueprint('debugtoolbar', __name__)
