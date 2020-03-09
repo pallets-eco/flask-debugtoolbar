@@ -23,8 +23,12 @@ class Foo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
 
+@app.before_first_request
+def setup():
+    db.create_all()
+
+
 @app.route('/')
 def index():
-    db.create_all()
     Foo.query.filter_by(id=1).all()
     return render_template('basic_app.html')
