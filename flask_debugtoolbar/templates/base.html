@@ -7,7 +7,7 @@
   <div style="display: none;" id="flDebugToolbar">
     <ol id="flDebugPanelList">
       {% if panels %}
-      <li><a id="flHideToolBarButton" href="#" title="Hide Toolbar">Hide &raquo;</a></li>
+      <li><a id="flDebugHideToolBarButton" href="#" title="Hide Toolbar">Hide &raquo;</a></li>
       {% else %}
       <li id="flDebugButton">DEBUG</li>
       {% endif %}
@@ -17,7 +17,7 @@
         {% if panel.has_content %}
         <a href="{{ panel.url()|default("#") }}" title="{{ panel.title() }}" class="{{ panel.dom_id() }}">
         {% else %}
-        <div class="contentless">
+        <div class="flDebugContentless">
         {% endif %}
 
         {{ panel.nav_title() }}
@@ -29,29 +29,29 @@
         </div>
         {% endif %}
         {% if panel.user_activate %}
-        <span class="switch {{ 'active' if panel.is_active else 'inactive' }}" title="Enable or disable the panel"></span>
+        <span class="flDebugSwitch {{ 'flDebugActive' if panel.is_active else 'flDebugInactive' }}" title="Enable or disable the panel"></span>
         {% endif %}
       </li>
       {% endfor %}
     </ol>
   </div>
   <div style="display:none;" id="flDebugToolbarHandle">
-    <a title="Show Toolbar" id="flShowToolBarButton" href="#">&laquo;</a>
+    <a title="Show Toolbar" id="flDebugShowToolBarButton" href="#">&laquo;</a>
   </div>
   {% for panel in panels %}
     {% if panel.has_content %}
-    <div id="{{ panel.dom_id() }}-content" class="panelContent">
+    <div id="{{ panel.dom_id() }}-content" class="flDebugPanelContentParent">
       <div class="flDebugPanelTitle">
         <a href="" class="flDebugClose">Close</a>
         <h3>{{ panel.title()|safe }}</h3>
       </div>
       <div class="flDebugPanelContent">
-        <div class="scroll">
+        <div class="flDebugScroll">
           {{ panel.content()|safe }}
         </div>
       </div>
     </div>
     {% endif %}
   {% endfor %}
-  <div id="flDebugWindow" class="panelContent"></div>
+  <div id="flDebugWindow" class="flDebugPanelContentParent"></div>
 </div>
