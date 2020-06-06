@@ -1,6 +1,8 @@
 import itertools
 import os.path
 import sys
+import io
+import gzip
 
 try:
     from pygments import highlight
@@ -83,3 +85,14 @@ def format_sql(query, args):
         query,
         SqlLexer(),
         HtmlFormatter(noclasses=True, style=PYGMENT_STYLE)))
+
+def gzip_compress(data, compresslevel=6):
+    buff = io.BytesIO()
+    with gzip.GzipFile(fileobj=buff, mode='wb', compresslevel=compresslevel) as f:
+        f.write(data)
+    return buff.getvalue()
+
+
+def gzip_decompress(data):
+    with gzip.GzipFile(fileobj=io.BytesIO(data), mode='rb') as f:
+        return f.read()
