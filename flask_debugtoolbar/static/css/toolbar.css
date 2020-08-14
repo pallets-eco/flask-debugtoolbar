@@ -53,7 +53,7 @@
 }
 
 #flDebug #flDebugToolbar li>a,
-#flDebug #flDebugToolbar li>div.contentless  {
+#flDebug #flDebugToolbar li>div.flDebugContentless  {
   font-weight:normal;
   font-style:normal;
   text-decoration:none;
@@ -68,7 +68,7 @@
   background-color:#ffc;
 }
 
-#flDebug #flDebugToolbar li.active {
+#flDebug #flDebugToolbar li.flDebugActive {
   background-image:url(../img/indicator.png);
   background-repeat:no-repeat;
   background-position:left center;
@@ -76,7 +76,7 @@
   padding-left:10px;
 }
 
-#flDebug #flDebugToolbar li.active a:hover {
+#flDebug #flDebugToolbar li.flDebugActive a:hover {
   color:#b36a60;
   background-color:transparent;
 }
@@ -89,7 +89,7 @@
   font-variant:small-caps;
 }
 
-#flDebug #flDebugToolbar li .switch {
+#flDebug #flDebugToolbar li .flDebugSwitch {
   font-size: 10px;
   position: absolute;
   display: block;
@@ -101,11 +101,11 @@
   right: 2px;
 }
 
-#flDebug #flDebugToolbar li .switch.active {
+#flDebug #flDebugToolbar li .flDebugSwitch.flDebugActive {
   background-image: url(../img/tick.png);
 }
 
-#flDebug #flDebugToolbar li .switch.inactive {
+#flDebug #flDebugToolbar li .flDebugSwitch.flDebugInactive {
   background-image: url(../img/tick-red.png);
 }
 
@@ -120,7 +120,7 @@
   opacity:0.75;
 }
 
-#flDebug a#flShowToolBarButton {
+#flDebug a#flDebugShowToolBarButton {
   display:block;
   height:75px;
   width:30px;
@@ -138,7 +138,7 @@
   opacity:0.5;
 }
 
-#flDebug a#flShowToolBarButton:hover {
+#flDebug a#flDebugShowToolBarButton:hover {
   background-color:#111;
   padding-right:6px;
   border-top-color:#FFE761;
@@ -157,7 +157,7 @@
   background-color:#f5f5f5;
 }
 
-#flDebug .panelContent {
+#flDebug .flDebugPanelContentParent {
   display:none;
   position:fixed;
   margin:0;
@@ -170,7 +170,7 @@
   z-index:100000000;
 }
 
-#flDebug .panelContent > div {
+#flDebug .flDebugPanelContentParent > div {
   border-bottom:1px solid #ddd;
 }
 
@@ -223,7 +223,7 @@
   font-size: 14px;
 }
 
-#flDebug .panelContent table {
+#flDebug .flDebugPanelContentParent table {
   border:1px solid #ccc;
   border-collapse:collapse;
   width:100%;
@@ -232,29 +232,29 @@
   margin-top:0.8em;
   overflow: auto;
 }
-#flDebug .panelContent tbody td,
-#flDebug .panelContent tbody th {
+#flDebug .flDebugPanelContentParent tbody td,
+#flDebug .flDebugPanelContentParent tbody th {
   vertical-align:top;
   padding:2px 3px;
 }
-#flDebug .panelContent thead th {
+#flDebug .flDebugPanelContentParent thead th {
   padding:1px 6px 1px 3px;
   text-align:left;
   font-weight:bold;
   font-size:14px;
 }
-#flDebug .panelContent tbody th {
+#flDebug .flDebugPanelContentParent tbody th {
   width:12em;
   text-align:right;
   color:#666;
   padding-right:.5em;
 }
 
-#flDebug .panelContent ol li {
+#flDebug .flDebugPanelContentParent ol li {
   margin: 0 0 1em 2em;
 }
 
-#flDebug .panelContent pre {
+#flDebug .flDebugPanelContentParent pre {
   border:1px solid #ccc;
   background-color:#fff;
   display:block;
@@ -266,7 +266,7 @@
   background-color:#fff;
 }
 
-#flDebug .panelContent .flDebugClose {
+#flDebug .flDebugPanelContentParent .flDebugClose {
   text-indent:-9999999px;
   display:block;
   position:absolute;
@@ -277,38 +277,38 @@
   background:url(../img/close.png) no-repeat center center;
 }
 
-#flDebug .panelContent .flDebugClose:hover {
+#flDebug .flDebugPanelContentParent .flDebugClose:hover {
   background-image:url(../img/close_hover.png);
 }
 
-#flDebug .panelContent .flDebugClose.flDebugBack {
+#flDebug .flDebugPanelContentParent .flDebugClose.flDebugBack {
   background-image:url(../img/back.png);
 }
 
-#flDebug .panelContent .flDebugClose.flDebugBack:hover  {
+#flDebug .flDebugPanelContentParent .flDebugClose.flDebugBack:hover  {
   background-image:url(../img/back_hover.png);
 }
 
-#flDebug .panelContent dt, #flDebug .panelContent dd {
+#flDebug .flDebugPanelContentParent dt, #flDebug .flDebugPanelContentParent dd {
   display:block;
 }
 
-#flDebug .panelContent dt {
+#flDebug .flDebugPanelContentParent dt {
   margin-top:0.75em;
 }
 
-#flDebug .panelContent dd {
+#flDebug .flDebugPanelContentParent dd {
   margin-left:10px;
 }
 
-#flDebug a.toggleTemplate {
+#flDebug a.flDebugToggleTemplate {
   padding:4px;
   background-color:#bbb;
   -moz-border-radius:3px;
   -webkit-border-radius:3px;
 }
 
-#flDebug a.toggleTemplate:hover {
+#flDebug a.flDebugToggleTemplate:hover {
   padding:4px;
   background-color:#444;
   color:#ffe761;
@@ -317,11 +317,11 @@
 }
 
 
-#flDebug a.flTemplateShowContext, #flDebug a.flTemplateShowContext span.toggleArrow {
+#flDebug a.flDebugTemplateShowContext, #flDebug a.flDebugTemplateShowContext span.flDebugToggleArrow {
   color:#999;
 }
 
-#flDebug a.flTemplateShowContext:hover,  #flDebug a.flTemplateShowContext:hover span.toggleArrow {
+#flDebug a.flDebugTemplateShowContext:hover,  #flDebug a.flDebugTemplateShowContext:hover span.flDebugToggleArrow {
   color:#000;
   cursor:pointer;
 }
@@ -334,7 +334,7 @@
   z-index:100000002;
 }
 
-#flDebug .flSQLHideStacktraceDiv tbody th {
+#flDebug .flDebugHideStacktraceDiv tbody th {
   text-align: left;
 }
 
@@ -373,25 +373,25 @@
 #flDebug .highlight .cp { color:#333 } /* Comment.Preproc */
 
 /* tablesorted */
-#flDebug table.tablesorter {
+#flDebug table.flDebugTablesorter {
   width: 100%;
 }
-#flDebug table.tablesorter thead th, table.tablesorter tfoot th {
+#flDebug table.flDebugTablesorter thead th, table.flDebugTablesorter tfoot th {
   padding-right: 20px;
 }
-#flDebug table.tablesorter thead th {
+#flDebug table.flDebugTablesorter thead th {
   background: url(../img/bg.gif) center right no-repeat;
   cursor: pointer;
 }
-#flDebug table.tablesorter tbody tr.odd td {
+#flDebug table.flDebugTablesorter tbody tr.odd td {
   background-color: #F0F0F6;
 }
-#flDebug table.tablesorter thead .headerSortUp {
+#flDebug table.flDebugTablesorter thead .headerSortUp {
   background-image: url(../img/asc.gif);
 }
-#flDebug table.tablesorter thead .headerSortDown {
+#flDebug table.flDebugTablesorter thead .headerSortDown {
   background-image: url(../img/desc.gif);
 }
-#flDebug table.tablesorter thead .headerSortDown, #flDebug table.tablesorter thead .headerSortUp {
+#flDebug table.flDebugTablesorter thead .headerSortDown, #flDebug table.flDebugTablesorter thead .headerSortUp {
   background-color: #8dbdd8;
 }

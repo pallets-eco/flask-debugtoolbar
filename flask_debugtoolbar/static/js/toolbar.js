@@ -14,16 +14,16 @@
         current = $('#flDebug #' + this.className + '-content');
         if (current.is(':visible')) {
           $(document).trigger('close.flDebug');
-          $(this).parent().removeClass('active');
+          $(this).parent().removeClass('flDebugActive');
         } else {
-          $('.panelContent').hide(); // Hide any that are already open
+          $('.flDebugPanelContentParent').hide(); // Hide any that are already open
           current.show();
-          $('#flDebugToolbar li').removeClass('active');
-          $(this).parent().addClass('active');
+          $('#flDebugToolbar li').removeClass('flDebugActive');
+          $(this).parent().addClass('flDebugActive');
         }
         return false;
       });
-      $('#flDebugPanelList li .switch').click(function() {
+      $('#flDebugPanelList li .flDebugSwitch').click(function() {
         var $panel = $(this).parent();
         var $this = $(this);
         var dom_id = $panel.attr('id');
@@ -33,13 +33,13 @@
         var active = (active_str) ? active_str.split(';') : [];
         active = $.grep(active, function(n,i) { return n != dom_id; });
 
-        if ($this.hasClass('active')) {
-          $this.removeClass('active');
-          $this.addClass('inactive');
+        if ($this.hasClass('flDebugActive')) {
+          $this.removeClass('flDebugActive');
+          $this.addClass('flDebugInactive');
         } else {
           active.push(dom_id);
-          $this.removeClass('inactive');
-          $this.addClass('active');
+          $this.removeClass('flDebugInactive');
+          $this.addClass('flDebugActive');
         }
 
         if (active.length > 0) {
@@ -54,10 +54,10 @@
       });
       $('#flDebug a.flDebugClose').click(function() {
         $(document).trigger('close.flDebug');
-        $('#flDebugToolbar li').removeClass('active');
+        $('#flDebugToolbar li').removeClass('flDebugActive');
         return false;
       });
-      $('#flDebug a.remoteCall').click(function() {
+      $('#flDebug a.flDebugRemoteCall').click(function() {
         $('#flDebugWindow').load(this.href, {}, function() {
           $('#flDebugWindow a.flDebugBack').click(function() {
             $(this).parent().parent().hide();
@@ -67,20 +67,20 @@
         $('#flDebugWindow').show();
         return false;
       });
-      $('#flDebugTemplatePanel a.flTemplateShowContext').click(function() {
-        fldt.toggle_arrow($(this).children('.toggleArrow'))
+      $('#flDebugTemplatePanel a.flDebugTemplateShowContext').click(function() {
+        fldt.toggle_arrow($(this).children('.flDebugToggleArrow'))
         fldt.toggle_content($(this).parent().next());
         return false;
       });
-      $('#flDebugSQLPanel a.flSQLShowStacktrace').click(function() {
-        fldt.toggle_content($('.flSQLHideStacktraceDiv', $(this).parents('tr')));
+      $('#flDebugSQLPanel a.flDebugShowStacktrace').click(function() {
+        fldt.toggle_content($('.flDebugHideStacktraceDiv', $(this).parents('tr')));
         return false;
       });
-      $('#flHideToolBarButton').click(function() {
+      $('#flDebugHideToolBarButton').click(function() {
         fldt.hide_toolbar(true);
         return false;
       });
-      $('#flShowToolBarButton').click(function() {
+      $('#flDebugShowToolBarButton').click(function() {
         fldt.show_toolbar();
         return false;
       });
@@ -91,8 +91,8 @@
           return;
         }
         // If a panel is open, close that
-        if ($('.panelContent').is(':visible')) {
-          $('.panelContent').hide();
+        if ($('.flDebugPanelContentParent').is(':visible')) {
+          $('.flDebugPanelContentParent').hide();
           return;
         }
         // Otherwise, just minimize the toolbar
@@ -106,7 +106,7 @@
       } else {
         fldt.show_toolbar(false);
       }
-      $('#flDebug table.tablesorter').each(function() {
+      $('#flDebug table.flDebugTablesorter').each(function() {
           var headers = {};
           $(this).find('thead th').each(function(idx, elem) {
             headers[idx] = $(elem).data();
@@ -137,8 +137,8 @@
       // close any sub panels
       $('#flDebugWindow').hide();
       // close all panels
-      $('.panelContent').hide();
-      $('#flDebugToolbar li').removeClass('active');
+      $('.flDebugPanelContentParent').hide();
+      $('#flDebugToolbar li').removeClass('flDebugActive');
       // finally close toolbar
       $('#flDebugToolbar').hide('fast');
       $('#flDebugToolbarHandle').show();
