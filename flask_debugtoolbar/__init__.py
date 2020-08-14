@@ -8,7 +8,7 @@ from werkzeug.urls import url_quote_plus
 
 from flask_debugtoolbar.compat import iteritems
 from flask_debugtoolbar.toolbar import DebugToolbar
-from flask_debugtoolbar.utils import decode_text
+from flask_debugtoolbar.utils import decode_text, gzip_compress, gzip_decompress
 
 try:
     # Python 3.8+
@@ -210,7 +210,10 @@ class DebugToolbarExtension(object):
                 response.headers['content-type'].startswith('text/html')):
             return response
 
-        response_html = response.data.decode(response.charset)
+        if 'gzip' in response.headers.get('Content-Encoding', ''):
+            response_html = gzip_decompress(response.data).decode(response.charset)
+        else:
+            response_html = response.data.decode(response.charset)
 
         no_case = response_html.lower()
         body_end = no_case.rfind('</body>')
@@ -235,6 +238,8 @@ class DebugToolbarExtension(object):
 
         content = ''.join((before, toolbar_html, after))
         content = content.encode(response.charset)
+        if 'gzip' in response.headers.get('Content-Encoding', ''):
+            content = gzip_compress(content)
         response.response = [content]
         response.content_length = len(content)
 
