@@ -167,6 +167,7 @@
   left:0px;
   background-color:#eee;
   color:#666;
+  overflow:auto;
   z-index:100000000;
 }
 
