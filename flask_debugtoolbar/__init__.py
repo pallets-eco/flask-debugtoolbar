@@ -3,6 +3,7 @@ import warnings
 
 from flask import Blueprint, current_app, request, g, send_from_directory, url_for
 from flask.globals import _request_ctx_stack
+from jinja2 import __version__ as __jinja_version__
 from jinja2 import Environment, PackageLoader
 from werkzeug.urls import url_quote_plus
 
@@ -54,12 +55,16 @@ class DebugToolbarExtension(object):
     def __init__(self, app=None):
         self.app = app
         self.debug_toolbars = {}
+        jinja_extensions = ['jinja2.ext.i18n']
+
+        if __jinja_version__[0] == '2':
+            jinja_extensions.append('jinja2.ext.with_')
 
         # Configure jinja for the internal templates and add url rules
         # for static data
         self.jinja_env = Environment(
             autoescape=True,
-            extensions=['jinja2.ext.i18n', 'jinja2.ext.with_'],
+            extensions=jinja_extensions,
             loader=PackageLoader(__name__, 'templates'))
         self.jinja_env.filters['urlencode'] = url_quote_plus
         self.jinja_env.filters['printable'] = _printable
