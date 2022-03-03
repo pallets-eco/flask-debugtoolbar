@@ -9,7 +9,11 @@ _ = lambda x: x
 
 def relpath(location, python_lib):
     location = os.path.normpath(location)
-    relative = os.path.relpath(location, python_lib)
+    try:
+        relative = os.path.relpath(location, python_lib)
+    except ValueError as e:
+        return location
+    
     if relative == os.path.curdir:
         return ''
     elif relative.startswith(os.path.pardir):
