@@ -34,7 +34,7 @@ def _get_jinja2_extensions():
     match = re.match('^(\d+)\.(\d+).+', __jinja_version__)
     if match:
         major, minor = tuple(map(int, match.groups()))
-        if major >= 3 and minor >= 1:
+        if major >= 3 and minor >= 0:
             return ('jinja2.ext.i18n',)
     
     return ('jinja2.ext.i18n', 'jinja2.ext.with_',)
