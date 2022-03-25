@@ -1,9 +1,10 @@
 import os
 import warnings
+import re
 
 from flask import Blueprint, current_app, request, g, send_from_directory, url_for
 from flask.globals import _request_ctx_stack
-from jinja2 import Environment, PackageLoader
+from jinja2 import Environment, PackageLoader, __version__ as __jinja_version__
 from werkzeug.urls import url_quote_plus
 
 from flask_debugtoolbar.compat import iteritems
@@ -22,6 +23,21 @@ except ImportError:
 
 
 module = Blueprint('debugtoolbar', __name__)
+
+
+def _get_jinja2_extensions():
+    """
+    Returns a list of extensions depends on jinja2 version.
+
+    P.S. 'jinja2.ext.with_' removed from version 3.1, it's now built-in.
+    """
+    match = re.match('^(\d+)\.(\d+).+', __jinja_version__)
+    if match:
+        major, minor = tuple(map(int, match.groups()))
+        if major >= 3 and minor >= 1:
+            return ('jinja2.ext.i18n',)
+    
+    return ('jinja2.ext.i18n', 'jinja2.ext.with_',)
 
 
 def replace_insensitive(string, target, replacement):
@@ -59,7 +75,7 @@ class DebugToolbarExtension(object):
         # for static data
         self.jinja_env = Environment(
             autoescape=True,
-            extensions=['jinja2.ext.i18n', 'jinja2.ext.with_'],
+            extensions=_get_jinja2_extensions(),
             loader=PackageLoader(__name__, 'templates'))
         self.jinja_env.filters['urlencode'] = url_quote_plus
         self.jinja_env.filters['printable'] = _printable
