@@ -10,6 +10,12 @@ Enhancements:
 Fixes:
 - ??
 
+0.12.1 (2022-03-28)
+-------------------
+
+Fixes:
+- Correct changelog and docs URLs on PyPI
+
 
 0.12.0 (2022-03-28)
 -------------------
