@@ -14,6 +14,7 @@ Fixes:
 -------------------
 
 Fixes:
+
 - Correct changelog and docs URLs on PyPI
 
 
@@ -21,11 +22,13 @@ Fixes:
 -------------------
 
 Enhancements:
+
 - Add flask.g section to show g object content. by @Yaser-Amiri in https://github.com/flask-debugtoolbar/flask-debugtoolbar/pull/118
 - Support gzip response by @zaw007 in https://github.com/flask-debugtoolbar/flask-debugtoolbar/pull/154
 - Update PyPI metadata files: add `setup.cfg` etc by @jeffwidman in https://github.com/flask-debugtoolbar/flask-debugtoolbar/pull/164
 
 Fixes:
+
 - Remove deprecated Jinja with_ extension for Jinja 3.0 (related to Flask 2.0) by @nickjj in https://github.com/flask-debugtoolbar/flask-debugtoolbar/pull/157
 - Fix SQLAlchemy SELECT/EXPLAIN to use url_for to respect app prefixes.… by @mattaw in https://github.com/flask-debugtoolbar/flask-debugtoolbar/pull/143
 - Setup DB properly by @jeffwidman in https://github.com/flask-debugtoolbar/flask-debugtoolbar/pull/148
