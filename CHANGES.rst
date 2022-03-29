@@ -1,14 +1,30 @@
 Changes
 =======
 
-0.13.0 (Unreleased)
+0.14.0 (Unreleased)
 -------------------
 
 Enhancements:
+
 - ??
 
 Fixes:
+
 - ??
+
+0.13.1 (2022-03-29)
+-------------------
+
+Fixes:
+
+- Use a consistent version naming convention, 0.13 should have been 0.13.0 but it was yanked and you can't re-push yanked packages with the same version
+
+0.13 (2022-03-29)
+-------------------
+
+Fixes:
+
+- Correct `setup.cfg` to include package files by @nickjj in https://github.com/flask-debugtoolbar/flask-debugtoolbar/pull/172
 
 0.12.1 (2022-03-28)
 -------------------
