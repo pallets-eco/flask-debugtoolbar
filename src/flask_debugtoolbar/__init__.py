@@ -50,6 +50,7 @@ class DebugToolbarExtension(object):
     _static_dir = os.path.realpath(
         os.path.join(os.path.dirname(__file__), 'static'))
 
+    _toolbar_codes = [200, 201, 400, 401, 403, 404, 405, 500, 501, 502, 503, 504]
     _redirect_codes = [301, 302, 303, 304]
 
     def __init__(self, app=None):
@@ -208,9 +209,9 @@ class DebugToolbarExtension(object):
                     response.response = [content]
                     response.status_code = 200
 
-        # If the http response code is 200 then we process to add the
+        # If the http response code is an allowed code then we process to add the
         # toolbar to the returned html response.
-        if not (response.status_code == 200 and
+        if not (response.status_code in self._toolbar_codes and
                 response.is_sequence and
                 response.headers['content-type'].startswith('text/html')):
             return response
