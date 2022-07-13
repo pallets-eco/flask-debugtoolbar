@@ -13,13 +13,13 @@
  */
 /**
  * 
- * @description Create a sortable table with multi-column sorting capabilitys
+ * @description Create a sortable table with multi-column sorting capabilities
  * 
  * @example $('table').tablesorter();
  * @desc Create a simple tablesorter interface.
  * 
  * @example $('table').tablesorter({ sortList:[[0,0],[1,0]] });
- * @desc Create a tablesorter interface and sort on the first and secound column column headers.
+ * @desc Create a tablesorter interface and sort on the first and second column column headers.
  * 
  * @example $('table').tablesorter({ headers: { 0: { sorter: false}, 1: {sorter: false} } });
  *          
@@ -49,7 +49,7 @@
  *         to sortable tr elements in the thead on a descending sort. Default
  *         value: "headerSortDown"
  * 
- * @option String sortInitialOrder (optional) A string of the inital sorting
+ * @option String sortInitialOrder (optional) A string of the initial sorting
  *         order can be asc or desc. Default value: "asc"
  * 
  * @option String sortMultisortKey (optional) A string of the multi-column sort
@@ -90,7 +90,7 @@
  *         Default value: true
  * 
  * @option Boolean debug (optional) Boolean flag indicating if tablesorter
- *         should display debuging information usefull for development.
+ *         should display debugging information usefull for development.
  * 
  * @type jQuery
  * 
@@ -134,7 +134,7 @@
                 debug: false
             };
 
-            /* debuging utils */
+            /* debugging utils */
 
             function benchmark(s, d) {
                 log(s + "," + (new Date().getTime() - d.getTime()) + "ms");

@@ -183,7 +183,7 @@ CodeMirror.defineMode('rst', function(config, options) {
                     setState(state, inline, {
                         ch: orig,               // inline() has to know what to search for
                         wide: wide,             // are we looking for `ch` or `chch`
-                        prev: null,             // terminator must not be preceeded with whitespace
+                        prev: null,             // terminator must not be preceded with whitespace
                         token: token            // I don't want to recompute this all the time
                     });
 
