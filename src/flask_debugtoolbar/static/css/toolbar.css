@@ -28,6 +28,7 @@
   bottom:0;
   right:0;
   opacity:0.9;
+  overflow-y: auto;
 }
 
 #flDebug #flDebugToolbar small {
