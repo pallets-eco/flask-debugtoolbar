@@ -2,7 +2,7 @@ import os
 import warnings
 
 from flask import Blueprint, current_app, request, g, send_from_directory, url_for
-from flask.globals import _request_ctx_stack
+from flask.globals import request_ctx
 from jinja2 import __version__ as __jinja_version__
 from jinja2 import Environment, PackageLoader
 from werkzeug.urls import url_quote_plus
@@ -122,7 +122,7 @@ class DebugToolbarExtension(object):
 
     def dispatch_request(self):
         """Modified version of Flask.dispatch_request to call process_view."""
-        req = _request_ctx_stack.top.request
+        req = request_ctx.request
         app = current_app
 
         if req.routing_exception is not None:
