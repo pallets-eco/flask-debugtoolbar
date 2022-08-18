@@ -2,11 +2,11 @@ import os
 import warnings
 
 import flask
-from packaging import version
+from packaging import version as version_builder
 from flask import Blueprint, current_app, request, g, send_from_directory, url_for
 
 
-if version.parse(flask.__version__) >= version.parse("2.2.0"):
+if version_builder.parse(flask.__version__) >= version_builder.parse("2.2.0"):
     from flask.globals import request_ctx
 else:
     from flask.globals import _request_ctx_stack
@@ -131,7 +131,7 @@ class DebugToolbarExtension(object):
 
     def dispatch_request(self):
         """Modified version of Flask.dispatch_request to call process_view."""
-        if version.parse(flask.__version__) >= version.parse("2.2.0"):
+        if version_builder.parse(flask.__version__) >= version_builder.parse("2.2.0"):
             req = request_ctx.request
         else:
             req = _request_ctx_stack.top.request
