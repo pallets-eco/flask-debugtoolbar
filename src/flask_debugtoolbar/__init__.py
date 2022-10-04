@@ -1,8 +1,17 @@
 import os
 import warnings
 
+import flask
+from packaging import version as version_builder
 from flask import Blueprint, current_app, request, g, send_from_directory, url_for
-from flask.globals import _request_ctx_stack
+
+
+if version_builder.parse(flask.__version__) >= version_builder.parse("2.2.0"):
+    from flask.globals import request_ctx
+else:
+    from flask.globals import _request_ctx_stack
+
+
 from jinja2 import __version__ as __jinja_version__
 from jinja2 import Environment, PackageLoader
 from werkzeug.urls import url_quote_plus
@@ -122,7 +131,11 @@ class DebugToolbarExtension(object):
 
     def dispatch_request(self):
         """Modified version of Flask.dispatch_request to call process_view."""
-        req = _request_ctx_stack.top.request
+        if version_builder.parse(flask.__version__) >= version_builder.parse("2.2.0"):
+            req = request_ctx.request
+        else:
+            req = _request_ctx_stack.top.request
+
         app = current_app
 
         if req.routing_exception is not None:
