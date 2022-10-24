@@ -6,6 +6,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 app = Flask('basic_app')
 app.config['SECRET_KEY'] = 'abc123'
 app.config['SQLALCHEMY_RECORD_QUERIES'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 
 # make sure these are printable in the config panel
