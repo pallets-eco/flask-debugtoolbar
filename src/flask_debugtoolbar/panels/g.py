@@ -19,11 +19,10 @@ class GDebugPanel(DebugPanel):
 
     def url(self):
         return ''
-    
+
     def content(self):
         context = self.context.copy()
         context.update({
             'g_content': g.__dict__
         })
         return self.render('panels/g.html', context)
-

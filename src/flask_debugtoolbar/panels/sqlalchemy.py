@@ -1,9 +1,18 @@
 try:
-    from flask_sqlalchemy import get_debug_queries, SQLAlchemy
+    from flask_sqlalchemy import SQLAlchemy
 except ImportError:
     sqlalchemy_available = False
-    get_debug_queries = SQLAlchemy = None
+    get_recorded_queries = SQLAlchemy = None
 else:
+    try:
+        from flask_sqlalchemy.record_queries import get_recorded_queries
+    except ImportError:
+        # For flask_sqlalchemy < 3.0.0
+        from flask_sqlalchemy import get_debug_queries as get_recorded_queries
+
+        location_property = 'context'
+    else:
+        location_property = 'location'
     sqlalchemy_available = True
 
 from flask import request, current_app, abort, g
@@ -11,7 +20,6 @@ from flask_debugtoolbar import module
 from flask_debugtoolbar.panels import DebugPanel
 from flask_debugtoolbar.utils import format_fname, format_sql
 import itsdangerous
-
 
 _ = lambda x: x
 
@@ -63,8 +71,8 @@ def is_available():
 
 
 def get_queries():
-    if get_debug_queries:
-        return get_debug_queries()
+    if get_recorded_queries:
+        return get_recorded_queries()
     else:
         return []
 
@@ -118,10 +126,11 @@ class SQLAlchemyDebugPanel(DebugPanel):
                 'duration': query.duration,
                 'sql': format_sql(query.statement, query.parameters),
                 'signed_query': dump_query(query.statement, query.parameters),
-                'context_long': query.context,
-                'context': format_fname(query.context)
+                'location_long': getattr(query, location_property),
+                'location': format_fname(getattr(query, location_property))
             })
         return self.render('panels/sqlalchemy.html', {'queries': data})
+
 
 # Panel views
 

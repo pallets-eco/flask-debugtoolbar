@@ -17,8 +17,8 @@
           <a class="flDebugRemoteCall" href="{{ url_for('debugtoolbar.sql_select', explain=True, query=query.signed_query, duration=query.duration )}}">EXPLAIN</a><br />
         {% endif %}
         </td>
-        <td title="{{ query.context_long }}">
-                    {{ query.context }}
+        <td title="{{ query.location_long }}">
+                    {{ query.location }}
         </td>
         <td class="flDebugSyntax">
           <div class="flDebugSqlWrap">
