@@ -97,7 +97,7 @@ class DebugToolbarExtension(object):
 
         if not app.config.get("SQLALCHEMY_RECORD_QUERIES", False):
             app.logger.warning(
-                "'SQLALCHEMY_RECORD_QUERIES' ist not set to True. SQL query logging will not be available.")
+                "'SQLALCHEMY_RECORD_QUERIES' is not set to True. SQL query logging will not be available.")
 
         DebugToolbar.load_panels(app)
 
