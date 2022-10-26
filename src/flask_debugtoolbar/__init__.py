@@ -95,10 +95,6 @@ class DebugToolbarExtension(object):
                 "The Flask-DebugToolbar requires the 'SECRET_KEY' config "
                 "var to be set")
 
-        if not app.config.get("SQLALCHEMY_RECORD_QUERIES", False):
-            app.logger.warning(
-                "'SQLALCHEMY_RECORD_QUERIES' is not set to True. SQL query logging will not be available.")
-
         DebugToolbar.load_panels(app)
 
         app.before_request(self.process_request)
@@ -131,6 +127,7 @@ class DebugToolbarExtension(object):
                 'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel',
                 'flask_debugtoolbar.panels.g.GDebugPanel',
             ),
+            'SQLALCHEMY_RECORD_QUERIES': app.debug,
         }
 
     def dispatch_request(self):
