@@ -3,12 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 from flask_debugtoolbar import DebugToolbarExtension
 
-
 app = Flask('basic_app')
 app.config['SECRET_KEY'] = 'abc123'
-
-# TODO: This can be removed once flask_sqlalchemy 3.0 ships
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_RECORD_QUERIES'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+# This is no longer needed for Flask-SQLAlchemy 3.0+, if you're using 2.X you'll want to define this:
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # make sure these are printable in the config panel
 app.config['BYTES_VALUE'] = b'\x00'

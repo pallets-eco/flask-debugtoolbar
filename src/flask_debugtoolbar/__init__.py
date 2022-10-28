@@ -127,6 +127,7 @@ class DebugToolbarExtension(object):
                 'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel',
                 'flask_debugtoolbar.panels.g.GDebugPanel',
             ),
+            'SQLALCHEMY_RECORD_QUERIES': app.debug,
         }
 
     def dispatch_request(self):
