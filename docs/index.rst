@@ -76,16 +76,16 @@ Panels
 Contributing
 ------------
 
-Fork us `on GitHub <https://github.com/mgood/flask-debugtoolbar>`_
+Fork us `on GitHub <https://github.com/pallets-eco/flask-debugtoolbar>`_
 
 Thanks
 ------
 
 This was based on the original `django-debug-toolbar`_. Thanks to `Michael van Tellingen`_ for the original development of this Flask extension, and to all the `individual contributors`_.
 
-.. _django-debug-toolbar: https://github.com/django-debug-toolbar/django-debug-toolbar
+.. _django-debug-toolbar: https://github.com/jazzband/django-debug-toolbar
 .. _Michael van Tellingen: https://github.com/mvantellingen
-.. _individual contributors: https://github.com/mgood/flask-debugtoolbar/graphs/contributors
+.. _individual contributors: https://github.com/pallets-eco/flask-debugtoolbar/graphs/contributors
 
 Indices and tables
 ==================
