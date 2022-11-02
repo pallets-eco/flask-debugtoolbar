@@ -1,7 +1,7 @@
 Flask Debug-toolbar
 ===================
 
-This is a port of the excellent `django-debug-toolbar <https://github.com/django-debug-toolbar/django-debug-toolbar>`_
+This is a port of the excellent `django-debug-toolbar <https://github.com/jazzband/django-debug-toolbar>`_
 for Flask applications.
 
 .. image:: https://travis-ci.org/flask-debugtoolbar/flask-debugtoolbar.png?branch=master
