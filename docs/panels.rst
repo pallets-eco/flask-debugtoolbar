@@ -76,9 +76,9 @@ Shows SQL queries run during the current request.
 
 .. image:: _static/screenshot-sqlalchemy-panel.png
 
-.. _Flask-SQLAlchemy: http://flask-sqlalchemy.pocoo.org/
+.. _Flask-SQLAlchemy: https://flask-sqlalchemy.palletsprojects.com/en/latest/
 
-.. _Pygments: http://pygments.org/
+.. _Pygments: https://pygments.org/
 
 
 Logging
