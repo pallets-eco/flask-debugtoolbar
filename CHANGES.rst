@@ -6,11 +6,16 @@ Changes
 
 Enhancements:
 
-- ??
+- Add ARIA role to toolbar by @natecollins in https://github.com/pallets-eco/flask-debugtoolbar/pull/174
+- Expand HTTP codes on which the toolbar is displayed by @natecollins in https://github.com/pallets-eco/flask-debugtoolbar/pull/176
+- Python 3.10 threading compatiblity by @hugovk in https://github.com/pallets-eco/flask-debugtoolbar/pull/179
+- Flask 2.2 compatibility by @christopherpickering in https://github.com/pallets-eco/flask-debugtoolbar/pull/183
+- Flask-SQLAlchemy 3 compatibility by @Dosenpfand in https://github.com/pallets-eco/flask-debugtoolbar/pull/186
 
 Fixes:
 
-- ??
+- Permit vertical scrolling by @natecollins in https://github.com/pallets-eco/flask-debugtoolbar/pull/173 and @caffeinatedMike in https://github.com/pallets-eco/flask-debugtoolbar/pull/182
+- Fix Flask-SQLAlchemy quickstart link by @frafra in https://github.com/pallets-eco/flask-debugtoolbar/issues/195
 
 0.13.1 (2022-03-29)
 -------------------
