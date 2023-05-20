@@ -8,5 +8,6 @@ setup(
         'Blinker',
         'itsdangerous',
         'werkzeug',
+        'MarkupSafe',
     ],
 )
