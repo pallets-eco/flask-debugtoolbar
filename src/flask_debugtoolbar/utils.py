@@ -20,7 +20,9 @@ try:
 except ImportError:
     HAVE_SQLPARSE = False
 
-from flask import current_app, Markup
+from flask import current_app
+
+from markupsafe import Markup
 
 
 def format_fname(value):
