@@ -1,4 +1,5 @@
 import os
+import urllib.parse
 import warnings
 
 import flask
@@ -14,7 +15,6 @@ else:
 
 from jinja2 import __version__ as __jinja_version__
 from jinja2 import Environment, PackageLoader
-from werkzeug.urls import url_quote_plus
 
 from flask_debugtoolbar.compat import iteritems
 from flask_debugtoolbar.toolbar import DebugToolbar
@@ -76,7 +76,7 @@ class DebugToolbarExtension(object):
             autoescape=True,
             extensions=jinja_extensions,
             loader=PackageLoader(__name__, 'templates'))
-        self.jinja_env.filters['urlencode'] = url_quote_plus
+        self.jinja_env.filters['urlencode'] = urllib.parse.quote_plus
         self.jinja_env.filters['printable'] = _printable
         self.jinja_env.globals['url_for'] = url_for
 
