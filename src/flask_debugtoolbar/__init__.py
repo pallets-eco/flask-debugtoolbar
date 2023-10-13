@@ -231,9 +231,9 @@ class DebugToolbarExtension(object):
             return response
 
         if 'gzip' in response.headers.get('Content-Encoding', ''):
-            response_html = gzip_decompress(response.data).decode(response.charset)
+            response_html = gzip_decompress(response.data).decode()
         else:
-            response_html = response.data.decode(response.charset)
+            response_html = response.get_data(as_text=True)
 
         no_case = response_html.lower()
         body_end = no_case.rfind('</body>')
