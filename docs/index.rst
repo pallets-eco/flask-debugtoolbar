@@ -59,6 +59,8 @@ Name                                  Description                             De
 ``DEBUG_TB_PANELS``                   List of module/class names of panels    enable all built-in panels
 ``DEBUG_TB_PROFILER_ENABLED``         Enable the profiler on all requests     ``False``, user-enabled
 ``DEBUG_TB_TEMPLATE_EDITOR_ENABLED``  Enable the template editor              ``False``
+``DEBUG_TB_PROFILER_DUMP_FILENAME``   Filename of the profiler stats dump,    ``None``, no dump will be written
+                                      can be a ``str`` or a ``callable``
 ====================================  =====================================   ==========================
 
 To change one of the config options, set it in the Flask app's config like::
