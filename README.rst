@@ -4,8 +4,8 @@ Flask Debug-toolbar
 This is a port of the excellent `django-debug-toolbar <https://github.com/jazzband/django-debug-toolbar>`_
 for Flask applications.
 
-.. image:: https://travis-ci.org/flask-debugtoolbar/flask-debugtoolbar.png?branch=master
-   :target: https://travis-ci.org/flask-debugtoolbar/flask-debugtoolbar
+.. image:: https://github.com/pallets-eco/flask-debugtoolbar/actions/workflows/tests.yml/badge.svg
+   :target: https://github.com/pallets-eco/flask-debugtoolbar/actions
 
 
 Installation
