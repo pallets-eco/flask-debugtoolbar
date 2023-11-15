@@ -22,15 +22,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
 toolbar = DebugToolbarExtension(app)
 
+with app.app_context():
+    db.create_all()
+
 
 class ExampleModel(db.Model):
     __tablename__ = 'examples'
     value = db.Column(db.String(100), primary_key=True)
-
-
-@app.before_first_request
-def setup():
-    db.create_all()
 
 
 @app.route('/')
