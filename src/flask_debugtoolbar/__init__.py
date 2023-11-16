@@ -257,7 +257,7 @@ class DebugToolbarExtension(object):
         toolbar_html = toolbar.render_toolbar()
 
         content = ''.join((before, toolbar_html, after))
-        content = content.encode(response.charset)
+        content = content.encode('utf-8')
         if 'gzip' in response.headers.get('Content-Encoding'):
             content = gzip_compress(content)
         response.response = [content]
