@@ -62,8 +62,7 @@ def extension_used():
 
 
 def recording_enabled():
-    return (current_app.debug
-            or current_app.config.get('SQLALCHEMY_RECORD_QUERIES'))
+    return (current_app.debug or current_app.config.get('SQLALCHEMY_RECORD_QUERIES'))
 
 
 def is_available():
