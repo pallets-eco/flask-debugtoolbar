@@ -230,7 +230,8 @@ class DebugToolbarExtension(object):
                 response.headers['content-type'].startswith('text/html')):
             return response
 
-        if 'gzip' in response.headers.get('Content-Encoding'):
+        content_encoding = response.headers.get('Content-Encoding')
+        if content_encoding and 'gzip' in content_encoding:
             response_html = gzip_decompress(response.data).decode()
         else:
             response_html = response.get_data(as_text=True)
@@ -258,7 +259,7 @@ class DebugToolbarExtension(object):
 
         content = ''.join((before, toolbar_html, after))
         content = content.encode('utf-8')
-        if 'gzip' in response.headers.get('Content-Encoding'):
+        if content_encoding and 'gzip' in content_encoding:
             content = gzip_compress(content)
         response.response = [content]
         response.content_length = len(content)
