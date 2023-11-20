@@ -52,8 +52,7 @@ class TimerDebugPanel(DebugPanel):
         return ''
 
     def _elapsed_ru(self, name):
-        return (getattr(self._end_rusage, name)
-                - getattr(self._start_rusage, name))
+        return (getattr(self._end_rusage, name) - getattr(self._start_rusage, name))
 
     def content(self):
 
