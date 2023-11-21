@@ -20,7 +20,9 @@ try:
 except ImportError:
     HAVE_SQLPARSE = False
 
-from flask import current_app, Markup
+from flask import current_app
+
+from markupsafe import Markup
 
 
 def format_fname(value):
@@ -85,6 +87,7 @@ def format_sql(query, args):
         query,
         SqlLexer(),
         HtmlFormatter(noclasses=True, style=PYGMENT_STYLE)))
+
 
 def gzip_compress(data, compresslevel=6):
     buff = io.BytesIO()

@@ -94,7 +94,7 @@ class ProfilerDebugPanel(DebugPanel):
     def title(self):
         if not self.is_active:
             return "Profiler not active"
-        return 'View: %.2fms' % (float(self.stats.total_tt)*1000,)
+        return 'View: %.2fms' % (float(self.stats.total_tt) * 1000,)
 
     def nav_title(self):
         return 'Profiler'
@@ -102,7 +102,7 @@ class ProfilerDebugPanel(DebugPanel):
     def nav_subtitle(self):
         if not self.is_active:
             return "in-active"
-        return 'View: %.2fms' % (float(self.stats.total_tt)*1000,)
+        return 'View: %.2fms' % (float(self.stats.total_tt) * 1000,)
 
     def url(self):
         return ''

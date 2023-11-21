@@ -28,11 +28,6 @@ class ExampleModel(db.Model):
     value = db.Column(db.String(100), primary_key=True)
 
 
-@app.before_first_request
-def setup():
-    db.create_all()
-
-
 @app.route('/')
 def index():
     app.logger.info("Hello there")
@@ -45,3 +40,7 @@ def redirect_example():
     response = redirect(url_for('index'))
     response.set_cookie('test_cookie', '1')
     return response
+
+
+with app.app_context():
+    db.create_all()

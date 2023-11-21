@@ -1,4 +1,5 @@
 import os
+import urllib.parse
 import warnings
 
 import flask
@@ -14,7 +15,6 @@ else:
 
 from jinja2 import __version__ as __jinja_version__
 from jinja2 import Environment, PackageLoader
-from werkzeug.urls import url_quote_plus
 
 from flask_debugtoolbar.compat import iteritems
 from flask_debugtoolbar.toolbar import DebugToolbar
@@ -76,7 +76,7 @@ class DebugToolbarExtension(object):
             autoescape=True,
             extensions=jinja_extensions,
             loader=PackageLoader(__name__, 'templates'))
-        self.jinja_env.filters['urlencode'] = url_quote_plus
+        self.jinja_env.filters['urlencode'] = urllib.parse.quote_plus
         self.jinja_env.filters['printable'] = _printable
         self.jinja_env.globals['url_for'] = url_for
 
@@ -230,10 +230,11 @@ class DebugToolbarExtension(object):
                 response.headers['content-type'].startswith('text/html')):
             return response
 
-        if 'gzip' in response.headers.get('Content-Encoding', ''):
-            response_html = gzip_decompress(response.data).decode(response.charset)
+        content_encoding = response.headers.get('Content-Encoding')
+        if content_encoding and 'gzip' in content_encoding:
+            response_html = gzip_decompress(response.data).decode()
         else:
-            response_html = response.data.decode(response.charset)
+            response_html = response.get_data(as_text=True)
 
         no_case = response_html.lower()
         body_end = no_case.rfind('</body>')
@@ -257,8 +258,8 @@ class DebugToolbarExtension(object):
         toolbar_html = toolbar.render_toolbar()
 
         content = ''.join((before, toolbar_html, after))
-        content = content.encode(response.charset)
-        if 'gzip' in response.headers.get('Content-Encoding', ''):
+        content = content.encode('utf-8')
+        if content_encoding and 'gzip' in content_encoding:
             content = gzip_compress(content)
         response.response = [content]
         response.content_length = len(content)
