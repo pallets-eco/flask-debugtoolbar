@@ -9,5 +9,6 @@ setup(
         'itsdangerous',
         'werkzeug',
         'MarkupSafe',
+        'packaging',
     ],
 )
