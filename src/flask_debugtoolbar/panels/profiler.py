@@ -92,14 +92,14 @@ class ProfilerDebugPanel(DebugPanel):
 
             self.stats = stats
             self.function_calls = function_calls
-            
+
             if self.dump_filename:
                 if callable(self.dump_filename):
                     filename = self.dump_filename()
                 else:
                     filename = self.dump_filename
                 self.profiler.dump_stats(filename)
-        
+
         return response
 
     def title(self):
