@@ -14,6 +14,7 @@ class ProfilerDebugPanel(DebugPanel):
     """
     Panel that displays the time a response took with cProfile output.
     """
+
     name = 'Profiler'
 
     user_activate = True
@@ -22,6 +23,9 @@ class ProfilerDebugPanel(DebugPanel):
         DebugPanel.__init__(self, jinja_env, context=context)
         if current_app.config.get('DEBUG_TB_PROFILER_ENABLED'):
             self.is_active = True
+            self.dump_filename = current_app.config.get(
+                "DEBUG_TB_PROFILER_DUMP_FILENAME"
+            )
 
     def has_content(self):
         return bool(self.profiler)
@@ -88,7 +92,14 @@ class ProfilerDebugPanel(DebugPanel):
 
             self.stats = stats
             self.function_calls = function_calls
-            # destroy the profiler just in case
+
+            if self.dump_filename:
+                if callable(self.dump_filename):
+                    filename = self.dump_filename()
+                else:
+                    filename = self.dump_filename
+                self.profiler.dump_stats(filename)
+
         return response
 
     def title(self):
