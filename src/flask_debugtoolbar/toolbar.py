@@ -48,8 +48,8 @@ class DebugToolbar(object):
     @classmethod
     def load_panels(cls, app):
         for panel_class in cls._iter_panels(app):
-            # just loop to make sure they've been loaded
-            pass
+            # Call `.init_app()` on panels
+            panel_class.init_app(app)
 
     @classmethod
     def _iter_panels(cls, app):

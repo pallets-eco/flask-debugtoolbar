@@ -25,6 +25,29 @@ class DebugPanel(object):
         # If the client enabled the panel
         self.is_active = False
 
+    @classmethod
+    def init_app(cls, app):
+        """Method that can be overridden by child classes.
+        Can be used for setting up additional URL-rules/routes.
+
+        Example::
+
+            class UMLDiagramPanel(DebugPanel):
+
+                @classmethod
+                def init_app(cls, app):
+                    app.add_url_rule(
+                        '/_flask_debugtoolbar_umldiagram/<path:filename>',
+                        '_flask_debugtoolbar_umldiagram.serve_generated_image',
+                        cls.serve_generated_image
+                    )
+
+                @classmethod
+                def serve_generated_image(cls, app):
+                    return Response(...)
+        """
+        pass
+
     def render(self, template_name, context):
         template = self.jinja_env.get_template(template_name)
         return template.render(**context)
