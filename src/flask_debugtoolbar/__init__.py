@@ -183,7 +183,7 @@ class DebugToolbarExtension(object):
         """
         real_request = request._get_current_object()
         try:
-            toolbar = self.debug_toolbars_var.get()[real_request]
+            toolbar = self.debug_toolbars_var.get({})[real_request]
         except KeyError:
             return view_func
 
