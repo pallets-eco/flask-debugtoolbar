@@ -1,3 +1,4 @@
+import contextvars
 import os
 import urllib.parse
 import warnings
@@ -57,7 +58,9 @@ class DebugToolbarExtension(object):
 
     def __init__(self, app=None):
         self.app = app
-        self.debug_toolbars = {}
+        # Support threads running  `flask.copy_current_request_context` without
+        # poping toolbar during `teardown_request`
+        self.debug_toolbars_var = contextvars.ContextVar('debug_toolbars')
         jinja_extensions = ['jinja2.ext.i18n']
 
         if __jinja_version__[0] == '2':
@@ -167,11 +170,11 @@ class DebugToolbarExtension(object):
             return
 
         real_request = request._get_current_object()
-
-        self.debug_toolbars[real_request] = (
+        self.debug_toolbars_var.set({})
+        self.debug_toolbars_var.get()[real_request] = (
             DebugToolbar(real_request, self.jinja_env))
 
-        for panel in self.debug_toolbars[real_request].panels:
+        for panel in self.debug_toolbars_var.get()[real_request].panels:
             panel.process_request(real_request)
 
     def process_view(self, app, view_func, view_kwargs):
@@ -180,7 +183,7 @@ class DebugToolbarExtension(object):
         """
         real_request = request._get_current_object()
         try:
-            toolbar = self.debug_toolbars[real_request]
+            toolbar = self.debug_toolbars_var.get({})[real_request]
         except KeyError:
             return view_func
 
@@ -193,7 +196,7 @@ class DebugToolbarExtension(object):
 
     def process_response(self, response):
         real_request = request._get_current_object()
-        if real_request not in self.debug_toolbars:
+        if real_request not in self.debug_toolbars_var.get():
             return response
 
         # Intercept http redirect codes and display an html page with a
@@ -239,7 +242,7 @@ class DebugToolbarExtension(object):
                           ' </body> tag not found in response.')
             return response
 
-        toolbar = self.debug_toolbars[real_request]
+        toolbar = self.debug_toolbars_var.get()[real_request]
 
         for panel in toolbar.panels:
             panel.process_response(real_request, response)
@@ -256,7 +259,8 @@ class DebugToolbarExtension(object):
         return response
 
     def teardown_request(self, exc):
-        self.debug_toolbars.pop(request._get_current_object(), None)
+        # debug_toolbars_var won't be set under `flask.copy_current_request_context`
+        self.debug_toolbars_var.get({}).pop(request._get_current_object(), None)
 
     def render(self, template_name, context):
         template = self.jinja_env.get_template(template_name)
