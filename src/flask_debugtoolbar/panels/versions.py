@@ -1,5 +1,5 @@
 import os
-from distutils.sysconfig import get_python_lib
+from sysconfig import get_path
 
 from flask import __version__ as flask_version
 from flask_debugtoolbar.panels import DebugPanel
@@ -47,6 +47,6 @@ class VersionDebugPanel(DebugPanel):
 
         return self.render('panels/versions.html', {
             'packages': packages,
-            'python_lib': os.path.normpath(get_python_lib()),
+            'python_lib': os.path.normpath(get_path('platlib')),
             'relpath': relpath,
         })
