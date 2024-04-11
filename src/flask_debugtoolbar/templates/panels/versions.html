@@ -1,10 +1,10 @@
 <h4>Installed Packages</h4>
 
 <p>
-  Installation paths relative to:
+  Current Site Packages Directory:
 </p>
 <pre>
-{{ python_lib }}
+{{ python_lib_dir }}
 </pre>
 
 <table>
@@ -12,21 +12,23 @@
     <tr>
       <th>Package</th>
       <th>Version</th>
-      <th>Installed Path</th>
+      <th>Homepage</th>
+      <th>Summary</th>
     </tr>
   </thead>
   <tbody>
     {% for package in packages %}
       <tr class="{{ loop.cycle('flDebugOdd', 'flDebugEven') }}">
-        <td>{{ package.project_name }}</td>
-        <td>{{ package.version }}</td>
-        <td>{{ relpath(package.location, python_lib) }}</td>
+        <td>{{ package.get('Name') }}</td>
+        <td>{{ package.get('Version') }}</td>
+        <td>{{ package.get('Home-page') }}</td>
+        <td>{{ package.get('Summary') }}</td>
       </tr>
     {% else %}
       <tr>
-        <td>setuptools</td>
+        <td>Python 3.8</td>
         <td>NOT INSTALLED</td>
-        <td>Install setuptools to display installed packages and version information</td>
+        <td>This panel requires Python >= 3.8 in order to display installed packages and version information.</td>
       </tr>
     {% endfor %}
   </tbody>
