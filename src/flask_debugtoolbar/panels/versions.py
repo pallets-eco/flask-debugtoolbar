@@ -1,8 +1,18 @@
 import os
 from sysconfig import get_path
 
-from flask import __version__ as flask_version
 from flask_debugtoolbar.panels import DebugPanel
+
+try:
+    # Python 3.8+
+    from importlib.metadata import version
+
+    flask_version = version('flask')
+
+except ImportError:
+    import pkg_resources
+
+    flask_version = pkg_resources.get_distribution('flask').version
 
 _ = lambda x: x
 
