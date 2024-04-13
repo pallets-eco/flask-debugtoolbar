@@ -10,6 +10,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Editing {{ templates[0].name }}</title>
   <script src="{{ static_path }}js/jquery.js"></script>
+  <!-- Temporarily adding jquery-migrate during the Jquery upgrade process, this can be removed post-upgrade -->
+  <script src="{{ static_path }}js/jquery-migrate.js"></script>
   <link rel="stylesheet" href="{{ static_path }}codemirror/codemirror.css">
   <link rel="stylesheet" href="{{ static_path }}codemirror/theme/rubyblue.css">
   <link rel="stylesheet" href="{{ static_path }}codemirror/theme/lesser-dark.css">
