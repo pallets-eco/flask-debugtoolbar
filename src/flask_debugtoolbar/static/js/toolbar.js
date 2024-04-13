@@ -7,7 +7,7 @@
     init: function() {
       $('#flDebug').show();
       var current = null;
-      $('#flDebugPanelList li a').click(function() {
+      $('#flDebugPanelList li a').on('click', function() {
         if (!this.className) {
           return false;
         }
@@ -23,7 +23,7 @@
         }
         return false;
       });
-      $('#flDebugPanelList li .flDebugSwitch').click(function() {
+      $('#flDebugPanelList li .flDebugSwitch').on('click', function() {
         var $panel = $(this).parent();
         var $this = $(this);
         var dom_id = $panel.attr('id');
@@ -52,12 +52,12 @@
           });
         }
       });
-      $('#flDebug a.flDebugClose').click(function() {
+      $('#flDebug a.flDebugClose').on('click', function() {
         $(document).trigger('close.flDebug');
         $('#flDebugToolbar li').removeClass('flDebugActive');
         return false;
       });
-      $('#flDebug a.flDebugRemoteCall').click(function() {
+      $('#flDebug a.flDebugRemoteCall').on('click', function() {
         $('#flDebugWindow').load(this.href, {}, function() {
           $('#flDebugWindow a.flDebugBack').click(function() {
             $(this).parent().parent().hide();
@@ -67,24 +67,24 @@
         $('#flDebugWindow').show();
         return false;
       });
-      $('#flDebugTemplatePanel a.flDebugTemplateShowContext').click(function() {
+      $('#flDebugTemplatePanel a.flDebugTemplateShowContext').on('click', function() {
         fldt.toggle_arrow($(this).children('.flDebugToggleArrow'))
         fldt.toggle_content($(this).parent().next());
         return false;
       });
-      $('#flDebugSQLPanel a.flDebugShowStacktrace').click(function() {
+      $('#flDebugSQLPanel a.flDebugShowStacktrace').on('click', function() {
         fldt.toggle_content($('.flDebugHideStacktraceDiv', $(this).parents('tr')));
         return false;
       });
-      $('#flDebugHideToolBarButton').click(function() {
+      $('#flDebugHideToolBarButton').on('click', function() {
         fldt.hide_toolbar(true);
         return false;
       });
-      $('#flDebugShowToolBarButton').click(function() {
+      $('#flDebugShowToolBarButton').on('click', function() {
         fldt.show_toolbar();
         return false;
       });
-      $(document).bind('close.flDebug', function() {
+      $(document).on('close.flDebug', function() {
         // If a sub-panel is open, close that
         if ($('#flDebugWindow').is(':visible')) {
           $('#flDebugWindow').hide();
@@ -153,7 +153,7 @@
     },
     show_toolbar: function(animate) {
       // Set up keybindings
-      $(document).bind('keydown.flDebug', function(e) {
+      $(document).on('keydown.flDebug', function(e) {
         if (e.keyCode == 27) {
           fldt.close();
         }
