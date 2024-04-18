@@ -1,6 +1,8 @@
 <div id="flDebug" style="display:none;" role="navigation">
   <script type="text/javascript">var DEBUG_TOOLBAR_STATIC_PATH = '{{ static_path }}'</script>
   <script type="text/javascript" src="{{ static_path }}js/jquery.js"></script>
+  <!-- Temporarily adding jquery-migrate during the Jquery upgrade process, this can be removed post-upgrade -->
+  <script src="{{ static_path }}js/jquery-migrate.js"></script>
   <script type="text/javascript" src="{{ static_path }}js/jquery.tablesorter.js"></script>
   <script type="text/javascript" src="{{ static_path }}js/toolbar.js"></script>
 

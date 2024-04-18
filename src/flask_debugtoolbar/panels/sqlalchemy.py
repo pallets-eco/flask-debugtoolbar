@@ -6,9 +6,14 @@ except ImportError:
 else:
     try:
         from flask_sqlalchemy.record_queries import get_recorded_queries
+        debug_enables_record_queries = False
     except ImportError:
         # For flask_sqlalchemy < 3.0.0
         from flask_sqlalchemy import get_debug_queries as get_recorded_queries
+
+        # flask_sqlalchemy < 3.0.0 automatically enabled
+        # SQLALCHEMY_RECORD_QUERIES in debug or test mode
+        debug_enables_record_queries = True
 
         location_property = 'context'
     else:
@@ -62,7 +67,10 @@ def extension_used():
 
 
 def recording_enabled():
-    return (current_app.debug or current_app.config.get('SQLALCHEMY_RECORD_QUERIES'))
+    return (
+        (debug_enables_record_queries and current_app.debug) or
+        current_app.config.get('SQLALCHEMY_RECORD_QUERIES')
+    )
 
 
 def is_available():
