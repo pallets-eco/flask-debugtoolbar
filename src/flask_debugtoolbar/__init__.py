@@ -196,7 +196,7 @@ class DebugToolbarExtension(object):
 
     def process_response(self, response):
         real_request = request._get_current_object()
-        if real_request not in self.debug_toolbars_var.get():
+        if real_request not in self.debug_toolbars_var.get({}):
             return response
 
         # Intercept http redirect codes and display an html page with a
