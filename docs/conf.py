@@ -37,6 +37,7 @@ BUILD_DATE = datetime.datetime.utcfromtimestamp(int(os.environ.get('SOURCE_DATE_
 extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.intersphinx',
+    'pallets_sphinx_themes',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -112,9 +113,7 @@ html_theme = 'flask'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {
-    'index_logo': None,
-}
+html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
 sys.path.append(os.path.abspath('_themes'))
