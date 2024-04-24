@@ -5,7 +5,6 @@ setup(
     name="Flask-DebugToolbar",
     install_requires=[
         'Flask>=2.2.0',
-        'Blinker',
         'itsdangerous',
         'werkzeug',
         'MarkupSafe',
