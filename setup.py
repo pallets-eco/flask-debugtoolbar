@@ -11,4 +11,10 @@ setup(
         'MarkupSafe',
         'packaging',
     ],
+     extras_require={
+        "docs": [
+            'Sphinx>=1.2.2',
+            'Pallets-Sphinx-Themes',
+        ],
+     }
 )
