@@ -1,4 +1,49 @@
+[project]
+name = "Flask-DebugToolbar"
+version = "0.15.0.dev"
+description = "A toolbar overlay for debugging Flask applications."
+readme = "README.rst"
+license = {file = "LICENSE"}
+maintainers = [{name = "TODO", email = "TODO"}]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Framework :: Flask",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "Flask>=2.2.0",
+    "itsdangerous",
+    "Werkzeug",
+    "MarkupSafe",
+    "packaging",
+    # In a follow-on PR use this rather than the try-excepts we have in our codebase
+    # "importlib-metadata>=3.6.0; python_version < '3.10'",
+]
+
+[project.urls]
+Source = "https://github.com/pallets-eco/flask-debugtoolbar"
+Documentation = "https://flask-debugtoolbar.readthedocs.io/"
+Changelog = "https://github.com/pallets-eco/flask-debugtoolbar/releases"
+
+
+[project.optional-dependencies]
+# TODO: I'm unclear if this is where we put stuff from options.extras_require...
+test =
+    pytest
+    Flask-SQLAlchemy
+    Pygments
+docs =
+    Sphinx>=1.2.2
+    Pallets-Sphinx-Themes
+
 [build-system]
+# TODO: Migrate to Hatch or Flit
 requires = [
     "setuptools>=42",
     "wheel"

@@ -37,6 +37,7 @@ BUILD_DATE = datetime.datetime.utcfromtimestamp(int(os.environ.get('SOURCE_DATE_
 extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.intersphinx',
+    'pallets_sphinx_themes',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
