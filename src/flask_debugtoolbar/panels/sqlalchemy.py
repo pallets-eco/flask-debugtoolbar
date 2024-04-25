@@ -3,6 +3,7 @@ try:
 except ImportError:
     sqlalchemy_available = False
     get_recorded_queries = SQLAlchemy = None
+    debug_enables_record_queries = False
 else:
     try:
         from flask_sqlalchemy.record_queries import get_recorded_queries
