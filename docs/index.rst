@@ -73,7 +73,8 @@ Panels
 
 .. toctree::
 
-   panels
+    panels
+    license
 
 Contributing
 ------------
@@ -88,11 +89,3 @@ This was based on the original `django-debug-toolbar`_. Thanks to `Michael van T
 .. _django-debug-toolbar: https://github.com/jazzband/django-debug-toolbar
 .. _Michael van Tellingen: https://github.com/mvantellingen
 .. _individual contributors: https://github.com/pallets-eco/flask-debugtoolbar/graphs/contributors
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-

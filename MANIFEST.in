@@ -1,3 +1,0 @@
-include LICENSE
-recursive-include src/flask_debugtoolbar/templates *.html
-recursive-include src/flask_debugtoolbar/static *
