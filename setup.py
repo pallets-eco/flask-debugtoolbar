@@ -4,7 +4,7 @@ from setuptools import setup
 setup(
     name="Flask-DebugToolbar",
     install_requires=[
-        'Flask>=2.2.0',
+        'Flask>=2.3.0',
         'itsdangerous',
         'werkzeug',
         'MarkupSafe',
