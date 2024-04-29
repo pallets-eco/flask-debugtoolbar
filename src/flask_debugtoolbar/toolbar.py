@@ -1,7 +1,4 @@
-try:
-    from urllib.parse import unquote
-except ImportError:
-    from urllib import unquote
+from urllib.parse import unquote
 
 from flask import url_for, current_app
 from werkzeug.utils import import_string

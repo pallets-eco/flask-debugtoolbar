@@ -2,10 +2,7 @@ from __future__ import with_statement
 
 import datetime
 import logging
-try:
-    import threading
-except ImportError:
-    threading = None
+import threading
 
 from flask_debugtoolbar.panels import DebugPanel
 from flask_debugtoolbar.utils import format_fname
@@ -15,9 +12,6 @@ _ = lambda x: x
 
 class ThreadTrackingHandler(logging.Handler):
     def __init__(self):
-        if threading is None:
-            raise NotImplementedError("threading module is not available, \
-                the logging panel cannot be used without it")
         logging.Handler.__init__(self)
         self.records = {}  # a dictionary that maps threads to log records
 
@@ -59,12 +53,9 @@ def _init_once():
         # and not configure console logging for the request log.
         # Werkzeug's default log level is INFO so this message probably won't
         # be seen.
-        try:
-            from werkzeug._internal import _log
-        except ImportError:
-            pass
-        else:
-            _log('debug', 'Initializing Flask-DebugToolbar log handler')
+        from werkzeug._internal import _log
+
+        _log('debug', 'Initializing Flask-DebugToolbar log handler')
 
         handler = ThreadTrackingHandler()
         logging.root.addHandler(handler)

@@ -24,12 +24,6 @@
         <td>{{ package.get('Home-page') }}</td>
         <td>{{ package.get('Summary') }}</td>
       </tr>
-    {% else %}
-      <tr>
-        <td>Python 3.8</td>
-        <td>NOT INSTALLED</td>
-        <td>This panel requires Python >= 3.8 in order to display installed packages and version information.</td>
-      </tr>
     {% endfor %}
   </tbody>
 </table>
