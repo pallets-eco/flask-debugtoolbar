@@ -1,29 +1,19 @@
 import contextvars
+import importlib.metadata
 import os
 import urllib.parse
 import warnings
 
-import flask
 from flask import Blueprint, current_app, request, g, send_from_directory, url_for
 from flask.globals import request_ctx
 
 from jinja2 import __version__ as __jinja_version__
 from jinja2 import Environment, PackageLoader
 
-from flask_debugtoolbar.compat import iteritems
 from flask_debugtoolbar.toolbar import DebugToolbar
 from flask_debugtoolbar.utils import decode_text, gzip_compress, gzip_decompress
 
-try:
-    # Python 3.8+
-    from importlib.metadata import version
-
-    __version__ = version("Flask-DebugToolbar")
-except ImportError:
-    import pkg_resources
-
-    __version__ = pkg_resources.get_distribution("Flask-DebugToolbar").version
-
+__version__ = importlib.metadata.version("flask-debugtoolbar")
 
 module = Blueprint('debugtoolbar', __name__)
 
@@ -80,7 +70,7 @@ class DebugToolbarExtension(object):
             self.init_app(app)
 
     def init_app(self, app):
-        for k, v in iteritems(self._default_config(app)):
+        for k, v in self._default_config(app).items():
             app.config.setdefault(k, v)
 
         if not app.config['DEBUG_TB_ENABLED']:

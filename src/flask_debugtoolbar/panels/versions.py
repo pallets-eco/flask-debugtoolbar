@@ -1,18 +1,10 @@
+import importlib.metadata
 import os
 from sysconfig import get_path
 
 from flask_debugtoolbar.panels import DebugPanel
 
-try:
-    # Python 3.8+
-    from importlib.metadata import version
-
-    flask_version = version('flask')
-
-except ImportError:
-    import pkg_resources
-
-    flask_version = pkg_resources.get_distribution('flask').version
+flask_version = importlib.metadata.version("flask")
 
 _ = lambda x: x
 
@@ -37,13 +29,8 @@ class VersionDebugPanel(DebugPanel):
         return _('Versions')
 
     def content(self):
-        try:
-            import importlib.metadata
-        except ImportError:
-            packages = []
-        else:
-            packages_metadata = [p.metadata for p in importlib.metadata.distributions()]
-            packages = sorted(packages_metadata, key=lambda p: p['Name'].lower())
+        packages_metadata = [p.metadata for p in importlib.metadata.distributions()]
+        packages = sorted(packages_metadata, key=lambda p: p['Name'].lower())
 
         return self.render('panels/versions.html', {
             'packages': packages,
