@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import collections.abc as c
-import importlib.metadata
 import os
 import typing as t
 import urllib.parse
 import warnings
 from contextvars import ContextVar
 
+import jinja2.ext
 from flask import Blueprint
 from flask import current_app
 from flask import Flask
@@ -26,9 +26,6 @@ from .toolbar import DebugToolbar
 from .utils import decode_text
 from .utils import gzip_compress
 from .utils import gzip_decompress
-
-__version__ = importlib.metadata.version("flask-debugtoolbar")
-_jinja_version = importlib.metadata.version("jinja2")
 
 module: Blueprint = Blueprint("debugtoolbar", __name__)
 
@@ -67,10 +64,11 @@ class DebugToolbarExtension:
         self.debug_toolbars_var: ContextVar[dict[Request, DebugToolbar]] = ContextVar(
             "debug_toolbars"
         )
-        jinja_extensions = ["jinja2.ext.i18n"]
+        jinja_extensions = [jinja2.ext.i18n]
 
-        if _jinja_version[0] == "2":
-            jinja_extensions.append("jinja2.ext.with_")
+        # Jinja2<3
+        if hasattr(jinja2.ext, "with_"):
+            jinja_extensions.append(jinja2.ext.with_)  # pyright: ignore
 
         # Configure jinja for the internal templates and add url rules
         # for static data
