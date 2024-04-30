@@ -1,3 +1,5 @@
 mypy
 pyright
 pytest
+types-pygments
+flask-sqlalchemy

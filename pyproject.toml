@@ -11,6 +11,7 @@ classifiers = [
     "Framework :: Flask",
     "License :: OSI Approved :: BSD License",
     "Programming Language :: Python",
+    "Typing :: Typed",
 ]
 requires-python = ">=3.8"
 dependencies = [
@@ -49,6 +50,12 @@ files = ["src/flask_debugtoolbar", "tests"]
 show_error_codes = true
 pretty = true
 strict = true
+
+[[tool.mypy.overrides]]
+module = [
+    "sqlparse.*"
+]
+ignore_missing_imports = true
 
 [tool.pyright]
 pythonVersion = "3.8"

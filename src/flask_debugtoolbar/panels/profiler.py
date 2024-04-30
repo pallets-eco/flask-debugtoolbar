@@ -1,7 +1,14 @@
+from __future__ import annotations
+
+import collections.abc as c
 import functools
 import pstats
+import typing as t
 
 from flask import current_app
+from jinja2 import Environment
+from werkzeug import Request
+from werkzeug import Response
 
 from ..utils import format_fname
 from . import DebugPanel
@@ -9,7 +16,7 @@ from . import DebugPanel
 try:
     import cProfile as profile
 except ImportError:
-    import profile
+    import profile  # type: ignore[no-redef]
 
 
 class ProfilerDebugPanel(DebugPanel):
@@ -18,7 +25,15 @@ class ProfilerDebugPanel(DebugPanel):
     name = "Profiler"
     user_activate = True
 
-    def __init__(self, jinja_env, context=None):
+    is_active: bool = False
+    dump_filename: str | None = None
+    profiler: profile.Profile
+    stats: pstats.Stats | None = None
+    function_calls: list[dict[str, t.Any]]
+
+    def __init__(
+        self, jinja_env: Environment, context: dict[str, t.Any] | None = None
+    ) -> None:
         super().__init__(jinja_env, context=context)
 
         if current_app.config.get("DEBUG_TB_PROFILER_ENABLED"):
@@ -27,40 +42,48 @@ class ProfilerDebugPanel(DebugPanel):
                 "DEBUG_TB_PROFILER_DUMP_FILENAME"
             )
 
-    def has_content(self):
+    @property
+    def has_content(self) -> bool:  # type: ignore[override]
         return bool(self.profiler)
 
-    def process_request(self, request):
+    def process_request(self, request: Request) -> None:
         if not self.is_active:
             return
 
-        self.profiler = profile.Profile()
+        self.profiler = profile.Profile()  # pyright: ignore
         self.stats = None
 
-    def process_view(self, request, view_func, view_kwargs):
+    def process_view(
+        self,
+        request: Request,
+        view_func: c.Callable[..., t.Any],
+        view_kwargs: dict[str, t.Any],
+    ) -> c.Callable[..., t.Any] | None:
         if self.is_active:
             func = functools.partial(self.profiler.runcall, view_func)
             functools.update_wrapper(func, view_func)
             return func
 
-    def process_response(self, request, response):
+        return None
+
+    def process_response(self, request: Request, response: Response) -> None:
         if not self.is_active:
-            return False
+            return
 
         if self.profiler is not None:
-            self.profiler.disable()
+            self.profiler.disable()  # pyright: ignore
 
             try:
                 stats = pstats.Stats(self.profiler)
             except TypeError:
                 self.is_active = False
-                return False
+                return
 
-            function_calls = []
+            function_calls: list[dict[str, t.Any]] = []
 
-            for func in stats.sort_stats(1).fcn_list:
-                current = {}
-                info = stats.stats[func]
+            for func in stats.sort_stats(1).fcn_list:  # type: ignore[attr-defined]
+                current: dict[str, t.Any] = {}
+                info = stats.stats[func]  # type: ignore[attr-defined]
 
                 # Number of calls
                 if info[0] != info[1]:
@@ -88,7 +111,7 @@ class ProfilerDebugPanel(DebugPanel):
                     current["percall_cum"] = 0
 
                 # Filename
-                filename = pstats.func_std_string(func)
+                filename = pstats.func_std_string(func)  # type: ignore[attr-defined]
                 current["filename_long"] = filename
                 current["filename"] = format_fname(filename)
                 function_calls.append(current)
@@ -104,27 +127,25 @@ class ProfilerDebugPanel(DebugPanel):
 
                 self.profiler.dump_stats(filename)
 
-        return response
-
-    def title(self):
+    def title(self) -> str:
         if not self.is_active:
             return "Profiler not active"
 
-        return f"View: {float(self.stats.total_tt) * 1000:.2f}ms"
+        return f"View: {float(self.stats.total_tt) * 1000:.2f}ms"  # type: ignore[union-attr]
 
-    def nav_title(self):
+    def nav_title(self) -> str:
         return "Profiler"
 
-    def nav_subtitle(self):
+    def nav_subtitle(self) -> str:
         if not self.is_active:
             return "in-active"
 
-        return f"View: {float(self.stats.total_tt) * 1000:.2f}ms"
+        return f"View: {float(self.stats.total_tt) * 1000:.2f}ms"  # type: ignore[union-attr]
 
-    def url(self):
+    def url(self) -> str:
         return ""
 
-    def content(self):
+    def content(self) -> str:
         if not self.is_active:
             return "The profiler is not activated, activate it to use it"
 

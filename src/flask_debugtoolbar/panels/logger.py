@@ -1,20 +1,27 @@
+from __future__ import annotations
+
 import datetime
 import logging
 import threading
+
+from werkzeug import Request
 
 from ..utils import format_fname
 from . import DebugPanel
 
 
 class ThreadTrackingHandler(logging.Handler):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self.records = {}  # a dictionary that maps threads to log records
+        # a dictionary that maps threads to log records
+        self.records: dict[threading.Thread, list[logging.LogRecord]] = {}
 
-    def emit(self, record):
+    def emit(self, record: logging.LogRecord) -> None:
         self.get_records().append(record)
 
-    def get_records(self, thread=None):
+    def get_records(
+        self, thread: threading.Thread | None = None
+    ) -> list[logging.LogRecord]:
         """
         Returns a list of records for the provided thread, of if none is
         provided, returns a list for the current thread.
@@ -27,7 +34,7 @@ class ThreadTrackingHandler(logging.Handler):
 
         return self.records[thread]
 
-    def clear_records(self, thread=None):
+    def clear_records(self, thread: threading.Thread | None = None) -> None:
         if thread is None:
             thread = threading.current_thread()
 
@@ -35,11 +42,11 @@ class ThreadTrackingHandler(logging.Handler):
             del self.records[thread]
 
 
-handler = None
+handler: ThreadTrackingHandler = None  # type: ignore[assignment]
 _init_lock = threading.Lock()
 
 
-def _init_once():
+def _init_once() -> None:
     global handler
 
     if handler is not None:
@@ -65,30 +72,30 @@ class LoggingPanel(DebugPanel):
     name = "Logging"
     has_content = True
 
-    def process_request(self, request):
+    def process_request(self, request: Request) -> None:
         _init_once()
         handler.clear_records()
 
-    def get_and_delete(self):
+    def get_and_delete(self) -> list[logging.LogRecord]:
         records = handler.get_records()
         handler.clear_records()
         return records
 
-    def nav_title(self):
+    def nav_title(self) -> str:
         return "Logging"
 
-    def nav_subtitle(self):
+    def nav_subtitle(self) -> str:
         num_records = len(handler.get_records())
         plural = "message" if num_records == 1 else "messages"
         return f"{num_records} {plural}"
 
-    def title(self):
+    def title(self) -> str:
         return "Log Messages"
 
-    def url(self):
+    def url(self) -> str:
         return ""
 
-    def content(self):
+    def content(self) -> str:
         records = []
 
         for record in self.get_and_delete():

@@ -1,4 +1,10 @@
+from __future__ import annotations
+
+import collections.abc as c
+import typing as t
+
 from flask import session
+from werkzeug import Request
 
 from . import DebugPanel
 
@@ -9,27 +15,31 @@ class RequestVarsDebugPanel(DebugPanel):
     name = "RequestVars"
     has_content = True
 
-    def nav_title(self):
+    def nav_title(self) -> str:
         return "Request Vars"
 
-    def title(self):
+    def title(self) -> str:
         return "Request Vars"
 
-    def url(self):
+    def url(self) -> str:
         return ""
 
-    def process_request(self, request):
+    def process_request(self, request: Request) -> None:
         self.request = request
         self.session = session
-        self.view_func = None
-        self.view_args = []
-        self.view_kwargs = {}
+        self.view_func: c.Callable[..., t.Any] | None = None
+        self.view_kwargs: dict[str, t.Any] = {}
 
-    def process_view(self, request, view_func, view_kwargs):
+    def process_view(
+        self,
+        request: Request,
+        view_func: c.Callable[..., t.Any],
+        view_kwargs: dict[str, t.Any],
+    ) -> None:
         self.view_func = view_func
         self.view_kwargs = view_kwargs
 
-    def content(self):
+    def content(self) -> str:
         context = self.context.copy()
         context.update(
             {
@@ -41,7 +51,6 @@ class RequestVarsDebugPanel(DebugPanel):
                     if self.view_func
                     else "[unknown]"
                 ),
-                "view_args": self.view_args,
                 "view_kwargs": self.view_kwargs or {},
                 "session": self.session.items(),
             }
