@@ -3,7 +3,10 @@
 A [Flask][] extension that injects debugging information into rendered HTML
 pages. Presented as a sidebar with configurable panels of information.
 
-This is a port of the excellent [django-debug-toolbar] <https://github.com/jazzband/django-debug-toolbar>`_.
+This is a port of the excellent [django-debug-toolbar][ddt].
+
+[Flask]: https://flask.palletsprojects.com
+[ddt]: https://github.com/jazzband/django-debug-toolbar/
 
 
 ## Pallets Community Ecosystem
@@ -38,4 +41,4 @@ mode is enabled.
 $ flask -A my_app run --debug
 ```
 
-![](https://raw.githubusercontent.com/pallets-eco/flask-debugtoolbar/main/docs/_static/screenshot-request-vars-panel.png)
+![](https://raw.githubusercontent.com/pallets-eco/flask-debugtoolbar/main/docs/_static/example.gif)
