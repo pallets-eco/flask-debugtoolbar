@@ -1,10 +1,6 @@
-"""Base DebugPanel class"""
+class DebugPanel:
+    """Base class for debug panels."""
 
-
-class DebugPanel(object):
-    """
-    Base class for debug panels.
-    """
     # name = Base
 
     # If content returns something, set to true in subclass
@@ -18,10 +14,11 @@ class DebugPanel(object):
     context = {}
 
     # Panel methods
-    def __init__(self, jinja_env, context={}):
-        self.context.update(context)
-        self.jinja_env = jinja_env
+    def __init__(self, jinja_env, context=None):
+        if context is not None:
+            self.context.update(context)
 
+        self.jinja_env = jinja_env
         # If the client enabled the panel
         self.is_active = False
 
@@ -53,7 +50,7 @@ class DebugPanel(object):
         return template.render(**context)
 
     def dom_id(self):
-        return 'flDebug%sPanel' % (self.name.replace(' ', ''))
+        return f"flDebug{self.name.replace(' ', '')}Panel"
 
     def nav_title(self):
         """Title showing in toolbar"""
@@ -61,7 +58,7 @@ class DebugPanel(object):
 
     def nav_subtitle(self):
         """Subtitle showing until title in toolbar"""
-        return ''
+        return ""
 
     def title(self):
         """Title showing in panel"""

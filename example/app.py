@@ -19,7 +19,8 @@ app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = True
 app.config["SECRET_KEY"] = "asd"
 app.config["SQLALCHEMY_RECORD_QUERIES"] = True
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////tmp/test.db"
-# This is no longer needed for Flask-SQLAlchemy 3.0+, if you're using 2.X you'll want to define this:
+# This is no longer needed for Flask-SQLAlchemy 3.0+, if you're using 2.X you'll
+# want to define this:
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
