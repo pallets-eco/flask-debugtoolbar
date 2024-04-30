@@ -1,18 +1,14 @@
-from __future__ import with_statement
-
 import datetime
 import logging
 import threading
 
-from flask_debugtoolbar.panels import DebugPanel
-from flask_debugtoolbar.utils import format_fname
-
-_ = lambda x: x
+from ..utils import format_fname
+from . import DebugPanel
 
 
 class ThreadTrackingHandler(logging.Handler):
     def __init__(self):
-        logging.Handler.__init__(self)
+        super().__init__()
         self.records = {}  # a dictionary that maps threads to log records
 
     def emit(self, record):
@@ -25,13 +21,16 @@ class ThreadTrackingHandler(logging.Handler):
         """
         if thread is None:
             thread = threading.current_thread()
+
         if thread not in self.records:
             self.records[thread] = []
+
         return self.records[thread]
 
     def clear_records(self, thread=None):
         if thread is None:
             thread = threading.current_thread()
+
         if thread in self.records:
             del self.records[thread]
 
@@ -42,8 +41,10 @@ _init_lock = threading.Lock()
 
 def _init_once():
     global handler
+
     if handler is not None:
         return
+
     with _init_lock:
         if handler is not None:
             return
@@ -55,14 +56,13 @@ def _init_once():
         # be seen.
         from werkzeug._internal import _log
 
-        _log('debug', 'Initializing Flask-DebugToolbar log handler')
-
+        _log("debug", "Initializing Flask-DebugToolbar log handler")
         handler = ThreadTrackingHandler()
         logging.root.addHandler(handler)
 
 
 class LoggingPanel(DebugPanel):
-    name = 'Logging'
+    name = "Logging"
     has_content = True
 
     def process_request(self, request):
@@ -75,32 +75,34 @@ class LoggingPanel(DebugPanel):
         return records
 
     def nav_title(self):
-        return _("Logging")
+        return "Logging"
 
     def nav_subtitle(self):
-        # FIXME l10n: use ngettext
         num_records = len(handler.get_records())
-        return '%s message%s' % (num_records, '' if num_records == 1 else 's')
+        plural = "message" if num_records == 1 else "messages"
+        return f"{num_records} {plural}"
 
     def title(self):
-        return _('Log Messages')
+        return "Log Messages"
 
     def url(self):
-        return ''
+        return ""
 
     def content(self):
         records = []
+
         for record in self.get_and_delete():
-            records.append({
-                'message': record.getMessage(),
-                'time': datetime.datetime.fromtimestamp(record.created),
-                'level': record.levelname,
-                'file': format_fname(record.pathname),
-                'file_long': record.pathname,
-                'line': record.lineno,
-            })
+            records.append(
+                {
+                    "message": record.getMessage(),
+                    "time": datetime.datetime.fromtimestamp(record.created),
+                    "level": record.levelname,
+                    "file": format_fname(record.pathname),
+                    "file_long": record.pathname,
+                    "line": record.lineno,
+                }
+            )
 
         context = self.context.copy()
-        context.update({'records': records})
-
-        return self.render('panels/logger.html', context)
+        context.update({"records": records})
+        return self.render("panels/logger.html", context)

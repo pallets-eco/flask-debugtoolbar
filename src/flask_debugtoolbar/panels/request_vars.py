@@ -1,25 +1,22 @@
 from flask import session
 
-from flask_debugtoolbar.panels import DebugPanel
-
-_ = lambda x: x
+from . import DebugPanel
 
 
 class RequestVarsDebugPanel(DebugPanel):
-    """
-    A panel to display request variables (POST/GET, session, cookies).
-    """
-    name = 'RequestVars'
+    """A panel to display request variables (POST/GET, session, cookies)."""
+
+    name = "RequestVars"
     has_content = True
 
     def nav_title(self):
-        return _('Request Vars')
+        return "Request Vars"
 
     def title(self):
-        return _('Request Vars')
+        return "Request Vars"
 
     def url(self):
-        return ''
+        return ""
 
     def process_request(self, request):
         self.request = request
@@ -34,16 +31,20 @@ class RequestVarsDebugPanel(DebugPanel):
 
     def content(self):
         context = self.context.copy()
-        context.update({
-            'get': self.request.args.lists(),
-            'post': self.request.form.lists(),
-            'cookies': self.request.cookies.items(),
-            'view_func': ('%s.%s' % (self.view_func.__module__,
-                                     self.view_func.__name__)
-                          if self.view_func else '[unknown]'),
-            'view_args': self.view_args,
-            'view_kwargs': self.view_kwargs or {},
-            'session': self.session.items(),
-        })
+        context.update(
+            {
+                "get": self.request.args.lists(),
+                "post": self.request.form.lists(),
+                "cookies": self.request.cookies.items(),
+                "view_func": (
+                    f"{self.view_func.__module__}.{self.view_func.__name__}"
+                    if self.view_func
+                    else "[unknown]"
+                ),
+                "view_args": self.view_args,
+                "view_kwargs": self.view_kwargs or {},
+                "session": self.session.items(),
+            }
+        )
 
-        return self.render('panels/request_vars.html', context)
+        return self.render("panels/request_vars.html", context)
