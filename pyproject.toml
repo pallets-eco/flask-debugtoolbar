@@ -1,6 +1,6 @@
 [project]
 name = "Flask-DebugToolbar"
-version = "0.15.1"
+version = "0.16.0.dev"
 description = "A toolbar overlay for debugging Flask applications."
 readme = "README.md"
 license = { file = "LICENSE.txt" }

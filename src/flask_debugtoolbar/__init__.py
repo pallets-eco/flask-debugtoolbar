@@ -27,7 +27,6 @@ from .utils import decode_text
 from .utils import gzip_compress
 from .utils import gzip_decompress
 
-__version__ = importlib.metadata.version("flask-debugtoolbar")
 _jinja_version = importlib.metadata.version("jinja2")
 
 module: Blueprint = Blueprint("debugtoolbar", __name__)
@@ -298,3 +297,19 @@ class DebugToolbarExtension:
     def render(self, template_name: str, context: dict[str, t.Any]) -> str:
         template = self.jinja_env.get_template(template_name)
         return template.render(**context)
+
+
+def __getattr__(name: str) -> t.Any:
+    import warnings
+
+    if name == "__version__":
+        warnings.warn(
+            "The '__version__' attribute is deprecated and will be removed in"
+            " Flask-DebugToolbar 0.17. Use feature detection or"
+            " 'importlib.metadata.version(\"flask-debugtoolbar\")' instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return importlib.metadata.version("flask-debugtoolbar")
+
+    raise AttributeError(name)
