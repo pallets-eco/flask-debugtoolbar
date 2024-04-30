@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from flask import Flask
 from flask import render_template
 from flask_sqlalchemy import SQLAlchemy
@@ -21,13 +23,13 @@ toolbar = DebugToolbarExtension(app)
 db = SQLAlchemy(app)
 
 
-class Foo(db.Model):
+class Foo(db.Model):  # type: ignore[name-defined, misc]
     __tablename__ = "foo"
     id = db.Column(db.Integer, primary_key=True)
 
 
 @app.route("/")
-def index():
+def index() -> str:
     Foo.query.filter_by(id=1).all()
     return render_template("basic_app.html")
 

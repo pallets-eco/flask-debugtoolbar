@@ -15,6 +15,7 @@ babel==2.14.0
 blinker==1.8.1
     # via
     #   -r tests.txt
+    #   -r typing.txt
     #   flask
 cachetools==5.3.3
     # via tox
@@ -33,6 +34,7 @@ charset-normalizer==3.3.2
 click==8.1.7
     # via
     #   -r tests.txt
+    #   -r typing.txt
     #   flask
 colorama==0.4.6
     # via tox
@@ -54,9 +56,12 @@ filelock==3.14.0
 flask==3.0.3
     # via
     #   -r tests.txt
+    #   -r typing.txt
     #   flask-sqlalchemy
 flask-sqlalchemy==3.1.1
-    # via -r tests.txt
+    # via
+    #   -r tests.txt
+    #   -r typing.txt
 identify==2.5.36
     # via pre-commit
 idna==3.7
@@ -71,6 +76,7 @@ importlib-metadata==7.1.0
     # via
     #   -r docs.txt
     #   -r tests.txt
+    #   -r typing.txt
     #   flask
     #   sphinx
 iniconfig==2.0.0
@@ -81,17 +87,20 @@ iniconfig==2.0.0
 itsdangerous==2.2.0
     # via
     #   -r tests.txt
+    #   -r typing.txt
     #   flask
 jinja2==3.1.3
     # via
     #   -r docs.txt
     #   -r tests.txt
+    #   -r typing.txt
     #   flask
     #   sphinx
 markupsafe==2.1.5
     # via
     #   -r docs.txt
     #   -r tests.txt
+    #   -r typing.txt
     #   jinja2
     #   werkzeug
 mypy==1.10.0
@@ -190,6 +199,7 @@ sphinxcontrib-serializinghtml==1.1.5
 sqlalchemy==2.0.29
     # via
     #   -r tests.txt
+    #   -r typing.txt
     #   flask-sqlalchemy
 tomli==2.0.1
     # via
@@ -201,6 +211,16 @@ tomli==2.0.1
     #   tox
 tox==4.15.0
     # via -r dev.in
+types-docutils==0.21.0.20240423
+    # via
+    #   -r typing.txt
+    #   types-pygments
+types-pygments==2.17.0.20240310
+    # via -r typing.txt
+types-setuptools==69.5.0.20240423
+    # via
+    #   -r typing.txt
+    #   types-pygments
 typing-extensions==4.11.0
     # via
     #   -r tests.txt
@@ -218,11 +238,13 @@ virtualenv==20.26.1
 werkzeug==3.0.2
     # via
     #   -r tests.txt
+    #   -r typing.txt
     #   flask
 zipp==3.18.1
     # via
     #   -r docs.txt
     #   -r tests.txt
+    #   -r typing.txt
     #   importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:

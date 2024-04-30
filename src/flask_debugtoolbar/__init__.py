@@ -1,19 +1,26 @@
-import contextvars
+from __future__ import annotations
+
+import collections.abc as c
 import importlib.metadata
 import os
+import typing as t
 import urllib.parse
 import warnings
+from contextvars import ContextVar
 
 from flask import Blueprint
 from flask import current_app
+from flask import Flask
 from flask import g
 from flask import request
 from flask import send_from_directory
 from flask import url_for
 from flask.globals import request_ctx
-from jinja2 import __version__ as __jinja_version__
 from jinja2 import Environment
 from jinja2 import PackageLoader
+from werkzeug import Request
+from werkzeug import Response
+from werkzeug.routing import Rule
 
 from .toolbar import DebugToolbar
 from .utils import decode_text
@@ -21,11 +28,12 @@ from .utils import gzip_compress
 from .utils import gzip_decompress
 
 __version__ = importlib.metadata.version("flask-debugtoolbar")
+_jinja_version = importlib.metadata.version("jinja2")
 
-module = Blueprint("debugtoolbar", __name__)
+module: Blueprint = Blueprint("debugtoolbar", __name__)
 
 
-def replace_insensitive(string, target, replacement):
+def replace_insensitive(string: str, target: str, replacement: str) -> str:
     """Similar to string.replace() but is case insensitive
     Code borrowed from:
     http://forums.devshed.com/python-programming-11/case-insensitive-string-replace-490921.html
@@ -39,7 +47,7 @@ def replace_insensitive(string, target, replacement):
         return string
 
 
-def _printable(value):
+def _printable(value: object) -> str:
     try:
         return decode_text(repr(value))
     except Exception as e:
@@ -52,19 +60,21 @@ class DebugToolbarExtension:
     _toolbar_codes = [200, 201, 400, 401, 403, 404, 405, 500, 501, 502, 503, 504]
     _redirect_codes = [301, 302, 303, 304]
 
-    def __init__(self, app=None):
+    def __init__(self, app: Flask | None = None) -> None:
         self.app = app
         # Support threads running  `flask.copy_current_request_context` without
         # poping toolbar during `teardown_request`
-        self.debug_toolbars_var = contextvars.ContextVar("debug_toolbars")
+        self.debug_toolbars_var: ContextVar[dict[Request, DebugToolbar]] = ContextVar(
+            "debug_toolbars"
+        )
         jinja_extensions = ["jinja2.ext.i18n"]
 
-        if __jinja_version__[0] == "2":
+        if _jinja_version[0] == "2":
             jinja_extensions.append("jinja2.ext.with_")
 
         # Configure jinja for the internal templates and add url rules
         # for static data
-        self.jinja_env = Environment(
+        self.jinja_env: Environment = Environment(
             autoescape=True,
             extensions=jinja_extensions,
             loader=PackageLoader(__name__, "templates"),
@@ -76,7 +86,7 @@ class DebugToolbarExtension:
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app):
+    def init_app(self, app: Flask) -> None:
         for k, v in self._default_config(app).items():
             app.config.setdefault(k, v)
 
@@ -96,7 +106,7 @@ class DebugToolbarExtension:
         app.teardown_request(self.teardown_request)
 
         # Monkey-patch the Flask.dispatch_request method
-        app.dispatch_request = self.dispatch_request
+        app.dispatch_request = self.dispatch_request  # type: ignore[method-assign]
 
         app.add_url_rule(
             "/_debug_toolbar/static/<path:filename>",
@@ -106,7 +116,7 @@ class DebugToolbarExtension:
 
         app.register_blueprint(module, url_prefix="/_debug_toolbar/views")
 
-    def _default_config(self, app):
+    def _default_config(self, app: Flask) -> dict[str, t.Any]:
         return {
             "DEBUG_TB_ENABLED": app.debug,
             "DEBUG_TB_HOSTS": (),
@@ -127,30 +137,32 @@ class DebugToolbarExtension:
             "SQLALCHEMY_RECORD_QUERIES": app.debug,
         }
 
-    def dispatch_request(self):
-        """Modified version of Flask.dispatch_request to call process_view."""
+    def dispatch_request(self) -> t.Any:
+        """Modified version of ``Flask.dispatch_request`` to call
+        :meth:`process_view`.
+        """
+        # self references this extension, use current_app to call app methods.
+        app = current_app._get_current_object()  # type: ignore[attr-defined]
         req = request_ctx.request
-        app = current_app
 
         if req.routing_exception is not None:
             app.raise_routing_exception(req)
 
-        rule = req.url_rule
+        rule: Rule = req.url_rule  # type: ignore[assignment]
 
-        # if we provide automatic options for this URL and the
-        # request came with the OPTIONS method, reply automatically
         if (
             getattr(rule, "provide_automatic_options", False)
             and req.method == "OPTIONS"
         ):
             return app.make_default_options_response()
 
-        # otherwise dispatch to the handler for that endpoint
         view_func = app.view_functions[rule.endpoint]
-        view_func = self.process_view(app, view_func, req.view_args)
-        return view_func(**req.view_args)
+        view_args: dict[str, t.Any] = req.view_args  # type: ignore[assignment]
+        # allow each toolbar to process the view and args
+        view_func = self.process_view(app, view_func, view_args)
+        return view_func(**view_args)
 
-    def _show_toolbar(self):
+    def _show_toolbar(self) -> bool:
         """Return a boolean to indicate if we need to show the toolbar."""
         if request.blueprint == "debugtoolbar":
             return False
@@ -162,17 +174,17 @@ class DebugToolbarExtension:
 
         return True
 
-    def send_static_file(self, filename):
+    def send_static_file(self, filename: str) -> Response:
         """Send a static file from the flask-debugtoolbar static directory."""
         return send_from_directory(self._static_dir, filename)
 
-    def process_request(self):
+    def process_request(self) -> None:
         g.debug_toolbar = self
 
         if not self._show_toolbar():
             return
 
-        real_request = request._get_current_object()
+        real_request = request._get_current_object()  # type: ignore[attr-defined]
         self.debug_toolbars_var.set({})
         self.debug_toolbars_var.get()[real_request] = DebugToolbar(
             real_request, self.jinja_env
@@ -181,11 +193,16 @@ class DebugToolbarExtension:
         for panel in self.debug_toolbars_var.get()[real_request].panels:
             panel.process_request(real_request)
 
-    def process_view(self, app, view_func, view_kwargs):
+    def process_view(
+        self,
+        app: Flask,
+        view_func: c.Callable[..., t.Any],
+        view_kwargs: dict[str, t.Any],
+    ) -> c.Callable[..., t.Any]:
         """This method is called just before the flask view is called.
         This is done by the dispatch_request method.
         """
-        real_request = request._get_current_object()
+        real_request = request._get_current_object()  # type: ignore[attr-defined]
 
         try:
             toolbar = self.debug_toolbars_var.get({})[real_request]
@@ -200,8 +217,8 @@ class DebugToolbarExtension:
 
         return view_func
 
-    def process_response(self, response):
-        real_request = request._get_current_object()
+    def process_response(self, response: Response) -> Response:
+        real_request = request._get_current_object()  # type: ignore[attr-defined]
 
         if real_request not in self.debug_toolbars_var.get({}):
             return response
@@ -219,7 +236,7 @@ class DebugToolbarExtension:
                         {"redirect_to": redirect_to, "redirect_code": redirect_code},
                     )
                     response.content_length = len(content)
-                    response.location = None
+                    del response.location
                     response.response = [content]
                     response.status_code = 200
 
@@ -263,20 +280,21 @@ class DebugToolbarExtension:
         toolbar_html = toolbar.render_toolbar()
 
         content = "".join((before, toolbar_html, after))
-        content = content.encode("utf-8")
+        content_bytes = content.encode("utf-8")
 
         if content_encoding and "gzip" in content_encoding:
-            content = gzip_compress(content)
+            content_bytes = gzip_compress(content_bytes)
 
-        response.response = [content]
-        response.content_length = len(content)
+        response.response = [content_bytes]
+        response.content_length = len(content_bytes)
 
         return response
 
-    def teardown_request(self, exc):
+    def teardown_request(self, exc: BaseException | None) -> None:
         # debug_toolbars_var won't be set under `flask.copy_current_request_context`
-        self.debug_toolbars_var.get({}).pop(request._get_current_object(), None)
+        real_request = request._get_current_object()  # type: ignore[attr-defined]
+        self.debug_toolbars_var.get({}).pop(real_request, None)
 
-    def render(self, template_name, context):
+    def render(self, template_name: str, context: dict[str, t.Any]) -> str:
         template = self.jinja_env.get_template(template_name)
         return template.render(**context)

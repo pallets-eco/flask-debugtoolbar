@@ -4,14 +4,12 @@
   <thead>
     <tr>
       <th>View Function</th>
-      <th>args</th>
       <th>kwargs</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>{{ view_func }}</td>
-      <td>{{ view_args|default("None") }}</td>
       <td>
         {% if view_kwargs.items() %}
           {% for k, v in view_kwargs.items() %}

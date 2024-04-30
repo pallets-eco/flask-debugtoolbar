@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import ntpath
 import posixpath
+from types import ModuleType
 
 import pytest
 from markupsafe import escape
@@ -34,7 +37,9 @@ from flask_debugtoolbar.utils import HAVE_PYGMENTS
         ("c:\\Foo\\Bar", ["c:\\foo"], ["Bar"], ntpath),
     ],
 )
-def test_relative_paths(value, paths, expected, path_module):
+def test_relative_paths(
+    value: str, paths: list[str], expected: list[str], path_module: ModuleType
+) -> None:
     assert list(_relative_paths(value, paths, path_module)) == expected
 
 
@@ -52,22 +57,24 @@ def test_relative_paths(value, paths, expected, path_module):
         ("c:\\foo\\bar\\baz", ["c:\\foo", "c:\\foo\\bar"], "baz", ntpath),
     ],
 )
-def test_shortest_relative_path(value, paths, expected, path_module):
+def test_shortest_relative_path(
+    value: str, paths: list[str], expected: str, path_module: ModuleType
+) -> None:
     assert _shortest_relative_path(value, paths, path_module) == expected
 
 
-def test_decode_text_unicode():
+def test_decode_text_unicode() -> None:
     value = "\uffff"
     decoded = decode_text(value)
     assert decoded == value
 
 
-def test_decode_text_ascii():
+def test_decode_text_ascii() -> None:
     value = "abc"
     assert decode_text(value.encode("ascii")) == value
 
 
-def test_decode_text_non_ascii():
+def test_decode_text_non_ascii() -> None:
     value = b"abc \xff xyz"
     assert isinstance(value, bytes)
 
@@ -79,22 +86,25 @@ def test_decode_text_non_ascii():
 
 
 @pytest.fixture()
-def no_pygments(monkeypatch):
+def no_pygments(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("flask_debugtoolbar.utils.HAVE_PYGMENTS", False)
 
 
-def test_format_sql_no_pygments(no_pygments):
+@pytest.mark.usefixtures("no_pygments")
+def test_format_sql_no_pygments() -> None:
     sql = "select 1"
     assert format_sql(sql, {}) == sql
 
 
-def test_format_sql_no_pygments_non_ascii(no_pygments):
+@pytest.mark.usefixtures("no_pygments")
+def test_format_sql_no_pygments_non_ascii() -> None:
     sql = b"select '\xff'"
     formatted = format_sql(sql, {})
     assert formatted.startswith("select '")
 
 
-def test_format_sql_no_pygments_escape_html(no_pygments):
+@pytest.mark.usefixtures("no_pygments")
+def test_format_sql_no_pygments_escape_html() -> None:
     sql = "select x < 1"
     formatted = format_sql(sql, {})
     assert not isinstance(formatted, Markup)
@@ -102,7 +112,7 @@ def test_format_sql_no_pygments_escape_html(no_pygments):
 
 
 @pytest.mark.skipif(not HAVE_PYGMENTS, reason='test requires the "Pygments" library')
-def test_format_sql_pygments():
+def test_format_sql_pygments() -> None:
     sql = "select 1"
     html = format_sql(sql, {})
     assert isinstance(html, Markup)
@@ -112,7 +122,7 @@ def test_format_sql_pygments():
 
 
 @pytest.mark.skipif(not HAVE_PYGMENTS, reason='test requires the "Pygments" library')
-def test_format_sql_pygments_non_ascii():
+def test_format_sql_pygments_non_ascii() -> None:
     sql = b"select 'abc \xff xyz'"
     html = format_sql(sql, {})
     assert isinstance(html, Markup)

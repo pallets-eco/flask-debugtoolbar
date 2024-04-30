@@ -1,4 +1,9 @@
+from __future__ import annotations
+
 import time
+
+from werkzeug import Request
+from werkzeug import Response
 
 from . import DebugPanel
 
@@ -16,22 +21,22 @@ class TimerDebugPanel(DebugPanel):
     name = "Timer"
     has_content = HAVE_RESOURCE
 
-    def process_request(self, request):
+    def process_request(self, request: Request) -> None:
         self._start_time = time.time()
 
         if HAVE_RESOURCE:
             self._start_rusage = resource.getrusage(resource.RUSAGE_SELF)
 
-    def process_response(self, request, response):
-        self.total_time = (time.time() - self._start_time) * 1000
+    def process_response(self, request: Request, response: Response) -> None:
+        self.total_time: float = (time.time() - self._start_time) * 1000
 
         if HAVE_RESOURCE:
             self._end_rusage = resource.getrusage(resource.RUSAGE_SELF)
 
-    def nav_title(self):
+    def nav_title(self) -> str:
         return "Time"
 
-    def nav_subtitle(self):
+    def nav_subtitle(self) -> str:
         if not HAVE_RESOURCE:
             return f"TOTAL: {self.total_time:0.2f}ms"
 
@@ -39,16 +44,16 @@ class TimerDebugPanel(DebugPanel):
         stime = self._end_rusage.ru_stime - self._start_rusage.ru_stime
         return f"CPU: {(utime + stime) * 1000.0:0.2f}ms ({self.total_time:0.2f}ms)"
 
-    def title(self):
+    def title(self) -> str:
         return "Resource Usage"
 
-    def url(self):
+    def url(self) -> str:
         return ""
 
-    def _elapsed_ru(self, name):
-        return getattr(self._end_rusage, name) - getattr(self._start_rusage, name)
+    def _elapsed_ru(self, name: str) -> float:
+        return getattr(self._end_rusage, name) - getattr(self._start_rusage, name)  # type: ignore[no-any-return]
 
-    def content(self):
+    def content(self) -> str:
         utime = 1000 * self._elapsed_ru("ru_utime")
         stime = 1000 * self._elapsed_ru("ru_stime")
         vcsw = self._elapsed_ru("ru_nvcsw")

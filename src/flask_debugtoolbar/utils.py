@@ -1,8 +1,12 @@
+from __future__ import annotations
+
+import collections.abc as c
 import gzip
 import io
 import itertools
 import os.path
 import sys
+from types import ModuleType
 
 from flask import current_app
 from markupsafe import Markup
@@ -19,14 +23,14 @@ except ImportError:
     HAVE_PYGMENTS = False
 
 try:
-    import sqlparse
+    import sqlparse  # pyright: ignore
 
     HAVE_SQLPARSE = True
 except ImportError:
     HAVE_SQLPARSE = False
 
 
-def format_fname(value):
+def format_fname(value: str) -> str:
     # If the value has a builtin prefix, return it unchanged
     if value.startswith(("{", "<")):
         return value
@@ -46,12 +50,16 @@ def format_fname(value):
     return f"<{_shortest_relative_path(value, sys.path, os.path)}>"
 
 
-def _shortest_relative_path(value, paths, path_module):
+def _shortest_relative_path(
+    value: str, paths: list[str], path_module: ModuleType
+) -> str:
     relpaths = _relative_paths(value, paths, path_module)
     return min(itertools.chain(relpaths, [value]), key=len)
 
 
-def _relative_paths(value, paths, path_module):
+def _relative_paths(
+    value: str, paths: list[str], path_module: ModuleType
+) -> c.Iterator[str]:
     for path in paths:
         try:
             relval = path_module.relpath(value, path)
@@ -64,7 +72,7 @@ def _relative_paths(value, paths, path_module):
             yield relval
 
 
-def decode_text(value):
+def decode_text(value: str | bytes) -> str:
     """
     Decode a text-like value for display.
 
@@ -73,11 +81,11 @@ def decode_text(value):
     """
     if isinstance(value, bytes):
         return value.decode("ascii", "replace")
-    else:
-        return value
+
+    return value  # pyright: ignore
 
 
-def format_sql(query, args):
+def format_sql(query: str | bytes, args: object) -> str:
     if HAVE_SQLPARSE:
         query = sqlparse.format(query, reindent=True, keyword_case="upper")
 
@@ -89,7 +97,7 @@ def format_sql(query, args):
     )
 
 
-def gzip_compress(data, compresslevel=6):
+def gzip_compress(data: bytes, compresslevel: int = 6) -> bytes:
     buff = io.BytesIO()
 
     with gzip.GzipFile(fileobj=buff, mode="wb", compresslevel=compresslevel) as f:
@@ -98,6 +106,6 @@ def gzip_compress(data, compresslevel=6):
     return buff.getvalue()
 
 
-def gzip_decompress(data):
+def gzip_decompress(data: bytes) -> bytes:
     with gzip.GzipFile(fileobj=io.BytesIO(data), mode="rb") as f:
         return f.read()

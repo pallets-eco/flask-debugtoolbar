@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import importlib.metadata
 import os
 from sysconfig import get_path
 
 from . import DebugPanel
 
-flask_version = importlib.metadata.version("flask")
+flask_version: str = importlib.metadata.version("flask")
 
 
 class VersionDebugPanel(DebugPanel):
@@ -13,19 +15,19 @@ class VersionDebugPanel(DebugPanel):
     name = "Version"
     has_content = True
 
-    def nav_title(self):
+    def nav_title(self) -> str:
         return "Versions"
 
-    def nav_subtitle(self):
+    def nav_subtitle(self) -> str:
         return f"Flask {flask_version}"
 
-    def url(self):
+    def url(self) -> str:
         return ""
 
-    def title(self):
+    def title(self) -> str:
         return "Versions"
 
-    def content(self):
+    def content(self) -> str:
         packages_metadata = [p.metadata for p in importlib.metadata.distributions()]
         packages = sorted(packages_metadata, key=lambda p: p["Name"].lower())
         return self.render(

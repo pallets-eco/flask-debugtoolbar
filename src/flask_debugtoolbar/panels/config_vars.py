@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from flask import current_app
 
 from . import DebugPanel
@@ -9,16 +11,16 @@ class ConfigVarsDebugPanel(DebugPanel):
     name = "ConfigVars"
     has_content = True
 
-    def nav_title(self):
+    def nav_title(self) -> str:
         return "Config"
 
-    def title(self):
+    def title(self) -> str:
         return "Config"
 
-    def url(self):
+    def url(self) -> str:
         return ""
 
-    def content(self):
+    def content(self) -> str:
         context = self.context.copy()
         context.update(
             {
