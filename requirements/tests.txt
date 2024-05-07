@@ -14,6 +14,8 @@ flask==3.0.3
     # via flask-sqlalchemy
 flask-sqlalchemy==3.1.1
     # via -r tests.in
+greenlet==3.0.3
+    # via sqlalchemy
 importlib-metadata==7.1.0
     # via flask
 iniconfig==2.0.0
@@ -40,7 +42,7 @@ tomli==2.0.1
     # via pytest
 typing-extensions==4.11.0
     # via sqlalchemy
-werkzeug==3.0.2
+werkzeug==3.0.3
     # via flask
 zipp==3.18.1
     # via importlib-metadata

@@ -62,6 +62,11 @@ flask-sqlalchemy==3.1.1
     # via
     #   -r tests.txt
     #   -r typing.txt
+greenlet==3.0.3
+    # via
+    #   -r tests.txt
+    #   -r typing.txt
+    #   sqlalchemy
 identify==2.5.36
     # via pre-commit
 idna==3.7
@@ -235,7 +240,7 @@ virtualenv==20.26.1
     # via
     #   pre-commit
     #   tox
-werkzeug==3.0.2
+werkzeug==3.0.3
     # via
     #   -r tests.txt
     #   -r typing.txt
