@@ -38,9 +38,9 @@ packaging==24.0
     # via pytest
 pluggy==1.5.0
     # via pytest
-pyright==1.1.360
+pyright==1.1.365
     # via -r typing.in
-pytest==8.2.0
+pytest==8.2.1
     # via -r typing.in
 sqlalchemy==2.0.29
     # via flask-sqlalchemy
@@ -50,7 +50,7 @@ tomli==2.0.1
     #   pytest
 types-docutils==0.21.0.20240423
     # via types-pygments
-types-pygments==2.17.0.20240310
+types-pygments==2.18.0.20240506
     # via -r typing.in
 types-setuptools==69.5.0.20240423
     # via types-pygments

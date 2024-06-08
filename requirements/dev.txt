@@ -143,16 +143,16 @@ pluggy==1.5.0
     #   tox
 pre-commit==3.5.0
     # via -r dev.in
-pygments==2.17.2
+pygments==2.18.0
     # via
     #   -r docs.txt
     #   -r tests.txt
     #   sphinx
 pyproject-api==1.6.1
     # via tox
-pyright==1.1.360
+pyright==1.1.365
     # via -r typing.txt
-pytest==8.2.0
+pytest==8.2.1
     # via
     #   -r tests.txt
     #   -r typing.txt
@@ -220,7 +220,7 @@ types-docutils==0.21.0.20240423
     # via
     #   -r typing.txt
     #   types-pygments
-types-pygments==2.17.0.20240310
+types-pygments==2.18.0.20240506
     # via -r typing.txt
 types-setuptools==69.5.0.20240423
     # via
