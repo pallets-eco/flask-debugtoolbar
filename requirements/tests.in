@@ -1,3 +1,4 @@
 pytest
 flask-sqlalchemy
 pygments
+beautifulsoup4

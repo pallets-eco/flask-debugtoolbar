@@ -18,7 +18,7 @@ class DebugPanel:
     has_content = False
 
     # If the client is able to activate/de-activate the panel
-    user_enable = False
+    user_activate = False
 
     # We'll maintain a local context instance so we can expose our template
     # context variables to panels which need them:
@@ -62,8 +62,9 @@ class DebugPanel:
         template = self.jinja_env.get_template(template_name)
         return template.render(**context)
 
-    def dom_id(self) -> str:
-        return f"flDebug{self.name.replace(' ', '')}Panel"
+    @classmethod
+    def dom_id(cls) -> str:
+        return f"flDebug{cls.name.replace(' ', '')}Panel"
 
     def nav_title(self) -> str:
         """Title showing in toolbar"""
