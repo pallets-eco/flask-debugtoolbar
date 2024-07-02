@@ -59,6 +59,8 @@ class DebugToolbarExtension:
 
     def __init__(self, app: Flask | None = None) -> None:
         self.app = app
+        self.toolbar_routes_host: str | None = None
+
         # Support threads running  `flask.copy_current_request_context` without
         # poping toolbar during `teardown_request`
         self.debug_toolbars_var: ContextVar[dict[Request, DebugToolbar]] = ContextVar(
@@ -97,6 +99,8 @@ class DebugToolbarExtension:
                 "var to be set"
             )
 
+        self._validate_and_configure_toolbar_routes_host(app)
+
         DebugToolbar.load_panels(app)
 
         app.before_request(self.process_request)
@@ -110,6 +114,7 @@ class DebugToolbarExtension:
             "/_debug_toolbar/static/<path:filename>",
             "_debug_toolbar.static",
             self.send_static_file,
+            host=self.toolbar_routes_host,
         )
 
         app.register_blueprint(module, url_prefix="/_debug_toolbar/views")
@@ -118,6 +123,7 @@ class DebugToolbarExtension:
         return {
             "DEBUG_TB_ENABLED": app.debug,
             "DEBUG_TB_HOSTS": (),
+            "DEBUG_TB_ROUTES_HOST": None,
             "DEBUG_TB_INTERCEPT_REDIRECTS": True,
             "DEBUG_TB_PANELS": (
                 "flask_debugtoolbar.panels.versions.VersionDebugPanel",
@@ -134,6 +140,61 @@ class DebugToolbarExtension:
             ),
             "SQLALCHEMY_RECORD_QUERIES": app.debug,
         }
+
+    def _validate_and_configure_toolbar_routes_host(self, app: Flask) -> None:
+        toolbar_routes_host = app.config["DEBUG_TB_ROUTES_HOST"]
+        if app.url_map.host_matching and not toolbar_routes_host:
+            import warnings
+
+            warnings.warn(
+                "Flask-DebugToolbar requires DEBUG_TB_ROUTES_HOST to be set if Flask "
+                "is running in `host_matching` mode. Static assets for the toolbar "
+                "will not be served correctly unless this is set.",
+                stacklevel=1,
+            )
+
+        if toolbar_routes_host:
+            if not app.url_map.host_matching:
+                raise ValueError(
+                    "`DEBUG_TB_ROUTES_HOST` should only be set if your Flask app is "
+                    "using `host_matching`."
+                )
+
+            if toolbar_routes_host.strip() == "*":
+                toolbar_routes_host = "<toolbar_routes_host>"
+            elif "<" in toolbar_routes_host and ">" in toolbar_routes_host:
+                raise ValueError(
+                    "`DEBUG_TB_ROUTES_HOST` must either be a host name with no "
+                    "variables, to serve all Flask-DebugToolbar assets from a single "
+                    "host, or `*` to match the current request's host."
+                )
+
+            # Automatically inject `toolbar_routes_host` into `url_for` calls for
+            # the toolbar's `send_static_file` method.
+            @app.url_defaults
+            def inject_toolbar_routes_host_if_required(
+                endpoint: str, values: dict[str, t.Any]
+            ) -> None:
+                if app.url_map.is_endpoint_expecting(endpoint, "toolbar_routes_host"):
+                    values.setdefault("toolbar_routes_host", request.host)
+
+            # Automatically strip `toolbar_routes_host` from the endpoint values so
+            # that the `send_static_host` method doesn't receive that parameter,
+            # as it's not actually required internally.
+            @app.url_value_preprocessor
+            def strip_toolbar_routes_host_from_static_endpoint(
+                endpoint: str | None, values: dict[str, t.Any] | None
+            ) -> None:
+                if (
+                    endpoint
+                    and values
+                    and app.url_map.is_endpoint_expecting(
+                        endpoint, "toolbar_routes_host"
+                    )
+                ):
+                    values.pop("toolbar_routes_host", None)
+
+        self.toolbar_routes_host = toolbar_routes_host
 
     def dispatch_request(self) -> t.Any:
         """Modified version of ``Flask.dispatch_request`` to call
