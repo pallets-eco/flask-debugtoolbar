@@ -232,7 +232,7 @@ typing-extensions==4.11.0
     #   -r typing.txt
     #   mypy
     #   sqlalchemy
-urllib3==2.2.1
+urllib3==2.2.2
     # via
     #   -r docs.txt
     #   requests
