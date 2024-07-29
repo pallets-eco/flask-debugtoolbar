@@ -28,7 +28,7 @@ markupsafe==2.1.5
     # via
     #   jinja2
     #   werkzeug
-mypy==1.10.0
+mypy==1.11.0
     # via -r typing.in
 mypy-extensions==1.0.0
     # via mypy
@@ -38,9 +38,9 @@ packaging==24.0
     # via pytest
 pluggy==1.5.0
     # via pytest
-pyright==1.1.365
+pyright==1.1.373
     # via -r typing.in
-pytest==8.2.1
+pytest==8.3.2
     # via -r typing.in
 sqlalchemy==2.0.29
     # via flask-sqlalchemy
@@ -60,7 +60,7 @@ typing-extensions==4.11.0
     #   sqlalchemy
 werkzeug==3.0.3
     # via flask
-zipp==3.18.1
+zipp==3.19.1
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:

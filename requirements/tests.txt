@@ -34,7 +34,7 @@ pluggy==1.5.0
     # via pytest
 pygments==2.18.0
     # via -r tests.in
-pytest==8.2.1
+pytest==8.3.2
     # via -r tests.in
 sqlalchemy==2.0.29
     # via flask-sqlalchemy
@@ -44,5 +44,5 @@ typing-extensions==4.11.0
     # via sqlalchemy
 werkzeug==3.0.3
     # via flask
-zipp==3.18.1
+zipp==3.19.1
     # via importlib-metadata
