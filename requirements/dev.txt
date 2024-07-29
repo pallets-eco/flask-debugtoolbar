@@ -108,7 +108,7 @@ markupsafe==2.1.5
     #   -r typing.txt
     #   jinja2
     #   werkzeug
-mypy==1.10.0
+mypy==1.10.1
     # via -r typing.txt
 mypy-extensions==1.0.0
     # via
@@ -150,9 +150,9 @@ pygments==2.18.0
     #   sphinx
 pyproject-api==1.6.1
     # via tox
-pyright==1.1.365
+pyright==1.1.370
     # via -r typing.txt
-pytest==8.2.1
+pytest==8.2.2
     # via
     #   -r tests.txt
     #   -r typing.txt
@@ -214,7 +214,7 @@ tomli==2.0.1
     #   pyproject-api
     #   pytest
     #   tox
-tox==4.15.0
+tox==4.15.1
     # via -r dev.in
 types-docutils==0.21.0.20240423
     # via
