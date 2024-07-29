@@ -55,6 +55,13 @@ Name                                  Description                             De
 ====================================  =====================================   ==========================
 ``DEBUG_TB_ENABLED``                  Enable the toolbar?                     ``app.debug``
 ``DEBUG_TB_HOSTS``                    Whitelist of hosts to display toolbar   any host
+``DEBUG_TB_ROUTES_HOST``              The host to associate with toolbar      ``None``
+                                      routes (where its assets are served
+                                      from), or the sentinel value `*` to
+                                      serve from the same host as the
+                                      current request (ie any host). This
+                                      is only required if Flask is
+                                      configured to use `host_matching`.
 ``DEBUG_TB_INTERCEPT_REDIRECTS``      Should intercept redirects?             ``True``
 ``DEBUG_TB_PANELS``                   List of module/class names of panels    enable all built-in panels
 ``DEBUG_TB_PROFILER_ENABLED``         Enable the profiler on all requests     ``False``, user-enabled
