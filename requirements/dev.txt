@@ -19,7 +19,7 @@ blinker==1.8.1
     #   flask
 cachetools==5.3.3
     # via tox
-certifi==2024.2.2
+certifi==2024.7.4
     # via
     #   -r docs.txt
     #   requests
@@ -232,7 +232,7 @@ typing-extensions==4.11.0
     #   -r typing.txt
     #   mypy
     #   sqlalchemy
-urllib3==2.2.1
+urllib3==2.2.2
     # via
     #   -r docs.txt
     #   requests
@@ -245,7 +245,7 @@ werkzeug==3.0.3
     #   -r tests.txt
     #   -r typing.txt
     #   flask
-zipp==3.18.1
+zipp==3.19.1
     # via
     #   -r docs.txt
     #   -r tests.txt
