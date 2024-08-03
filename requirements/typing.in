@@ -3,3 +3,4 @@ pyright
 pytest
 types-pygments
 flask-sqlalchemy
+types-beautifulsoup4
