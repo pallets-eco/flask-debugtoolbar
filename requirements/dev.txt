@@ -108,7 +108,7 @@ markupsafe==2.1.5
     #   -r typing.txt
     #   jinja2
     #   werkzeug
-mypy==1.11.1
+mypy==1.11.2
     # via -r typing.txt
 mypy-extensions==1.0.0
     # via
@@ -150,9 +150,9 @@ pygments==2.18.0
     #   sphinx
 pyproject-api==1.6.1
     # via tox
-pyright==1.1.374
+pyright==1.1.382.post1
     # via -r typing.txt
-pytest==8.3.2
+pytest==8.3.3
     # via
     #   -r tests.txt
     #   -r typing.txt
@@ -231,6 +231,7 @@ typing-extensions==4.11.0
     #   -r tests.txt
     #   -r typing.txt
     #   mypy
+    #   pyright
     #   sqlalchemy
 urllib3==2.2.2
     # via
