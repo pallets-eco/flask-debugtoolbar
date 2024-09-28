@@ -28,7 +28,7 @@ markupsafe==2.1.5
     # via
     #   jinja2
     #   werkzeug
-mypy==1.11.1
+mypy==1.11.2
     # via -r typing.in
 mypy-extensions==1.0.0
     # via mypy
@@ -38,9 +38,9 @@ packaging==24.0
     # via pytest
 pluggy==1.5.0
     # via pytest
-pyright==1.1.374
+pyright==1.1.382.post1
     # via -r typing.in
-pytest==8.3.2
+pytest==8.3.3
     # via -r typing.in
 sqlalchemy==2.0.29
     # via flask-sqlalchemy
@@ -57,6 +57,7 @@ types-setuptools==69.5.0.20240423
 typing-extensions==4.11.0
     # via
     #   mypy
+    #   pyright
     #   sqlalchemy
 werkzeug==3.0.3
     # via flask
