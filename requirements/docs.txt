@@ -28,7 +28,7 @@ packaging==24.0
     # via
     #   pallets-sphinx-themes
     #   sphinx
-pallets-sphinx-themes==2.1.3
+pallets-sphinx-themes==2.3.0
     # via -r docs.in
 pygments==2.18.0
     # via sphinx
@@ -42,7 +42,10 @@ sphinx==7.1.2
     # via
     #   -r docs.in
     #   pallets-sphinx-themes
+    #   sphinx-notfound-page
     #   sphinxcontrib-log-cabinet
+sphinx-notfound-page==1.0.4
+    # via pallets-sphinx-themes
 sphinxcontrib-applehelp==1.0.4
     # via sphinx
 sphinxcontrib-devhelp==1.0.2
