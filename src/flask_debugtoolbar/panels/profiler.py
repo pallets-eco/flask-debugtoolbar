@@ -35,7 +35,7 @@ class ProfilerDebugPanel(DebugPanel):
         self, jinja_env: Environment, context: dict[str, t.Any] | None = None
     ) -> None:
         super().__init__(jinja_env, context=context)
-        
+
         self.dump_filename = None
 
         if current_app.config.get("DEBUG_TB_PROFILER_ENABLED"):
