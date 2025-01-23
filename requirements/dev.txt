@@ -12,6 +12,8 @@ babel==2.14.0
     # via
     #   -r docs.txt
     #   sphinx
+beautifulsoup4==4.12.3
+    # via -r tests.txt
 blinker==1.8.1
     # via
     #   -r tests.txt
@@ -170,6 +172,10 @@ snowballstemmer==2.2.0
     # via
     #   -r docs.txt
     #   sphinx
+soupsieve==2.5
+    # via
+    #   -r tests.txt
+    #   beautifulsoup4
 sphinx==7.1.2
     # via
     #   -r docs.txt
@@ -216,10 +222,16 @@ tomli==2.0.1
     #   tox
 tox==4.15.1
     # via -r dev.in
+types-beautifulsoup4==4.12.0.20240511
+    # via -r typing.txt
 types-docutils==0.21.0.20240423
     # via
     #   -r typing.txt
     #   types-pygments
+types-html5lib==1.1.11.20240228
+    # via
+    #   -r typing.txt
+    #   types-beautifulsoup4
 types-pygments==2.18.0.20240506
     # via -r typing.txt
 types-setuptools==69.5.0.20240423

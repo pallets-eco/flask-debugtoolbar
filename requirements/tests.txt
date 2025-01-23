@@ -4,6 +4,8 @@
 #
 #    pip-compile tests.in
 #
+beautifulsoup4==4.12.3
+    # via -r tests.in
 blinker==1.8.1
     # via flask
 click==8.1.7
@@ -36,6 +38,8 @@ pygments==2.18.0
     # via -r tests.in
 pytest==8.3.3
     # via -r tests.in
+soupsieve==2.5
+    # via beautifulsoup4
 sqlalchemy==2.0.29
     # via flask-sqlalchemy
 tomli==2.0.1

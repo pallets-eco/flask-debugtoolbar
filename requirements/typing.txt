@@ -48,8 +48,12 @@ tomli==2.0.1
     # via
     #   mypy
     #   pytest
+types-beautifulsoup4==4.12.0.20240511
+    # via -r typing.in
 types-docutils==0.21.0.20240423
     # via types-pygments
+types-html5lib==1.1.11.20240228
+    # via types-beautifulsoup4
 types-pygments==2.18.0.20240506
     # via -r typing.in
 types-setuptools==69.5.0.20240423
