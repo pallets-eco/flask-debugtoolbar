@@ -357,3 +357,10 @@ class DebugToolbarExtension:
     def render(self, template_name: str, context: dict[str, t.Any]) -> str:
         template = self.jinja_env.get_template(template_name)
         return template.render(**context)
+
+@module.route("/toggle_redirect_intercept", methods=["POST"])
+def toggle_redirect_intercept() -> Response:
+    current = current_app.config.get("DEBUG_TB_INTERCEPT_REDIRECTS", True)
+    new_value = not current
+    current_app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = new_value
+    return {"intercept_redirects": new_value}
