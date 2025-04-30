@@ -358,6 +358,7 @@ class DebugToolbarExtension:
         template = self.jinja_env.get_template(template_name)
         return template.render(**context)
 
+
 @module.route("/toggle_redirect_intercept", methods=["POST"])
 def toggle_redirect_intercept() -> Response:
     current = current_app.config.get("DEBUG_TB_INTERCEPT_REDIRECTS", True)
