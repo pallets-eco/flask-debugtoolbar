@@ -6,8 +6,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      hash: ${{ steps.hash.outputs.hash }}
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
@@ -19,27 +17,11 @@ jobs:
       # Use the commit date instead of the current date during the build.
       - run: echo "SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)" >> $GITHUB_ENV
       - run: python -m build
-      # Generate hashes used for provenance.
-      - name: generate hash
-        id: hash
-        run: cd dist && echo "hash=$(sha256sum * | base64 -w0)" >> $GITHUB_OUTPUT
       - uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
         with:
           path: ./dist
-  provenance:
-    needs: [build]
-    permissions:
-      actions: read
-      id-token: write
-      contents: write
-    # Can't pin with hash due to how this workflow works.
-    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.0.0
-    with:
-      base64-subjects: ${{ needs.build.outputs.hash }}
   create-release:
-    # Upload the sdist, wheels, and provenance to a GitHub release. They remain
-    # available as build artifacts for a while as well.
-    needs: [provenance]
+    needs: [build]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -48,12 +30,11 @@ jobs:
       - name: create release
         run: >
           gh release create --draft --repo ${{ github.repository }}
-          ${{ github.ref_name }}
-          *.intoto.jsonl/* artifact/*
+          ${{ github.ref_name }} artifact/*
         env:
           GH_TOKEN: ${{ github.token }}
   publish-pypi:
-    needs: [provenance]
+    needs: [build]
     # Wait for approval before attempting to upload to PyPI. This allows reviewing the
     # files in the draft release.
     environment:
