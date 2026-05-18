@@ -93,11 +93,15 @@ dev = [
     {include-group = "typing"},
     "pre-commit>=3.5.0",
     "tox>=4.15.1",
+    "tox-uv>=1.11.0",
 ]
 docs = [
     "pallets-sphinx-themes>=2.1.3",
     "sphinx>=7.1.2",
     "sphinxcontrib-log-cabinet>=1.0.1",
+]
+pre-commit = [
+    "pre-commit>=3.5.0",
 ]
 tests = [
     "flask-sqlalchemy>=3.1.1",
