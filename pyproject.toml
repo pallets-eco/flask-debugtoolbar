@@ -87,6 +87,13 @@ order-by-type = false
 build = [
     "build>=1.2.2",
 ]
+dev = [
+    {include-group = "docs"},
+    {include-group = "tests"}
+    {include-group = "typing"}
+    "pre-commit>=3.5.0",
+    "tox>=4.15.1",
+]
 docs = [
     "pallets-sphinx-themes>=2.1.3",
     "sphinx>=7.1.2",
