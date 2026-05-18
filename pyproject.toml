@@ -61,6 +61,8 @@ ignore_missing_imports = true
 pythonVersion = "3.8"
 include = ["src/flask_debugtoolbar", "tests"]
 typeCheckingMode = "basic"
+venvPath = "."
+venv = ".venv"
 
 [tool.ruff]
 src = ["src"]
