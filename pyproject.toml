@@ -88,12 +88,12 @@ build = [
     "build>=1.2.2",
 ]
 dev = [
-    {include-group = "docs"},
-    {include-group = "tests"},
-    {include-group = "typing"},
     "pre-commit>=3.5.0",
     "tox>=4.15.1",
     "tox-uv>=1.11.0",
+    {include-group = "docs"},
+    {include-group = "tests"},
+    {include-group = "typing"},
 ]
 docs = [
     "pallets-sphinx-themes>=2.1.3",
