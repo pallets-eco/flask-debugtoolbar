@@ -89,8 +89,8 @@ build = [
 ]
 dev = [
     {include-group = "docs"},
-    {include-group = "tests"}
-    {include-group = "typing"}
+    {include-group = "tests"},
+    {include-group = "typing"},
     "pre-commit>=3.5.0",
     "tox>=4.15.1",
 ]
