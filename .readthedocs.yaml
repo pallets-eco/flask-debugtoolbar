@@ -8,6 +8,3 @@ build:
     - asdf install uv latest
     - asdf global uv latest
     - uv run --group docs sphinx-build -W -b dirhtml docs $READTHEDOCS_OUTPUT/html
-sphinx:
-  builder: dirhtml
-  fail_on_warning: true
