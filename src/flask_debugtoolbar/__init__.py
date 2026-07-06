@@ -95,8 +95,7 @@ class DebugToolbarExtension:
 
         if not app.config.get("SECRET_KEY"):
             raise RuntimeError(
-                "The Flask-DebugToolbar requires the 'SECRET_KEY' config "
-                "var to be set"
+                "The Flask-DebugToolbar requires the 'SECRET_KEY' config var to be set"
             )
 
         self._validate_and_configure_toolbar_routes_host(app)
@@ -326,7 +325,7 @@ class DebugToolbarExtension:
             after = ""
         else:
             warnings.warn(
-                "Could not insert debug toolbar." " </body> tag not found in response.",
+                "Could not insert debug toolbar. </body> tag not found in response.",
                 stacklevel=1,
             )
             return response
