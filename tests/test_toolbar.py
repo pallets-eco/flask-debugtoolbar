@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import typing as t
 from unittest.mock import MagicMock
 from unittest.mock import patch
@@ -8,6 +9,7 @@ import pytest
 from flask import Flask
 from flask import Response
 from flask.testing import FlaskClient
+from werkzeug.utils import import_string
 
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -165,3 +167,28 @@ def test_toolbar_serves_assets_based_on_host_configuration(
                 "/_debug_toolbar/static/js/toolbar.js", headers={"Host": request_host}
             )
             assert response.status_code == expected_status_code
+
+
+def test_debug_switch_included_for_user_activated_panels() -> None:
+    checked_panels = set()
+
+    app = load_app("basic_app")
+    index = app.get("/")
+    html = index.text
+
+    panels = app.application.config["DEBUG_TB_PANELS"]
+    for panel in panels:
+        panel_cls = import_string(panel)
+        panel_id = panel_cls.dom_id()
+
+        match = re.search(rf'<li id="{panel_id}">(.*?)</li>', html, re.DOTALL)
+        assert match, f"Panel {panel_id} not found in the rendered toolbar"
+
+        has_switch = "flDebugSwitch" in match.group(1)
+        assert (
+            has_switch is panel_cls.user_activate
+        ), f"Panel {panel_id} is incorrectly showing (or not showing) a debug switch"
+
+        checked_panels.add(panel_id)
+
+    assert len(checked_panels) == len(panels)
