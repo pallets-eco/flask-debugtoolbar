@@ -45,11 +45,11 @@
     <div id="{{ panel.dom_id() }}-content" class="flDebugPanelContentParent">
       <div class="flDebugPanelTitle">
         <a href="" class="flDebugClose">Close</a>
-        <h3>{{ panel.title()|safe }}</h3>
+        <h3>{{ panel.title() }}</h3>
       </div>
       <div class="flDebugPanelContent">
         <div class="flDebugScroll">
-          {{ panel.content()|safe }}
+          {{ panel.content() }}
         </div>
       </div>
     </div>
