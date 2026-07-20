@@ -10,6 +10,13 @@
     <ol id="flDebugPanelList">
       {% if panels %}
       <li><a id="flDebugHideToolBarButton" href="#" title="Hide Toolbar">Hide &raquo;</a></li>
+      <li>
+        <button id="toggleRedirectBtn"
+                style="background-color: {{ 'green' if intercept_redirects else 'gray' }};
+                      color: white; padding: 4px 8px; border: none; border-radius: 4px;">
+          Intercept: {{ 'ON' if intercept_redirects else 'OFF' }}
+        </button>
+      </li>
       {% else %}
       <li id="flDebugButton">DEBUG</li>
       {% endif %}
@@ -56,4 +63,19 @@
     {% endif %}
   {% endfor %}
   <div id="flDebugWindow" class="flDebugPanelContentParent"></div>
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+      const btn = document.getElementById("toggleRedirectBtn");
+      if (!btn) return;
+
+      btn.addEventListener("click", () => {
+        fetch("/_debug_toolbar/views/toggle_redirect_intercept", { method: "POST" })
+          .then(res => res.json())
+          .then(data => {
+            btn.textContent = data.intercept_redirects ? "Intercept: ON" : "Intercept: OFF";
+            btn.style.backgroundColor = data.intercept_redirects ? "green" : "gray";
+          });
+      });
+    });
+  </script>
 </div>
