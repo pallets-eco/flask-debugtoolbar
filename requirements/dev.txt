@@ -241,7 +241,7 @@ virtualenv==20.26.1
     # via
     #   pre-commit
     #   tox
-werkzeug==3.0.3
+werkzeug==3.0.6
     # via
     #   -r tests.txt
     #   -r typing.txt
