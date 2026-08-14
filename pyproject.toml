@@ -4,7 +4,7 @@ version = "0.16.0"
 description = "A toolbar overlay for debugging Flask applications."
 readme = "README.md"
 license = { file = "LICENSE.txt" }
-author = [{ name = "Michael van Tellingen" }]
+authors = [{ name = "Michael van Tellingen" }]
 maintainers = [{ name = "Pallets Ecosystem", email = "contact@palletsprojects.com" }]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -25,7 +25,7 @@ Source = "https://github.com/pallets-eco/flask-debugtoolbar/"
 Chat = "https://discord.gg/pallets"
 
 [build-system]
-requires = ["flit_core<4"]
+requires = ["flit_core<5"]
 build-backend = "flit_core.buildapi"
 
 [tool.flit.module]
