@@ -225,6 +225,26 @@ def build_flamegraph(
     return blocks, (max_depth + 1) * _FRAME_HEIGHT
 
 
+def format_flamegraph_stacks(
+    stack_counts: t.Mapping[tuple[FlamegraphFrame, ...], int],
+) -> str:
+    """Serialize samples in the folded-stack format used by FlameGraph tools."""
+
+    def frame_label(frame: FlamegraphFrame) -> str:
+        return frame.label.replace(";", ":").replace("\r", " ").replace("\n", " ")
+
+    lines = (
+        f"{';'.join(frame_label(frame) for frame in stack)} {samples}"
+        for stack, samples in sorted(
+            stack_counts.items(),
+            key=lambda item: tuple((frame.label, frame.location) for frame in item[0]),
+        )
+        if stack and samples > 0
+    )
+    output = "\n".join(lines)
+    return f"{output}\n" if output else ""
+
+
 class FlamegraphDebugPanel(DebugPanel):
     """Panel that displays a sampled flamegraph for the current request."""
 
@@ -315,5 +335,6 @@ class FlamegraphDebugPanel(DebugPanel):
                 "graph_width": _GRAPH_WIDTH,
                 "interval": self.interval,
                 "sample_count": self.sampler.sample_count,
+                "stacks": format_flamegraph_stacks(self.sampler.stack_counts),
             },
         )

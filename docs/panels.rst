@@ -118,7 +118,9 @@ Flamegraph
 Shows a sampled flamegraph of the Python call stacks observed while the current
 view function runs. Wider frames account for more of the view's elapsed time;
 frames above another frame are functions called by it. Click a frame to zoom,
-or use the search field to highlight matching functions and modules.
+or use the search field to highlight matching functions and modules. The graph
+can be exported as a standalone SVG, and the underlying samples can be exported
+in folded-stack format for use with other FlameGraph-compatible tools.
 
 Sampling is disabled by default to avoid adding overhead to every request.
 Click the checkmark to enable it and then refresh the page, or set

@@ -130,8 +130,25 @@
         var details = graph.find('.flDebugFlamegraphDetails');
         var reset = graph.find('.flDebugFlamegraphReset');
         var search = graph.find('.flDebugFlamegraphSearch');
+        var exportSvg = graph.find('.flDebugFlamegraphExportSvg');
+        var exportStacks = graph.find('.flDebugFlamegraphExportStacks');
         var graphWidth = 1200;
         var defaultDetails = 'Click a frame to zoom. Hover over a frame for details.';
+
+        function download(filename, content, contentType) {
+          var blob = new Blob([content], {type: contentType});
+          var url = window.URL.createObjectURL(blob);
+          var link = $('<a>')
+            .attr('href', url)
+            .attr('download', filename)
+            .appendTo(document.body);
+
+          link.get(0).click();
+          link.remove();
+          window.setTimeout(function() {
+            window.URL.revokeObjectURL(url);
+          }, 0);
+        }
 
         function frameLabel(frame) {
           var location = frame.data('flamegraph-location');
@@ -210,6 +227,52 @@
           details.text(defaultDetails);
         }
 
+        function standaloneSvg() {
+          var namespace = 'http://www.w3.org/2000/svg';
+          var svg = graph.find('.flDebugFlamegraphChart').get(0).cloneNode(true);
+          var clonedGraph = $(svg);
+          var graphHeight = Number(clonedGraph.attr('height'));
+          var background = document.createElementNS(namespace, 'rect');
+          var style = document.createElementNS(namespace, 'style');
+
+          clonedGraph
+            .attr('xmlns', namespace)
+            .attr('width', graphWidth)
+            .removeClass('flDebugFlamegraphChart');
+
+          clonedGraph.find('.flDebugFlamegraphFrame').each(function() {
+            var frame = $(this);
+            var x = Number(frame.attr('data-flamegraph-x'));
+            var width = Number(frame.attr('data-flamegraph-width'));
+
+            frame
+              .removeAttr('display tabindex role')
+              .removeClass('flDebugFlamegraphMatch');
+            frame.find('rect').attr('x', x).attr('width', width);
+            frame.find('text').attr('x', x + 3);
+            updateText(frame, width);
+          });
+
+          $(background).attr({
+            x: 0,
+            y: 0,
+            width: graphWidth,
+            height: graphHeight,
+            fill: '#fff8e8'
+          });
+          style.textContent =
+            '.flDebugFlamegraphFrame rect{' +
+              'stroke:rgba(90,30,10,.4);stroke-width:.5}' +
+            '.flDebugFlamegraphFrame text{' +
+              'fill:#111;font-family:Verdana,sans-serif;font-size:11px;' +
+              'pointer-events:none}';
+          svg.insertBefore(background, svg.firstChild);
+          svg.insertBefore(style, svg.firstChild);
+
+          return '<?xml version="1.0" encoding="UTF-8"?>\n' +
+            new XMLSerializer().serializeToString(svg);
+        }
+
         frames.on('click', function() {
           zoom($(this));
         }).on('keydown', function(event) {
@@ -222,6 +285,16 @@
         });
 
         reset.on('click', resetZoom);
+        exportSvg.on('click', function() {
+          download('flamegraph.svg', standaloneSvg(), 'image/svg+xml;charset=utf-8');
+        });
+        exportStacks.on('click', function() {
+          download(
+            'flamegraph.folded',
+            graph.find('.flDebugFlamegraphStacks').val(),
+            'text/plain;charset=utf-8'
+          );
+        });
         search.on('input', function() {
           var query = String($(this).val()).toLowerCase();
           var matches = 0;

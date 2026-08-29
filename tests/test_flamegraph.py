@@ -8,6 +8,7 @@ from flask import Flask
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_debugtoolbar.panels.flamegraph import build_flamegraph
 from flask_debugtoolbar.panels.flamegraph import FlamegraphFrame
+from flask_debugtoolbar.panels.flamegraph import format_flamegraph_stacks
 
 
 def make_frame(name: str, lineno: int) -> FlamegraphFrame:
@@ -53,6 +54,25 @@ def test_build_flamegraph_ignores_non_positive_samples() -> None:
     assert height == 0
 
 
+def test_format_flamegraph_stacks() -> None:
+    request_frame = make_frame("request", 10)
+    first_leaf = make_frame("first", 20)
+    escaped_leaf = make_frame("second;line\nbreak", 30)
+
+    result = format_flamegraph_stacks(
+        {
+            (request_frame, escaped_leaf): 1,
+            (request_frame, first_leaf): 2,
+            (request_frame,): 0,
+        }
+    )
+
+    assert result == (
+        "request (test_app);first (test_app) 2\n"
+        "request (test_app);second:line break (test_app) 1\n"
+    )
+
+
 def test_flamegraph_panel_profiles_request() -> None:
     app = Flask(__name__)
     app.config.update(
@@ -74,6 +94,9 @@ def test_flamegraph_panel_profiles_request() -> None:
     assert response.status_code == 200
     assert b'id="flDebugFlamegraphPanel"' in response.data
     assert b'class="flDebugFlamegraphChart"' in response.data
+    assert b'class="flDebugFlamegraphExportSvg"' in response.data
+    assert b'class="flDebugFlamegraphExportStacks"' in response.data
+    assert b'class="flDebugFlamegraphStacks"' in response.data
     assert b"index (test_flamegraph)" in response.data
     assert (
         b"test_flamegraph_panel_profiles_request (test_flamegraph)" not in response.data

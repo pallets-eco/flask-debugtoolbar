@@ -6,6 +6,8 @@
         <input class="flDebugFlamegraphSearch" type="search" placeholder="Function or module" />
       </label>
       <button class="flDebugFlamegraphReset" type="button" disabled>Reset zoom</button>
+      <button class="flDebugFlamegraphExportSvg" type="button">Export SVG</button>
+      <button class="flDebugFlamegraphExportStacks" type="button">Export stacks</button>
       <span class="flDebugFlamegraphSummary">
         {{ sample_count }} samples over {{ '%.2f'|format(duration * 1000) }}ms
       </span>
@@ -49,6 +51,7 @@
         </g>
       {% endfor %}
     </svg>
+    <textarea class="flDebugFlamegraphStacks" hidden readonly>{{ stacks }}</textarea>
   {% else %}
     <p class="flDebugFlamegraphEmpty">
       No samples were captured. The view completed in
