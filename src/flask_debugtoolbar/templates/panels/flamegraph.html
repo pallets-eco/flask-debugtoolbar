@@ -1,0 +1,59 @@
+<div class="flDebugFlamegraph">
+  {% if blocks %}
+    <div class="flDebugFlamegraphControls">
+      <label>
+        Search
+        <input class="flDebugFlamegraphSearch" type="search" placeholder="Function or module" />
+      </label>
+      <button class="flDebugFlamegraphReset" type="button" disabled>Reset zoom</button>
+      <span class="flDebugFlamegraphSummary">
+        {{ sample_count }} samples over {{ '%.2f'|format(duration * 1000) }}ms
+      </span>
+    </div>
+    <div class="flDebugFlamegraphDetails" aria-live="polite">
+      Click a frame to zoom. Hover over a frame for details.
+    </div>
+    <svg
+      class="flDebugFlamegraphChart"
+      viewBox="0 0 {{ graph_width }} {{ graph_height }}"
+      height="{{ graph_height }}"
+      preserveAspectRatio="none"
+      role="img"
+      aria-label="Request flamegraph"
+    >
+      {% for block in blocks %}
+        <g
+          class="flDebugFlamegraphFrame"
+          data-flamegraph-name="{{ block.name }}"
+          data-flamegraph-location="{{ block.location }}"
+          data-flamegraph-samples="{{ block.samples }}"
+          data-flamegraph-percentage="{{ '%.2f'|format(block.percentage) }}"
+          data-flamegraph-x="{{ block.x }}"
+          data-flamegraph-width="{{ block.width }}"
+          tabindex="0"
+          role="button"
+        >
+          <title>
+            {{ block.name }} — {{ block.samples }} samples
+            ({{ '%.2f'|format(block.percentage) }}%)
+            {% if block.location %}— {{ block.location }}{% endif %}
+          </title>
+          <rect
+            x="{{ block.x }}"
+            y="{{ block.y + 1 }}"
+            width="{{ block.width }}"
+            height="18"
+            fill="{{ block.color }}"
+          />
+          <text x="{{ block.x + 3 }}" y="{{ block.y + 14 }}"></text>
+        </g>
+      {% endfor %}
+    </svg>
+  {% else %}
+    <p class="flDebugFlamegraphEmpty">
+      No samples were captured. The view completed in
+      {{ '%.2f'|format(duration * 1000) }}ms, before the first
+      {{ '%.2f'|format(interval * 1000) }}ms sampling interval elapsed.
+    </p>
+  {% endif %}
+</div>

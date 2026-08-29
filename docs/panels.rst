@@ -108,3 +108,23 @@ Profiler
 Reports profiling data for the current request. Due to the performance overhead, profiling is disabled by default. Click the checkmark to toggle profiling on or off. After enabling the profiler, refresh the page to re-run it with profiling.
 
 .. image:: _static/screenshot-profiler-panel.png
+
+
+Flamegraph
+----------
+
+    flask_debugtoolbar.panels.flamegraph.FlamegraphDebugPanel
+
+Shows a sampled flamegraph of the Python call stacks observed while the current
+view function runs. Wider frames account for more of the view's elapsed time;
+frames above another frame are functions called by it. Click a frame to zoom,
+or use the search field to highlight matching functions and modules.
+
+Sampling is disabled by default to avoid adding overhead to every request.
+Click the checkmark to enable it and then refresh the page, or set
+``DEBUG_TB_FLAMEGRAPH_ENABLED`` to ``True``. The sample interval is controlled
+by ``DEBUG_TB_FLAMEGRAPH_INTERVAL`` and defaults to one millisecond.
+
+The panel uses only Python's standard library. It works in threaded servers and
+does not require the Unix signals or Perl renderer used by the original
+``flask-debugtoolbar-flamegraph`` extension.

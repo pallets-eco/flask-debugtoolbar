@@ -397,3 +397,105 @@
 #flDebug table.flDebugTablesorter thead .headerSortDown, #flDebug table.flDebugTablesorter thead .headerSortUp {
   background-color: #8dbdd8;
 }
+
+/* flamegraph */
+#flDebug .flDebugFlamegraph {
+  margin-top: 10px;
+}
+
+#flDebug .flDebugFlamegraphControls {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+#flDebug .flDebugFlamegraphControls label {
+  align-items: center;
+  display: flex;
+  font-weight: bold;
+  gap: 5px;
+}
+
+#flDebug .flDebugFlamegraphControls input {
+  background: #fff;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  padding: 3px 5px;
+  width: 220px;
+}
+
+#flDebug .flDebugFlamegraphControls button {
+  background: #fff;
+  border: 1px solid #888;
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 3px 8px;
+}
+
+#flDebug .flDebugFlamegraphControls button:disabled {
+  color: #999;
+  cursor: default;
+}
+
+#flDebug .flDebugFlamegraphSummary {
+  color: #555;
+  margin-left: auto;
+}
+
+#flDebug .flDebugFlamegraphDetails {
+  background: #fff;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  min-height: 27px;
+  overflow: hidden;
+  padding: 4px 6px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+#flDebug .flDebugFlamegraphChart {
+  background: #fff8e8;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  display: block;
+  margin-top: 8px;
+  width: 100%;
+}
+
+#flDebug .flDebugFlamegraphFrame {
+  cursor: pointer;
+}
+
+#flDebug .flDebugFlamegraphFrame rect {
+  stroke: rgba(90, 30, 10, 0.4);
+  stroke-width: 0.5;
+}
+
+#flDebug .flDebugFlamegraphFrame:hover rect,
+#flDebug .flDebugFlamegraphFrame:focus rect {
+  filter: brightness(1.08);
+  stroke: #111;
+  stroke-width: 1.5;
+}
+
+#flDebug .flDebugFlamegraphFrame text {
+  fill: #111;
+  font-family: Verdana, sans-serif;
+  font-size: 11px;
+  pointer-events: none;
+}
+
+#flDebug .flDebugFlamegraphFrame.flDebugFlamegraphMatch rect {
+  fill: #7fffd4;
+  stroke: #005f51;
+  stroke-width: 2;
+}
+
+#flDebug .flDebugFlamegraphEmpty {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+}

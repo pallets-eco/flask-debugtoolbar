@@ -121,6 +121,130 @@
               .toggleClass('flDebugOdd', !even);
           });
         });
+      fldt.init_flamegraphs();
+    },
+    init_flamegraphs: function() {
+      $('#flDebug .flDebugFlamegraph').each(function() {
+        var graph = $(this);
+        var frames = graph.find('.flDebugFlamegraphFrame');
+        var details = graph.find('.flDebugFlamegraphDetails');
+        var reset = graph.find('.flDebugFlamegraphReset');
+        var search = graph.find('.flDebugFlamegraphSearch');
+        var graphWidth = 1200;
+        var defaultDetails = 'Click a frame to zoom. Hover over a frame for details.';
+
+        function frameLabel(frame) {
+          var location = frame.data('flamegraph-location');
+          var label = frame.data('flamegraph-name') + ' — ' +
+            frame.data('flamegraph-samples') + ' samples (' +
+            frame.data('flamegraph-percentage') + '%)';
+
+          return location ? label + ' — ' + location : label;
+        }
+
+        function updateText(frame, width) {
+          var label = String(frame.data('flamegraph-name'));
+          var available = Math.floor((width - 6) / 7);
+
+          if (available < 3) {
+            label = '';
+          } else if (label.length > available) {
+            label = label.substring(0, available - 1) + '\u2026';
+          }
+
+          frame.find('text').text(label);
+        }
+
+        function zoom(target) {
+          var targetX = Number(target.data('flamegraph-x'));
+          var targetWidth = Number(target.data('flamegraph-width'));
+          var targetEnd = targetX + targetWidth;
+
+          frames.each(function() {
+            var frame = $(this);
+            var x = Number(frame.data('flamegraph-x'));
+            var width = Number(frame.data('flamegraph-width'));
+            var end = x + width;
+            var isAncestor = x <= targetX && end >= targetEnd;
+            var isDescendant = x >= targetX && end <= targetEnd;
+            var visible = isAncestor || isDescendant;
+            var scaledX;
+            var scaledWidth;
+
+            frame.attr('display', visible ? null : 'none');
+
+            if (!visible) {
+              return;
+            }
+
+            if (isAncestor && !isDescendant) {
+              scaledX = 0;
+              scaledWidth = graphWidth;
+            } else {
+              scaledX = (x - targetX) / targetWidth * graphWidth;
+              scaledWidth = width / targetWidth * graphWidth;
+            }
+
+            frame.find('rect').attr('x', scaledX).attr('width', scaledWidth);
+            frame.find('text').attr('x', scaledX + 3);
+            updateText(frame, scaledWidth);
+          });
+
+          reset.prop('disabled', false);
+          details.text(frameLabel(target));
+        }
+
+        function resetZoom() {
+          frames.each(function() {
+            var frame = $(this);
+            var x = Number(frame.data('flamegraph-x'));
+            var width = Number(frame.data('flamegraph-width'));
+
+            frame.removeAttr('display');
+            frame.find('rect').attr('x', x).attr('width', width);
+            frame.find('text').attr('x', x + 3);
+            updateText(frame, width);
+          });
+
+          reset.prop('disabled', true);
+          details.text(defaultDetails);
+        }
+
+        frames.on('click', function() {
+          zoom($(this));
+        }).on('keydown', function(event) {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            zoom($(this));
+          }
+        }).on('mouseenter focus', function() {
+          details.text(frameLabel($(this)));
+        });
+
+        reset.on('click', resetZoom);
+        search.on('input', function() {
+          var query = String($(this).val()).toLowerCase();
+          var matches = 0;
+
+          frames.each(function() {
+            var frame = $(this);
+            var searchable = String(frame.data('flamegraph-name')) + ' ' +
+              String(frame.data('flamegraph-location'));
+            var matchesQuery = query && searchable.toLowerCase().indexOf(query) !== -1;
+
+            frame.toggleClass('flDebugFlamegraphMatch', Boolean(matchesQuery));
+            matches += matchesQuery ? 1 : 0;
+          });
+
+          if (query) {
+            details.text(matches + (matches === 1 ? ' matching frame' : ' matching frames'));
+          } else {
+            details.text(defaultDetails);
+          }
+        });
+
+        resetZoom();
+      });
     },
     toggle_content: function(elem) {
       if (elem.is(':visible')) {

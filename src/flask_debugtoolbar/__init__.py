@@ -125,6 +125,8 @@ class DebugToolbarExtension:
             "DEBUG_TB_HOSTS": (),
             "DEBUG_TB_ROUTES_HOST": None,
             "DEBUG_TB_INTERCEPT_REDIRECTS": True,
+            "DEBUG_TB_FLAMEGRAPH_ENABLED": False,
+            "DEBUG_TB_FLAMEGRAPH_INTERVAL": 0.001,
             "DEBUG_TB_PANELS": (
                 "flask_debugtoolbar.panels.versions.VersionDebugPanel",
                 "flask_debugtoolbar.panels.timer.TimerDebugPanel",
@@ -136,6 +138,7 @@ class DebugToolbarExtension:
                 "flask_debugtoolbar.panels.logger.LoggingPanel",
                 "flask_debugtoolbar.panels.route_list.RouteListDebugPanel",
                 "flask_debugtoolbar.panels.profiler.ProfilerDebugPanel",
+                "flask_debugtoolbar.panels.flamegraph.FlamegraphDebugPanel",
                 "flask_debugtoolbar.panels.g.GDebugPanel",
             ),
             "SQLALCHEMY_RECORD_QUERIES": app.debug,
