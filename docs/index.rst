@@ -63,6 +63,8 @@ Name                                  Description                             De
                                       is only required if Flask is
                                       configured to use `host_matching`.
 ``DEBUG_TB_INTERCEPT_REDIRECTS``      Should intercept redirects?             ``True``
+``DEBUG_TB_FLAMEGRAPH_ENABLED``       Enable the flamegraph on all requests   ``False``, user-enabled
+``DEBUG_TB_FLAMEGRAPH_INTERVAL``      Seconds between flamegraph samples      ``0.001``
 ``DEBUG_TB_PANELS``                   List of module/class names of panels    enable all built-in panels
 ``DEBUG_TB_PROFILER_ENABLED``         Enable the profiler on all requests     ``False``, user-enabled
 ``DEBUG_TB_TEMPLATE_EDITOR_ENABLED``  Enable the template editor              ``False``
