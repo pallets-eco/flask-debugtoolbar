@@ -185,9 +185,9 @@ def test_debug_switch_included_for_user_activated_panels() -> None:
         assert match, f"Panel {panel_id} not found in the rendered toolbar"
 
         has_switch = "flDebugSwitch" in match.group(1)
-        assert (
-            has_switch is panel_cls.user_activate
-        ), f"Panel {panel_id} is incorrectly showing (or not showing) a debug switch"
+        assert has_switch is panel_cls.user_activate, (
+            f"Panel {panel_id} is incorrectly showing (or not showing) a debug switch"
+        )
 
         checked_panels.add(panel_id)
 
