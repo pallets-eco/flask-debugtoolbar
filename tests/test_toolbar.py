@@ -192,3 +192,18 @@ def test_debug_switch_included_for_user_activated_panels() -> None:
         checked_panels.add(panel_id)
 
     assert len(checked_panels) == len(panels)
+
+
+@pytest.mark.parametrize("endpoint", ["sql_select", "sql_explain"])
+def test_sqlalchemy_select_and_explain(endpoint: str) -> None:
+    app = load_app("basic_app")
+    html = app.get("/").text
+
+    match = re.search(
+        rf'href="(/_debug_toolbar/views/sqlalchemy/{endpoint}[^"]+)"', html
+    )
+    assert match, f"{endpoint} link not found in the rendered toolbar"
+
+    response = app.get(match.group(1).replace("&amp;", "&"))
+    assert response.status_code == 200
+    assert "SQL Details" in response.text
