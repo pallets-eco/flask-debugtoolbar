@@ -37,6 +37,14 @@ Setting up the debug toolbar is simple::
 The toolbar will automatically be injected into HTML responses when debug mode
 is on. In production, setting ``app.debug = False`` will disable the toolbar.
 
+If the toolbar does not appear, check your terminal or console output for a
+warning like ``Could not insert debug toolbar. </body> tag not found in
+response.`` This means your route returned content without a valid
+``</body>`` tag, for example a plain string like ``return "hello"`` instead
+of a full HTML page. The toolbar can only inject itself into responses that
+contain real HTML with a closing body tag. Returning a complete response,
+such as ``return "<html><body>hello</body></html>"``, will resolve this.
+
 This extension also supports the Flask app factory pattern by separately
 creating the toolbar and later initializing it for an app::
 
