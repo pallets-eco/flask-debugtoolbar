@@ -18,6 +18,11 @@ dependencies = [
     "flask>=2.3.0",
 ]
 
+[project.optional-dependencies]
+sqlalchemy = [
+    "Flask-SQLAlchemy>=3.0",
+]
+
 [project.urls]
 Documentation = "https://flask-debugtoolbar.readthedocs.io"
 Changes = "https://github.com/pallets-eco/flask-debugtoolbar/releases/"
