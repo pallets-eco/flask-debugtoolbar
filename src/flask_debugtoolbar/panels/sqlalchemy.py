@@ -174,12 +174,18 @@ def sql_select(explain: bool = False) -> str:
         else:
             statement = f"EXPLAIN\n{statement}"
 
-    result = engine.execute(statement, params)
+    if isinstance(params, list):
+        params = [tuple(p) if isinstance(p, list) else p for p in params]
+
+    with engine.connect() as connection:
+        result = connection.exec_driver_sql(statement, params)
+        rows, headers = result.fetchall(), list(result.keys())
+
     return g.debug_toolbar.render(  # type: ignore[no-any-return]
         "panels/sqlalchemy_select.html",
         {
-            "result": result.fetchall(),
-            "headers": result.keys(),
+            "result": rows,
+            "headers": headers,
             "sql": format_sql(statement, params),
             "duration": float(request.args["duration"]),
         },

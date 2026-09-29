@@ -69,6 +69,10 @@ Shows SQL queries run during the current request.
    to record the queries. See the Flask-SQLAlchemy
    :ref:`flasksqlalchemy:quickstart` section to configure it.
 
+   You can install it alongside the toolbar with the ``sqlalchemy`` extra::
+
+       $ pip install "Flask-DebugToolbar[sqlalchemy]"
+
    For additional details on query recording see the
    :py:func:`~flask_sqlalchemy.get_debug_queries` documentation.
 
