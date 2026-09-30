@@ -53,6 +53,11 @@ creating the toolbar and later initializing it for an app::
     app = create_app('the-config.cfg')
     toolbar.init_app(app)
 
+Routes may also be defined as ``async def`` views. As with Flask itself, this
+requires the ``async`` extra to be installed::
+
+    $ pip install "flask[async]"
+
 Configuration
 -------------
 

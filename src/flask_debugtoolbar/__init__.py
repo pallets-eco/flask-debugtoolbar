@@ -219,7 +219,9 @@ class DebugToolbarExtension:
         view_args: dict[str, t.Any] = req.view_args  # type: ignore[assignment]
         # allow each toolbar to process the view and args
         view_func = self.process_view(app, view_func, view_args)
-        return view_func(**view_args)
+        # async views must be wrapped like Flask does, otherwise Flask
+        # receives a coroutine instead of a response
+        return app.ensure_sync(view_func)(**view_args)
 
     def _show_toolbar(self) -> bool:
         """Return a boolean to indicate if we need to show the toolbar."""

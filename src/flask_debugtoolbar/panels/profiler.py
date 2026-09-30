@@ -62,7 +62,11 @@ class ProfilerDebugPanel(DebugPanel):
         view_kwargs: dict[str, t.Any],
     ) -> c.Callable[..., t.Any] | None:
         if self.is_active:
-            func = functools.partial(self.profiler.runcall, view_func)
+            # Wrap async views like Flask does, otherwise the profiler
+            # would return an un-awaited coroutine.
+            func = functools.partial(
+                self.profiler.runcall, current_app.ensure_sync(view_func)
+            )
             functools.update_wrapper(func, view_func)
             return func
 

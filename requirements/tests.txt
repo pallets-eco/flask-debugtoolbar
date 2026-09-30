@@ -4,6 +4,8 @@
 #
 #    pip-compile tests.in
 #
+asgiref==3.8.1
+    # via -r tests.in
 blinker==1.8.1
     # via flask
 click==8.1.7
@@ -41,7 +43,9 @@ sqlalchemy==2.0.29
 tomli==2.0.1
     # via pytest
 typing-extensions==4.11.0
-    # via sqlalchemy
+    # via
+    #   asgiref
+    #   sqlalchemy
 werkzeug==3.0.3
     # via flask
 zipp==3.19.1

@@ -1,3 +1,5 @@
 pytest
 flask-sqlalchemy
 pygments
+# For testing async views, equivalent to the `flask[async]` extra.
+asgiref

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import re
 import typing as t
 from unittest.mock import MagicMock
@@ -207,3 +208,26 @@ def test_sqlalchemy_select_and_explain(endpoint: str) -> None:
     response = app.get(match.group(1).replace("&amp;", "&"))
     assert response.status_code == 200
     assert "SQL Details" in response.text
+
+
+@pytest.mark.parametrize("profiler_enabled", [False, True])
+def test_async_view(profiler_enabled: bool) -> None:
+    """Async views must be awaited like Flask does, see issue #158."""
+    app = app_with_config(
+        app_config={},
+        toolbar_config=dict(
+            DEBUG_TB_ENABLED=True, DEBUG_TB_PROFILER_ENABLED=profiler_enabled
+        ),
+    )
+
+    @app.route("/async")
+    async def async_index() -> str:
+        await asyncio.sleep(0)
+        return "<html><head></head><body>Async response</body></html>"
+
+    with app.test_client() as client:
+        response = client.get("/async")
+
+    assert response.status_code == 200
+    assert "Async response" in response.text
+    assert '<div id="flDebug" ' in response.text

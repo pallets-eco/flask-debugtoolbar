@@ -8,6 +8,8 @@ alabaster==0.7.13
     # via
     #   -r docs.txt
     #   sphinx
+asgiref==3.8.1
+    # via -r tests.txt
 babel==2.14.0
     # via
     #   -r docs.txt
@@ -230,6 +232,7 @@ typing-extensions==4.11.0
     # via
     #   -r tests.txt
     #   -r typing.txt
+    #   asgiref
     #   mypy
     #   pyright
     #   sqlalchemy
