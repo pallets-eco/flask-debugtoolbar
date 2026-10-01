@@ -43,11 +43,15 @@ jobs:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
         with:
-          python-version: '3.x'
+          # The pinned typing requirements have no wheels for 3.13+ yet
+          # (greenlet 3.0.3 tops out at cp312), so building it from source
+          # on a newer interpreter fails. Bump back to '3.x' once the
+          # requirements are updated.
+          python-version: '3.12'
           cache: pip
           cache-dependency-path: requirements*/*.txt
       - name: cache mypy
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
           path: ./.mypy_cache
           key: mypy|${{ hashFiles('pyproject.toml') }}
