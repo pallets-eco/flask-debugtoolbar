@@ -21,16 +21,12 @@ except ImportError:
     debug_enables_record_queries: bool = False
 else:
     try:
-        from flask_sqlalchemy.record_queries import (  # type: ignore[assignment]
-            get_recorded_queries,
-        )
+        from flask_sqlalchemy.record_queries import get_recorded_queries  # type: ignore[assignment]
 
         debug_enables_record_queries = False
     except ImportError:
         # For flask_sqlalchemy < 3.0.0
-        from flask_sqlalchemy import (  # type: ignore[no-redef]
-            get_debug_queries as get_recorded_queries,
-        )
+        from flask_sqlalchemy import get_debug_queries as get_recorded_queries  # type: ignore[no-redef]
 
         # flask_sqlalchemy < 3.0.0 automatically enabled
         # SQLALCHEMY_RECORD_QUERIES in debug or test mode
